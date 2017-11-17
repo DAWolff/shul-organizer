@@ -1,10 +1,2 @@
 language: node_js
 node_js: node
-services:
-deploy:
-  provider: heroku
-  api_key:
-    secure: YYMB1pIkDQ4bk/IXxtjgUOlsKp+xe2D536jP6vOH2cKp3W2eXth0zjF/NWarh9bFcgW5AB/w9vUBEHVW/hQwHbcVTtORmYVio1Zl8JAAH54KBtS0AU0CXWNMGpwWXnQTgrVhqEtUN9o3KqFiUmsSieIElkvUtnP9b7NSHaH55SVteDJNvxqB9cXU+JRSzLTLcCilrYChFtq4BAe9y+muJ72RfDkRE7MZitUbzVGedx6I/LK0+qprTkNZWAMIYWhSnmSJjMSW5gjsXeUEBu9xRQrKDbd6BzKZ6RP7Nw+qCUzz1BGQYj1BjeNvS49d8gFvmCPD3CEQLRPgu2WAs3VFmigKDjvr2RTRSfx0X5adDdeBCawZo5CfeI2c5O8o/0XXdl7Er4KPMSd18uDOH2Mmq7oLP5n7kQEOAunHWPcsbv/3xV5g3HIYPc7pdE4ZMPADMs1M8pDmcrsp+HOpex87jPHMHvlOqpey2CpioFKsXEXw/mY3rkjmROGDCq+p0AtvGdPMn1yUmSLRTK/BckHOC7LAqMJVaz/EkHhCgYxStvdVkSwMKYfTvLNfpGEfwyJSkuUJyzcFDA2N/N3P9vSJXT7zrJkpd4VlJWvbD15Rkcsezk9A3kX8kohNOFIKp67yiaH0cCz1YRKPdcmgJf8oI/17LMEk8PyHp4RITDI0HV4=
-  app: fierce-tundra-73265
-  on:
-    repo: DAWolff/shul-organizer
