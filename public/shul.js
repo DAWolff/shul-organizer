@@ -65,8 +65,10 @@ function getShulData(callbackFn) {
 // to real API later
 function displayShulData(data) {
     for (index in data.shulData) {
-	   $('body').append(
-        '<p>' + data.shulData[index].text + '</p>');
+	   $('#shulInfo').append(
+        '<p>' + data.shulData[index].name + '</p>'	+
+			 '<p>' + data.shulData[index].called + '</p>'
+			);
     }
 }
 

@@ -4,9 +4,9 @@ var MOCK_MEMBER_DATA = {
 	"memberData": [
     {
       "id": "1111111",
-      "familyName" "Metz",
+      "familyName": "Metz",
       "hebrewNameFull": "Yehuda Bentzion",
-      "englishName": "Jerry"
+      "englishName": "Jerry",
       "called": "Yehuda Metz",
       "regular": "y",
       "contactInfo": {
@@ -31,21 +31,21 @@ var MOCK_MEMBER_DATA = {
         "aliya": "revii"
       },
       "canLeadDavening": "t",
-      "lastLedDavening" {
+      "lastLedDavening": {
         "parsha": "Noach",
         "year": "2017",
         "tefilla": "musaf"
       },
       "occaisions": [
-       { "name" "Jewish Birthday",
+       { "name": "Jewish Birthday",
          "month": "Shevat",
          "day": "10",
        },
-       { "name" "yortzeit Father",
+       { "name": "yortzeit Father",
          "month": "Teves",
          "day": "19",
        },
-       { "name" "yortzeit Mother",
+       { "name": "yortzeit Mother",
          "month": "Av",
          "day": "23",
        },
@@ -57,14 +57,14 @@ var MOCK_MEMBER_DATA = {
          "month": "Tammuz",
          "day": "10"
        },
-      ]
+		 ],
       "notes": ""
     },
     {
       "id": "2222222",
-      "familyName" "Katz",
+      "familyName": "Katz",
       "hebrewNameFull": "Binyomin Eliezer Lipa",
-      "englishName": "Benjamin"
+      "englishName": "Benjamin",
       "called": "Benny Katz",
       "regular": "y",
       "contactInfo": {
@@ -89,13 +89,13 @@ var MOCK_MEMBER_DATA = {
         "aliya": "kohen"
       },
       "canLeadDavening": "t",
-      "lastLedDavening" {
+      "lastLedDavening": {
         "parsha": "Bereshis",
         "year": "2017",
         "tefilla": "shacharis"
       },
       "occaisions": [
-       { "name" "Jewish Birthday",
+       { "name": "Jewish Birthday",
          "month": "Iyyar",
          "day": "5",
        },
@@ -107,14 +107,14 @@ var MOCK_MEMBER_DATA = {
          "month": "Elul",
          "day": "7"
        },
-      ]
+		 ],
       "notes": ""
     },
     {
       "id": "3333333",
-      "familyName" "Levine",
+      "familyName": "Levine",
       "hebrewNameFull": "Avrohom",
-      "englishName": "Abraham"
+      "englishName": "Abraham",
       "called": "Avrohom Levine",
       "regular": "y",
       "contactInfo": {
@@ -139,17 +139,17 @@ var MOCK_MEMBER_DATA = {
         "aliya": "levi"
       },
       "canLeadDavening": "t",
-      "lastLedDavening" {
+      "lastLedDavening": {
         "parsha": "Noach",
         "year": "2017",
         "tefilla": "shacharis"
       },
       "occaisions": [
-       { "name" "Jewish Birthday",
+       { "name": "Jewish Birthday",
          "month": "Sivan",
          "day": "29",
        },
-       { "name" "yortzeit Father",
+       { "name": "yortzeit Father",
          "month": "Cheshvan",
          "day": "20",
        },
@@ -157,7 +157,7 @@ var MOCK_MEMBER_DATA = {
          "month": "Kislev",
          "day": "4"
        },
-      ]
+		 ],
       "notes": ""
     },
   ]
@@ -179,8 +179,10 @@ function getAllMembers(callbackFn) {
 // to real API later
 function displayAllMembers(data) {
     for (index in data.memberData) {
-	   $('body').append(
-        '<p>' + data.memberData[index].text + '</p>');
+			$('#membersInfo').append(
+         '<p>' + data.memberData[index].called + '</p>'	+
+ 			 '<p>' + data.memberData[index].fatherHebrewName + '</p>'
+ 			);
     }
 }
 

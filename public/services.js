@@ -4,7 +4,7 @@ var MOCK_SERVICES_DATA = {
 	"servicesData": [
         {
           "id": "1111111",
-          "parsha" "Breishis",
+          "parsha": "Breishis",
           "dateHebrew": "23 Tishrei, 5718",
           "dateEnglish": "Oct. 3, 2017",
           "kiddush": {
@@ -23,31 +23,31 @@ var MOCK_SERVICES_DATA = {
             "kohen": {
               "member": "Benny Katz",
               "pledge": "18"
-            }
+            },
             "levi": {
               "member": "Avrohom Levine",
               "pledge": "18"
-            }
+            },
             "shlishi": {
               "member": "Michoel Greene",
               "pledge": "54"
-            }
+            },
             "revii": {
               "member": "Ezra Nagar",
               "pledge": "54"
-            }
+            },
             "chamishi": {
               "member": "Daniel Yarmush",
               "pledge": "54"
-            }
+            },
             "shishi": {
               "member": "Eli Beren",
               "pledge": "54"
-            }
+            },
             "shevii": {
               "member": "Moshe Altein",
               "pledge": "54"
-            }
+            },
             "maftir": {
               "member": "Yochanan Danziger",
               "pledge": "200"
@@ -62,7 +62,7 @@ var MOCK_SERVICES_DATA = {
       },
       {
         "id": "2222222",
-        "parsha" "Noach",
+        "parsha": "Noach",
         "dateHebrew": "27 Tishrei, 5718",
         "dateEnglish": "Oct. 10, 2017",
         "kiddush": {
@@ -81,31 +81,31 @@ var MOCK_SERVICES_DATA = {
           "kohen": {
             "member": "Toby Sofer",
             "pledge": "10"
-          }
+          },
           "levi": {
             "member": "Avrohom Levine",
             "pledge": "18"
-          }
+          },
           "shlishi": {
             "member": "Yehuda Rosen",
             "pledge": "50"
-          }
+          },
           "revii": {
             "member": "Avrohom Duban",
             "pledge": "26"
-          }
+          },
           "chamishi": {
             "member": "Naftoli Hirsh",
             "pledge": "54"
-          }
+          },
           "shishi": {
             "member": "Alon Benjamin",
             "pledge": "10"
-          }
+          },
           "shevii": {
             "member": "Noach Dear",
             "pledge": "100"
-          }
+          },
           "maftir": {
             "member": "Zev Herman",
             "pledge": "100"
@@ -138,8 +138,10 @@ function getRecentServicesData(callbackFn) {
 // to real API later
 function displayServicesData(data) {
     for (index in data.servicesData) {
-	   $('body').append(
-        '<p>' + data.servicesData[index].text + '</p>');
+			 $('#servicesInfo').append(
+	        '<p>' + data.servicesData[index].parsha + '</p>'	+
+				  '<p>' + data.servicesData[index].dateHebrew + '</p>'
+				);
     }
 }
 
