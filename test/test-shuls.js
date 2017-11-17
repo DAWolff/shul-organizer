@@ -6,7 +6,7 @@ const {app, closeServer, runServer} = require('../server');
 
 chai.use(chaiHttp);
 
-describe('GET endpoint', function() {
+describe('GET endpoints', function() {
 
   before(function() {
     return runServer();
@@ -16,7 +16,7 @@ describe('GET endpoint', function() {
     return closeServer();
   });
 
-  it('should return html and status code of 200', function() {
+  it('should return homepage html and status code of 200', function() {
     let res;
     return chai.request(app)
       .get('/')
@@ -24,5 +24,35 @@ describe('GET endpoint', function() {
         res.should.have.status(200);
         res.should.be.html;
       })
-    });
+  });
+
+  it('should return Shul html and status code of 200', function() {
+    let res;
+    return chai.request(app)
+      .get('/shul')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.html;
+      })
+  });
+
+  it('should return Member html and status code of 200', function() {
+    let res;
+    return chai.request(app)
+      .get('/member')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.html;
+      })
+  });
+
+  it('should return Services html and status code of 200', function() {
+    let res;
+    return chai.request(app)
+      .get('/services')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.html;
+      })
+  });
 });

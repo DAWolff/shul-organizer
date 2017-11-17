@@ -10,6 +10,32 @@ app.get("/", (req, res) => {
   .sendFile(__dirname + '/public/index.html');
 });
 
+app.get("/shul", (req, res) => {
+  res.status(200)
+  .sendFile(__dirname + '/public/shul.html');
+});
+
+app.get("/member", (req, res) => {
+  res.status(200)
+  .sendFile(__dirname + '/public/member.html');
+});
+
+app.get("/services", (req, res) => {
+  res.status(200)
+  .sendFile(__dirname + '/public/services.html');
+});
+
+// app.get('/shul/:id', (req, res) => {
+//   BlogPost
+//     .findById(req.params.id)
+//     .then(post => res.json(post.apiRepr()))
+//     .catch(err => {
+//       console.error(err);
+//       res.status(500).json({error: 'something went horribly awry'});
+//     });
+// });
+
+
 let server;
 
 // this function starts our server and returns a Promise.
