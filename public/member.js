@@ -8,7 +8,7 @@ var MOCK_MEMBER_DATA = {
       "hebrewNameFull": "Yehuda Bentzion",
       "englishName": "Jerry",
       "called": "Yehuda Metz",
-      "regular": "y",
+      "regular": "t",
       "contactInfo": {
         "eMail": "ymetz@gmaiil.com",
         "cellPhone": "6462489372",
@@ -22,7 +22,7 @@ var MOCK_MEMBER_DATA = {
       },
       "fatherHebrewName": "Eliezer ben Volf",
       "motherHebrewName": "Miriam bas Feivel",
-      "titles": "Dr.",
+      "title": "Dr.",
       "kohen": "f",
       "levi": "f",
       "lastAliya": {
@@ -66,7 +66,7 @@ var MOCK_MEMBER_DATA = {
       "hebrewNameFull": "Binyomin Eliezer Lipa",
       "englishName": "Benjamin",
       "called": "Benny Katz",
-      "regular": "y",
+      "regular": "t",
       "contactInfo": {
         "eMail": "bennyk@gmaiil.com",
         "cellPhone": "6462879377",
@@ -80,7 +80,7 @@ var MOCK_MEMBER_DATA = {
       },
       "fatherHebrewName": "Alter ben Nosson",
       "motherHebrewName": "Aliza bas Koppel Gneivish",
-      "titles": "",
+      "title": "Rabbi",
       "kohen": "t",
       "levi": "f",
       "lastAliya": {
@@ -116,7 +116,7 @@ var MOCK_MEMBER_DATA = {
       "hebrewNameFull": "Avrohom",
       "englishName": "Abraham",
       "called": "Avrohom Levine",
-      "regular": "y",
+      "regular": "t",
       "contactInfo": {
         "eMail": "al613@gmaiil.com",
         "cellPhone": "7186746474",
@@ -130,7 +130,7 @@ var MOCK_MEMBER_DATA = {
       },
       "fatherHebrewName": "Gershon Zev ben Mendel Yitzchok",
       "motherHebrewName": "Dina bas Tzvi Hersh",
-      "titles": "President of Shul",
+      "title": "Shul President",
       "kohen": "f",
       "levi": "t",
       "lastAliya": {
@@ -178,12 +178,50 @@ function getAllMembers(callbackFn) {
 // this function stays the same when we connect
 // to real API later
 function displayAllMembers(data) {
-    for (index in data.memberData) {
-			$('#membersInfo').append(
-         '<p>' + data.memberData[index].called + '</p>'	+
- 			 '<p>' + data.memberData[index].fatherHebrewName + '</p>'
- 			);
-    }
+    // for (index in data.memberData) {
+		// 	$('#membersInfo').append(
+    //      '<p>' + data.memberData[index].called + '</p>'	+
+ 	// 		 '<p>' + data.memberData[index].fatherHebrewName + '</p>'
+ 	// 		);
+    // }
+		for (i in data.memberData) {
+		   $('#memberInfo').append(
+				'<p>' + data.memberData[i].id + '</p>'	+
+				'<p>' + data.memberData[i].familyName + '</p>'	+
+				'<p>' + data.memberData[i].hebrewNameFull + '</p>'	+
+				'<p>' + data.memberData[i].called + '</p>'	+
+				'<p>' + data.memberData[i].englishName + '</p>'	+
+				'<p>' + data.memberData[i].regular + '</p>'	+
+				'<p>' + data.memberData[i].contactInfo.eMail + '</p>'	+
+				'<p>' + data.memberData[i].contactInfo.cellPhone + '</p>'	+
+				'<p>' + data.memberData[i].contactInfo.homeAddress.street + '</p>'	+
+				'<p>' + data.memberData[i].contactInfo.homeAddress.city + '</p>'	+
+				'<p>' + data.memberData[i].contactInfo.homeAddress.state + '</p>'	+
+				'<p>' + data.memberData[i].contactInfo.homeAddress.zip + '</p>'	+
+				'<p>' + data.memberData[i].contactInfo.homeAddress.addrNotes + '</p>'	+
+				'<p>' + data.memberData[i].fatherHebrewName + '</p>'	+
+				'<p>' + data.memberData[i].motherHebrewName + '</p>'	+
+				'<p>' + data.memberData[i].title + '</p>'	+
+				'<p>' + data.memberData[i].kohen + '</p>'	+
+				'<p>' + data.memberData[i].levi + '</p>'	+
+				'<p>' + data.memberData[i].lastAliya.parsha + '</p>'	+
+				'<p>' + data.memberData[i].lastAliya.year + '</p>'	+
+				'<p>' + data.memberData[i].lastAliya.aliya + '</p>'	+
+				'<p>' + data.memberData[i].canLeadDavening + '</p>'	+
+				'<p>' + data.memberData[i].lastLedDavening.parsha + '</p>'	+
+				'<p>' + data.memberData[i].lastLedDavening.year + '</p>'	+
+				'<p>' + data.memberData[i].lastLedDavening.tefilla + '</p>'
+		 	 );
+		   for (j in data.memberData.occaisions) {
+			   $('#shulInfo').append(
+		     '<p>' + data.memberData[i].occaisions[j].name + '</p>'	+
+		     '<p>' + data.memberData[i].occaisions[j].month + '</p>'	+
+		     '<p>' + data.memberData[i].occaisions[j].day + '</p>'
+			 	 );}
+			 $('#shulInfo').append(
+		   '<p>' + data.memberData[i].notes + '</p>'
+		 	 );
+		}
 }
 
 // this function can stay the same even when we

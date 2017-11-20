@@ -137,12 +137,48 @@ function getRecentServicesData(callbackFn) {
 // this function stays the same when we connect
 // to real API later
 function displayServicesData(data) {
-    for (index in data.servicesData) {
-			 $('#servicesInfo').append(
-	        '<p>' + data.servicesData[index].parsha + '</p>'	+
-				  '<p>' + data.servicesData[index].dateHebrew + '</p>'
-				);
-    }
+    // for (index in data.servicesData) {
+		// 	 $('#servicesInfo').append(
+	  //       '<p>' + data.servicesData[index].parsha + '</p>'	+
+		// 		  '<p>' + data.servicesData[index].dateHebrew + '</p>'
+		// 		);
+    // }
+		for (i in data.servicesData) {
+		   $('#servicesInfo').append(
+		   '<p>' + data.servicesData[i].id + '</p>'	+
+		   '<p>' + data.servicesData[i].parsha + '</p>'	+
+		   '<p>' + data.servicesData[i].dateHebrew + '</p>'	+
+		   '<p>' + data.servicesData[i].dateEnglish + '</p>'	+
+		   '<p>' + data.servicesData[i].kiddush.made + '</p>'	+
+		   '<p>' + data.servicesData[i].kiddush.sponsor + '</p>'	+
+		   '<p>' + data.servicesData[i].kiddush.pledge + '</p>'	+
+		   '<p>' + data.servicesData[i].kiddush.paid + '</p>'	+
+			 '<p>' + data.servicesData[i].ledDavening.kabolasShabbos + '</p>'	+
+			 '<p>' + data.servicesData[i].ledDavening.shacharis + '</p>'	+
+			 '<p>' + data.servicesData[i].ledDavening.musaf + '</p>'	+
+			 '<p>' + data.servicesData[i].ledDavening.mincha + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosShacharis.kohen.member + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosShacharis.kohen.pledge + '</p>'	+
+			 '<p>' + data.servicesData[i].aliyosShacharis.levi.member + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosShacharis.levi.pledge + '</p>'	+
+			 '<p>' + data.servicesData[i].aliyosShacharis.shlishi.member + '</p>'	+
+			 '<p>' + data.servicesData[i].aliyosShacharis.shlishi.pledge + '</p>'	+
+			 '<p>' + data.servicesData[i].aliyosShacharis.revii.member + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosShacharis.revii.pledge + '</p>'	+
+			 '<p>' + data.servicesData[i].aliyosShacharis.chamishi.member + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosShacharis.chamishi.pledge + '</p>'	+
+			 '<p>' + data.servicesData[i].aliyosShacharis.shishi.member + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosShacharis.shishi.pledge + '</p>'	+
+			 '<p>' + data.servicesData[i].aliyosShacharis.shevii.member + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosShacharis.shevii.pledge + '</p>'	+
+			 '<p>' + data.servicesData[i].aliyosShacharis.maftir.member + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosShacharis.maftir.pledge + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosMincha.kohen + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosMincha.levi + '</p>'	+
+		   '<p>' + data.servicesData[i].aliyosMincha.shlishi + '</p>'	+
+			 '<p>' + data.servicesData[i].notes + '</p>'	 
+		 	 );
+		}
 }
 
 // this function can stay the same even when we
