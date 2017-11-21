@@ -62,7 +62,7 @@ var MOCK_SHUL_DATA = {
                 "desc": "Fathers and Sons learning program"
                 },
             ],
-            "notes": "notes"
+            "notes": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
         }
     ]
 };
@@ -82,47 +82,63 @@ function getShulData(callbackFn) {
 // this function stays the same when we connect
 // to real API later
 function displayShulData(data) {
-  for (i in data.shulData) {
-	   $('#shulInfo').append(
-	   '<p>' + data.shulData[i].id + '</p>'	+
-	   '<p>' + data.shulData[i].adminEmail + '</p>'	+
-	   '<p>' + data.shulData[i].name + '</p>'	+
-	   '<p>' + data.shulData[i].called + '</p>'	+
-	   '<p>' + data.shulData[i].address.street + '</p>'	+
-	   '<p>' + data.shulData[i].address.city + '</p>'	+
-	   '<p>' + data.shulData[i].address.state + '</p>'	+
-	   '<p>' + data.shulData[i].address.zip + '</p>'	+
-	   '<p>' + data.shulData[i].rabbi + '</p>'	+
-	   '<p>' + data.shulData[i].asstRabbi + '</p>' +
-		 	'<p>' + data.shulData[i].chazan + '</p>'
-	 	 );
-	   for (j in data.shulData.board) {
-		   $('#shulInfo').append(
-	     '<p>' + data.shulData[i].board[j].title + '</p>'	+
-	     '<p>' + data.shulData[i].board[j].person + '</p>'
-		 	 );}
-		 $('#shulInfo').append(
-	   '<p>' + data.shulData[i].shabbos.minchaErevShabbos + '</p>'	+
-	   '<p>' + data.shulData[i].shabbos.kabolasShabbos + '</p>'	+
-	   '<p>' + data.shulData[i].shabbos.shacharis + '</p>'	+
-	   '<p>' + data.shulData[i].shabbos.mincha + '</p>'	+
-	   '<p>' + data.shulData[i].shabbos.maariv + '</p>'	+
-	   '<p>' + data.shulData[i].weekday.shacharis1 + '</p>'	+
-	   '<p>' + data.shulData[i].weekday.shacharis2 + '</p>'	+
-	   '<p>' + data.shulData[i].weekday.shacharis3 + '</p>'	+
-	   '<p>' + data.shulData[i].weekday.mincha + '</p>'	+
-	   '<p>' + data.shulData[i].weekday.maariv1 + '</p>'	+
-	   '<p>' + data.shulData[i].weekday.maariv2 + '</p>'	+
-	   '<p>' + data.shulData[i].sundayLegalHoliday.shacharis1 + '</p>'	+
-	   '<p>' + data.shulData[i].sundayLegalHoliday.shacharis2 + '</p>'	+
-	   '<p>' + data.shulData[i].notes + '</p>'
-	 	 );
-	   for (k in data.shulData.events) {
-			 $('#shulInfo').append(
-	     '<p>' + data.shulData[i].events[k].label + '</p>'	+
-	     '<p>' + data.shulData[i].events[k].date + '</p>'	+
-	     '<p>' + data.shulData[i].events[k].desc + '</p>'
-		 );}
+
+	for (i in data.shulData) {
+		 console.log(data.shulData[i].id);
+		 document.shulForm.adminEmail.value = data.shulData[i].adminEmail;
+		 document.shulForm.adminEmail.value = data.shulData[i].adminEmail;
+		 document.shulForm.name.value = data.shulData[i].name;
+		 document.shulForm.called.value = data.shulData[i].called;
+		 document.shulForm.street.value = data.shulData[i].address.street;
+		 document.shulForm.city.value = data.shulData[i].address.city;
+		 document.shulForm.state.value = data.shulData[i].address.state;
+		 document.shulForm.zip.value = data.shulData[i].address.zip;
+		 document.shulForm.rabbi.value = data.shulData[i].rabbi;
+		 document.shulForm.asstRabbi.value = data.shulData[i].asstRabbi;
+		 document.shulForm.chazan.value = data.shulData[i].chazan;
+
+		 for (j in data.shulData.board) {
+			 let titl = data.shulData[i].board[j].title;
+			 let persn = data.shulData[i].board[j].person;
+			 let nam = 'official' + j;
+			 $('#officials').append( `
+				 <label for="${nam}">"${titl}":</label><br>
+				 <input type="text" id="${nam}" name="${nam}" value="${persn}">
+				 <br>
+				`);
+		 }
+
+		 document.shulForm.minchaErevShabbos.value = data.shulData[i].shabbos.minchaErevShabbos;
+		 document.shulForm.kabolasShabbos.value = data.shulData[i].shabbos.kabolasShabbos;
+		 document.shulForm.shacharis.value = data.shulData[i].shabbos.shacharis;
+		 document.shulForm.mincha.value = data.shulData[i].shabbos.mincha;
+		 document.shulForm.maariv.value = data.shulData[i].shabbos.maariv;
+
+		 document.shulForm.shacharis1.value = data.shulData[i].weekday.shacharis1;
+		 document.shulForm.shacharis2.value = data.shulData[i].weekday.shacharis2;
+		 document.shulForm.shacharis3.value = data.shulData[i].weekday.shacharis3;
+		 document.shulForm.minchaW.value = data.shulData[i].weekday.mincha;
+		 document.shulForm.maariv1.value = data.shulData[i].weekday.maariv1;
+		 document.shulForm.maariv2.value = data.shulData[i].weekday.maariv2;
+		 document.shulForm.shacharisS1.value = data.shulData[i].sundayLegalHoliday.shacharis1;
+		 document.shulForm.shacharisS2.value = data.shulData[i].sundayLegalHoliday.shacharis2;
+		 document.shulForm.shacharisS3.value = data.shulData[i].sundayLegalHoliday.shacharis3;
+
+		//  for (k in data.shulData.events) {
+		for (var k = 0; k < data.shulData[i].events.length; k++) {
+			 let labl = data.shulData[i].events[k].label;
+			 let dt = data.shulData[i].events[k].date;
+			 let dscr = data.shulData[i].events[k].desc;
+			 $('#events').append( `
+				 <span>${labl}</span><br>
+				 <span>${dscr}</span><br>
+				 <span>${dt}</span><br>
+				 <br>
+				`);
+		 }
+
+	 document.shulForm.notes.value = data.shulData[i].notes;
+
 	}
 }
 

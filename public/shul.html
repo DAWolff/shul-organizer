@@ -18,18 +18,113 @@
 
     <body>
       <h1>This is the Shul Page</h1>
-      <section id="shulInfo">
-        <!-- <form action="/shul" method="get">
-            <fieldset>
-              <legend>Personal information:</legend>
-              First name:<br>
-              <input type="text" name="firstname" value="Mickey"><br>
-              Last name:<br>
-              <input type="text" name="lastname" value="Mouse"><br><br>
-              <input type="submit" value="Submit">
-            </fieldset>
-          </form> -->
-      </section>
+      <form name="shulForm" action="/shul" method="get">
+
+        <!-- <fieldset style="width:90%"> -->
+
+        <fieldset> <legend>Shul:</legend>
+
+           <label for="admin">Admin:</label> <br>
+           <input type="text" id="admin" name="adminEmail"> <br>
+
+           <label for="name">Name:</label> <br>
+           <input type="text" id="name" name="name"> <br>
+
+           <label for="called">Called:</label> <br>
+           <input type="text" id="called" name="called"> <br>
+
+        </fieldset> <br>
+
+        <fieldset> <legend>Address:</legend>
+
+           <input type="text" id="street" name="street"
+                     placeholder="street"> <br>
+
+           <input type="text" id="city" name="city" placeholder="city">
+           <input type="text" id="state" name="state" placeholder="st.">
+           <input type="text" id="zip" name="zip" placeholder="zip">
+
+        </fieldset> <br>
+
+        <fieldset> <legend>Shul Officials:</legend>
+
+           <label for="rabbi">Rabbi:</label> <br>
+           <input type="text" id="rabbi" name="rabbi"> <br>
+
+           <label for="asstRabbi">Assistant rabbi:</label <br>
+           <input type="text" id="asstRabbi" name="asstRabbi"> <br>
+
+           <label for="chazan">Chazan:</label> <br>
+           <input type="text" id="chazan" name="chazan"> <br>
+
+           <span  id="officials"></span>
+
+        </fieldset> <br>
+
+        <fieldset> <legend>Shabbos Davening:</legend>
+
+           <label for="minchaFri">Mincha Erev Shabbos:</label> <br>
+           <input type="text" id="minchaFri" name="minchaErevShabbos"> <br>
+
+           <label for="kabolo">Kabolas Shabbos:</label> <br>
+           <input type="text" id="kabolo" name="kabolasShabbos"> <br>
+
+           <label for="shacharis">Shacharis:</label> <br>
+           <input type="text" id="shacharis" name="shacharis"> <br>
+
+           <label for="mincha">Mincha:</label> <br>
+           <input type="text" id="mincha" name="mincha"> <br>
+
+           <label for="maariv">Maariv Motzoei Shabbos:</label> <br>
+           <input type="text" id="maariv" name="maariv"> <br>
+
+        </fieldset> <br>
+
+        <fieldset> <legend>Weekday Davening:</legend>
+
+           <label for="shacharis1">First Shacharis:</label> <br>
+           <input type="text" id="shacharis1" name="shacharis1"> <br>
+
+           <label for="shacharis2">Second Shachris:</label> <br>
+           <input type="text" id="shacharis2" name="shacharis2"> <br>
+
+           <label for="shacharis3">Third Shacharis:</label> <br>
+           <input type="text" id="shacharis3" name="shacharis3"> <br>
+
+           <label for="minchaW">Mincha:</label> <br>
+           <input type="text" id="minchaW" name="minchaW"> <br>
+
+           <label for="maariv1">First Maariv:</label> <br>
+           <input type="text" id="maariv1" name="maariv1"> <br>
+
+           <label for="maariv2">Second Maariv:</label> <br>
+           <input type="text" id="maariv2" name="maariv2"> <br>
+
+           <label for="shacharisS1">Sunday &amp; Legal Holiday 1st Shacharis:</label> <br>
+           <input type="text" id="shacharisS1" name="shacharisS1"> <br>
+
+           <label for="shacharisS2">Sunday &amp; Legal Holiday 2nd Shacharis:</label> <br>
+           <input type="text" id="shacharisS2" name="shacharisS2"> <br>
+
+           <label for="shacharisS3">Sunday &amp; Legal Holiday 3rd Shacharis:</label> <br>
+           <input type="text" id="shacharisS3" name="shacharisS3"> <br>
+
+        </fieldset> <br>
+
+        <fieldset> <legend>Events:</legend>
+
+             <span  id="events"></span>
+
+        </fieldset> <br>
+
+        <fieldset> <legend>Notes:</legend>
+
+          <textarea wrap="soft" name="notes"></textarea><br>
+
+        </fieldset> <br>
+
+         <!--<input type="submit" value="Submit">-->
+      </form>
       <script src="shul.js" type='text/javascript'></script>
     </body>
 </html>
