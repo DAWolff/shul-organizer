@@ -1,3 +1,4 @@
+'use strict'
 // this is mock data, but when we create our API
 // we'll have it return data that looks like this
 var MOCK_SHUL_DATA = {
@@ -83,9 +84,9 @@ function getShulData(callbackFn) {
 // to real API later
 function displayShulData(data) {
 
+	var i;
 	for (i in data.shulData) {
 		 console.log(data.shulData[i].id);
-		 document.shulForm.adminEmail.value = data.shulData[i].adminEmail;
 		 document.shulForm.adminEmail.value = data.shulData[i].adminEmail;
 		 document.shulForm.name.value = data.shulData[i].name;
 		 document.shulForm.called.value = data.shulData[i].called;
@@ -126,19 +127,16 @@ function displayShulData(data) {
 
 		//  for (k in data.shulData.events) {
 		for (var k = 0; k < data.shulData[i].events.length; k++) {
-			 let labl = data.shulData[i].events[k].label;
-			 let dt = data.shulData[i].events[k].date;
-			 let dscr = data.shulData[i].events[k].desc;
+			 let event = data.shulData[i].events[k].label + '\r\n' +
+			 						 data.shulData[i].events[k].desc + '\r\n' +
+			  				 	 data.shulData[i].events[k].date;
+
 			 $('#events').append( `
-				 <span>${labl}</span><br>
-				 <span>${dscr}</span><br>
-				 <span>${dt}</span><br>
-				 <br>
-				`);
-		 }
+				 <textarea wrap="hard" name="events" rows="3">${event}</textarea><br>
+			 `);
+		 };
 
-	 document.shulForm.notes.value = data.shulData[i].notes;
-
+	 	 document.shulForm.notes.value = data.shulData[i].notes;
 	}
 }
 

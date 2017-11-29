@@ -13,6 +13,7 @@ var MOCK_SERVICES_DATA = {
             "pledge": "200",
             "paid": "t"
           },
+					"speaker": "Yehuda Metz",
           "ledDavening": {
             "kabolasShabbos": "Yehuda Metz",
             "shacharis": "Benny Katz",
@@ -71,6 +72,7 @@ var MOCK_SERVICES_DATA = {
           "pledge": "f",
           "paid": ""
         },
+				"speaker": "Chaim Sanzer",
         "ledDavening": {
           "kabolasShabbos": "Yitzchok Isaacs",
           "shacharis": "Baruch Hofinger",
@@ -117,7 +119,7 @@ var MOCK_SERVICES_DATA = {
           "levi": "Zalman Horowitz",
           "shlishi": "Reuvain Brennen"
         },
-        "notes": ""
+        "notes": "nada"
     }
     ]
 };
@@ -137,47 +139,47 @@ function getRecentServicesData(callbackFn) {
 // this function stays the same when we connect
 // to real API later
 function displayServicesData(data) {
-    // for (index in data.servicesData) {
-		// 	 $('#servicesInfo').append(
-	  //       '<p>' + data.servicesData[index].parsha + '</p>'	+
-		// 		  '<p>' + data.servicesData[index].dateHebrew + '</p>'
-		// 		);
-    // }
-		for (i in data.servicesData) {
-		   $('#servicesInfo').append(
-		   '<p>' + data.servicesData[i].id + '</p>'	+
-		   '<p>' + data.servicesData[i].parsha + '</p>'	+
-		   '<p>' + data.servicesData[i].dateHebrew + '</p>'	+
-		   '<p>' + data.servicesData[i].dateEnglish + '</p>'	+
-		   '<p>' + data.servicesData[i].kiddush.made + '</p>'	+
-		   '<p>' + data.servicesData[i].kiddush.sponsor + '</p>'	+
-		   '<p>' + data.servicesData[i].kiddush.pledge + '</p>'	+
-		   '<p>' + data.servicesData[i].kiddush.paid + '</p>'	+
-			 '<p>' + data.servicesData[i].ledDavening.kabolasShabbos + '</p>'	+
-			 '<p>' + data.servicesData[i].ledDavening.shacharis + '</p>'	+
-			 '<p>' + data.servicesData[i].ledDavening.musaf + '</p>'	+
-			 '<p>' + data.servicesData[i].ledDavening.mincha + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosShacharis.kohen.member + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosShacharis.kohen.pledge + '</p>'	+
-			 '<p>' + data.servicesData[i].aliyosShacharis.levi.member + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosShacharis.levi.pledge + '</p>'	+
-			 '<p>' + data.servicesData[i].aliyosShacharis.shlishi.member + '</p>'	+
-			 '<p>' + data.servicesData[i].aliyosShacharis.shlishi.pledge + '</p>'	+
-			 '<p>' + data.servicesData[i].aliyosShacharis.revii.member + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosShacharis.revii.pledge + '</p>'	+
-			 '<p>' + data.servicesData[i].aliyosShacharis.chamishi.member + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosShacharis.chamishi.pledge + '</p>'	+
-			 '<p>' + data.servicesData[i].aliyosShacharis.shishi.member + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosShacharis.shishi.pledge + '</p>'	+
-			 '<p>' + data.servicesData[i].aliyosShacharis.shevii.member + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosShacharis.shevii.pledge + '</p>'	+
-			 '<p>' + data.servicesData[i].aliyosShacharis.maftir.member + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosShacharis.maftir.pledge + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosMincha.kohen + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosMincha.levi + '</p>'	+
-		   '<p>' + data.servicesData[i].aliyosMincha.shlishi + '</p>'	+
-			 '<p>' + data.servicesData[i].notes + '</p>'	 
-		 	 );
+		// for (i in data.servicesData) {
+		var i = 0;
+		while (i == 0) {
+			 ++i;
+			 console.log(data.servicesData[i].id);
+
+			 document.servicesForm.parsha.value = data.servicesData[i].parsha;
+			 document.servicesForm.hebDate.value = data.servicesData[i].dateHebrew;
+			 document.servicesForm.engDate.value = data.servicesData[i].dateEnglish;
+ 			 document.servicesForm.speaker.value = data.servicesData[i].speaker;
+
+			 document.servicesForm.ledKabShabb.value = data.servicesData[i].ledDavening.kabolasShabbos;
+			 document.servicesForm.ledShacharis.value = data.servicesData[i].ledDavening.shacharis;
+			 document.servicesForm.ledMusaf.value = data.servicesData[i].ledDavening.musaf;
+			 document.servicesForm.ledMincha.value = data.servicesData[i].ledDavening.mincha;
+
+			 document.servicesForm.shaKohen.value = data.servicesData[i].aliyosShacharis.kohen.member;			 document.servicesForm.kohenPledge.value = data.servicesData[i].aliyosShacharis.kohen.pledge;
+			 document.servicesForm.shaLevi.value = data.servicesData[i].aliyosShacharis.levi.member;
+			 document.servicesForm.leviPledge.value = data.servicesData[i].aliyosShacharis.levi.pledge;
+			 document.servicesForm.sha3.value = data.servicesData[i].aliyosShacharis.shlishi.member;
+			 document.servicesForm.pledge3.value = data.servicesData[i].aliyosShacharis.shlishi.pledge;
+			 document.servicesForm.sha4.value = data.servicesData[i].aliyosShacharis.revii.member;
+			 document.servicesForm.pledge4.value = data.servicesData[i].aliyosShacharis.revii.pledge;
+			 document.servicesForm.sha5.value = data.servicesData[i].aliyosShacharis.chamishi.member;			 document.servicesForm.pledge5.value = data.servicesData[i].aliyosShacharis.chamishi.pledge;
+			 document.servicesForm.sha6.value = data.servicesData[i].aliyosShacharis.shishi.member;
+			 document.servicesForm.pledge6.value = data.servicesData[i].aliyosShacharis.shishi.pledge;
+			 document.servicesForm.sha7.value = data.servicesData[i].aliyosShacharis.shevii.member;
+			 document.servicesForm.pledge7.value = data.servicesData[i].aliyosShacharis.shevii.pledge;
+			 document.servicesForm.shaMaftir.value = data.servicesData[i].aliyosShacharis.maftir.member;
+			 document.servicesForm.maftirPledge.value = data.servicesData[i].aliyosShacharis.maftir.pledge;
+
+			 document.servicesForm.minchaKohen.value = data.servicesData[i].aliyosMincha.kohen;
+			 document.servicesForm.minchaLevi.value = data.servicesData[i].aliyosMincha.levi;
+			 document.servicesForm.minchaShlishi.value = data.servicesData[i].aliyosMincha.shlishi;
+
+			 document.servicesForm.kiddushMade.value = data.servicesData[i].kiddush.made;
+			 document.servicesForm.kiddushSponsor.value = data.servicesData[i].kiddush.sponsor;
+			 document.servicesForm.kiddushPledge.value = data.servicesData[i].kiddush.pledge;
+			 document.servicesForm.pledgePaid.value = data.servicesData[i].kiddush.paid;
+
+		 	 document.servicesForm.notes.value = data.servicesData[i].notes;
 		}
 }
 

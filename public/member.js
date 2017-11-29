@@ -58,7 +58,7 @@ var MOCK_MEMBER_DATA = {
          "day": "10"
        },
 		 ],
-      "notes": ""
+      "notes": "not anything really."
     },
     {
       "id": "2222222",
@@ -108,7 +108,7 @@ var MOCK_MEMBER_DATA = {
          "day": "7"
        },
 		 ],
-      "notes": ""
+      "notes": "something something else"
     },
     {
       "id": "3333333",
@@ -158,8 +158,8 @@ var MOCK_MEMBER_DATA = {
          "day": "4"
        },
 		 ],
-      "notes": ""
-    },
+      "notes": "something something"
+    }
   ]
 };
 
@@ -178,50 +178,80 @@ function getAllMembers(callbackFn) {
 // this function stays the same when we connect
 // to real API later
 function displayAllMembers(data) {
-    // for (index in data.memberData) {
-		// 	$('#membersInfo').append(
-    //      '<p>' + data.memberData[index].called + '</p>'	+
- 	// 		 '<p>' + data.memberData[index].fatherHebrewName + '</p>'
- 	// 		);
-    // }
-		for (i in data.memberData) {
-		   $('#memberInfo').append(
-				'<p>' + data.memberData[i].id + '</p>'	+
-				'<p>' + data.memberData[i].familyName + '</p>'	+
-				'<p>' + data.memberData[i].hebrewNameFull + '</p>'	+
-				'<p>' + data.memberData[i].called + '</p>'	+
-				'<p>' + data.memberData[i].englishName + '</p>'	+
-				'<p>' + data.memberData[i].regular + '</p>'	+
-				'<p>' + data.memberData[i].contactInfo.eMail + '</p>'	+
-				'<p>' + data.memberData[i].contactInfo.cellPhone + '</p>'	+
-				'<p>' + data.memberData[i].contactInfo.homeAddress.street + '</p>'	+
-				'<p>' + data.memberData[i].contactInfo.homeAddress.city + '</p>'	+
-				'<p>' + data.memberData[i].contactInfo.homeAddress.state + '</p>'	+
-				'<p>' + data.memberData[i].contactInfo.homeAddress.zip + '</p>'	+
-				'<p>' + data.memberData[i].contactInfo.homeAddress.addrNotes + '</p>'	+
-				'<p>' + data.memberData[i].fatherHebrewName + '</p>'	+
-				'<p>' + data.memberData[i].motherHebrewName + '</p>'	+
-				'<p>' + data.memberData[i].title + '</p>'	+
-				'<p>' + data.memberData[i].kohen + '</p>'	+
-				'<p>' + data.memberData[i].levi + '</p>'	+
-				'<p>' + data.memberData[i].lastAliya.parsha + '</p>'	+
-				'<p>' + data.memberData[i].lastAliya.year + '</p>'	+
-				'<p>' + data.memberData[i].lastAliya.aliya + '</p>'	+
-				'<p>' + data.memberData[i].canLeadDavening + '</p>'	+
-				'<p>' + data.memberData[i].lastLedDavening.parsha + '</p>'	+
-				'<p>' + data.memberData[i].lastLedDavening.year + '</p>'	+
-				'<p>' + data.memberData[i].lastLedDavening.tefilla + '</p>'
-		 	 );
-		   for (j in data.memberData.occaisions) {
-			   $('#shulInfo').append(
-		     '<p>' + data.memberData[i].occaisions[j].name + '</p>'	+
-		     '<p>' + data.memberData[i].occaisions[j].month + '</p>'	+
-		     '<p>' + data.memberData[i].occaisions[j].day + '</p>'
-			 	 );}
-			 $('#shulInfo').append(
-		   '<p>' + data.memberData[i].notes + '</p>'
-		 	 );
-		}
+
+	// for (i in data.memberData) {
+	var i = 1;
+	while (i == 1) {
+		 ++i;
+		 console.log(data.memberData[i].id);
+
+		 document.memberForm.called.value = data.memberData[i].called;
+		 document.memberForm.hebName.value = data.memberData[i].hebrewNameFull;
+
+		 if (data.memberData[i].kohen == "t")
+				// 	$('#kl').value = 'kohen';
+				// document.memberForm.kohen.value = "kohen";
+				$('#kl').append( `
+					<span>is a Kohen </span>
+				`);
+		 if (data.memberData[i].levi == "t")
+		 		$('#kl').append( `
+			 		<span>is a Levi </span>
+		 		`);
+		 if (data.memberData[i].regular == "t")
+				$('#regular').append( `
+					<span> (shul regular)</span>
+				`);
+
+		 document.memberForm.father.value = data.memberData[i].fatherHebrewName;
+		 document.memberForm.mother.value = data.memberData[i].motherHebrewName;
+
+		 document.memberForm.title.value = data.memberData[i].title;
+		 document.memberForm.english.value = data.memberData[i].englishName;
+		 document.memberForm.family.value = data.memberData[i].familyName;
+
+		 document.memberForm.email.value = data.memberData[i].contactInfo.eMail;
+		 document.memberForm.cell.value = data.memberData[i].contactInfo.cellPhone;
+		 document.memberForm.street.value = data.memberData[i].contactInfo.homeAddress.street;
+		 document.memberForm.city.value = data.memberData[i].contactInfo.homeAddress.city;
+		 document.memberForm.state.value = data.memberData[i].contactInfo.homeAddress.state;
+		 document.memberForm.zip.value = data.memberData[i].contactInfo.homeAddress.zip;
+		 document.memberForm.addrNotes.value = data.memberData[i].contactInfo.homeAddress.addrNotes;
+
+		//  document.memberForm.aParsha.value = data.memberData[i].lastAliya.parsha;
+		//  document.memberForm.aYear.value = data.memberData[i].lastAliya.year;
+		//  document.memberForm.aTefilla.value = data.memberData[i].lastAliya.aliya;
+		 let lastAl = data.memberData[i].lastAliya.year + ' ' +
+		 							data.memberData[i].lastAliya.parsha + ', ' +
+		 						  data.memberData[i].lastAliya.aliya;
+
+		 		 $('#lastAliya').append( `
+		 			<span>${lastAl}</span><br>
+		 		 `);
+
+		 document.memberForm.canLead.value = data.memberData[i].canLeadDavening;
+		//  document.memberForm.lParsha.value = data.memberData[i].lastLedDavening.parsha;
+		//  document.memberForm.lYear.value = data.memberData[i].lastLedDavening.year;
+		//  document.memberForm.lTefilla.value = data.memberData[i].lastLedDavening.tefilla;
+		 let lastLd = data.memberData[i].lastLedDavening.year + ' ' +
+								  data.memberData[i].lastLedDavening.parsha + ', ' +
+								  data.memberData[i].lastLedDavening.tefilla;
+
+		 $('#lastLed').append( `
+			<span>${lastLd}</span><br>
+		 `);
+
+		 for (var j = 0; j < data.memberData[i].occaisions.length; j++) {
+			let occaision = data.memberData[i].occaisions[j].name + '\r\n' +
+											data.memberData[i].occaisions[j].day + ' ' +
+											data.memberData[i].occaisions[j].month;
+
+			$('#occaisions').append( `
+				<textarea wrap="hard" rows="2">${occaision}</textarea><br>
+			`);
+		 }
+	 	 document.memberForm.notes.value = data.memberData[i].notes;
+	}
 }
 
 // this function can stay the same even when we

@@ -7,7 +7,7 @@
     <meta name="description" content="Member Info">
     <title>Member</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:500|Crimson+Text:700|Montserrat" rel="stylesheet">
-          <link rel="stylesheet" type="text/css"  href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+          <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
           <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
           <link href="style.css" rel="stylesheet" type="text/css" />
           <script
@@ -18,9 +18,86 @@
 
     <body>
       <h1>This is the Member Page</h1>
-      <section id="memberInfo">
+      <form name="memberForm" action="/member" method="get">
 
-      </section>
-      <script src='member.js' type='text/javascript'></script>
+          <fieldset> <legend>Member:</legend>
+
+             <label for="called">Name:</label> <br>
+             <input type="text" id="called" name="called"> <br>
+             <br>
+             <label for="hebName">Hebrew Name:</label>
+             <input type="text" id="hebName" name="hebName">
+             <span id="kl"></span>
+             <span id="regular"></span> <br>
+             <br>
+             <label for="father">Father:</label> <br>
+             <input type="text" id="father" name="father"> <br>
+             <br>
+             <label for="mother">Mother:</label> <br>
+             <input type="text" id="mother" name="mother"> <br>
+             <br>
+             <label for="english">Title and English Name:</label>
+             <input type="text" id="title" name="title" placeholder="title">
+             <input type="text" id="english" name="english">
+             <input type="text" id="family" name="family"><br>
+             <br>
+          </fieldset> <br>
+
+          <fieldset> <legend>Contact Info:</legend>
+
+             <label for="email">e-Mail:</label> <br>
+             <input type="email" id="email" name="email"> <br>
+             <br>
+             <label for="cell">Mobile:</label> <br>
+             <input type="tel" id="cell" name="cell"> <br>
+             <br>
+             <label for="address">Home Address:</label> <br>
+             <input type="text" id="street" name="address"
+                       placeholder="street"> <br>
+             <input type="text" id="city" name="city" placeholder="city">
+             <input type="text" id="state" name="state" placeholder="st.">
+             <input type="text" id="zip" name="zip" placeholder="zip">
+             <input type="text" id="addrNotes" name="addrNotes">
+             <br>
+          </fieldset> <br>
+
+          <fieldset> <legend>Participation:</legend>
+             <br>
+             <fieldset> <legend>Last Aliya:</legend>
+               <!-- <label for="aParsha">Parsha:</label> <br>
+               <input type="text" id="aParsha" name="aParsha">
+               <input type="text" id="aYear" name="aYear">
+               <input type="text" id="aTefilla" name="aTefilla">  -->
+               <span  id="lastAliya"></span>
+               <br>
+             </fieldset>
+             <br>
+             <fieldset> <legend>Last Led Davening:</legend>
+               <label for="canLead">Can Lead?:</label>
+               <input type="text" id="canLead" name="canLead">
+               <br>
+               <!-- <input type="text" id="lParsha" name="lParsha">
+               <input type="text" id="lYear" name="lYear">
+               <input type="text" id="lTefilla" name="lTefilla"> <br> -->
+               <span  id="lastLed"></span>
+               <br>
+             </fieldset> <br>
+
+          </fieldset> <br>
+
+          <fieldset> <legend>Occaisions:</legend>
+              <br>
+              <span  id="occaisions"></span>
+              <br>
+          </fieldset> <br>
+
+          <fieldset> <legend>Notes:</legend>
+            <br>
+            <textarea wrap="hard" name="notes"></textarea><br>
+            <br>
+          </fieldset> <br>
+        </form>
+      <script src="member.js" type='text/javascript'></script>
     </body>
+
 </html>
