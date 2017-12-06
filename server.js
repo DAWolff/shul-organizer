@@ -12,19 +12,24 @@ app.get("/", (req, res) => {
   .sendFile(__dirname + '/public/index.html');
 });
 
-app.get("/shul", (req, res) => {
+app.get("/shul-read", (req, res) => {
   res.status(200)
-  .sendFile(__dirname + '/public/shul.html');
+  .sendFile(__dirname + '/public/shul-read.html');
 });
 
-app.get("/member", (req, res) => {
+app.get("/member-read", (req, res) => {
   res.status(200)
-  .sendFile(__dirname + '/public/member.html');
+  .sendFile(__dirname + '/public/member-read.html');
 });
 
-app.get("/services", (req, res) => {
+app.get("/member-all", (req, res) => {
   res.status(200)
-  .sendFile(__dirname + '/public/services.html');
+  .sendFile(__dirname + '/public/member-all.html');
+});
+
+app.get("/services-read", (req, res) => {
+  res.status(200)
+  .sendFile(__dirname + '/public/services-read.html');
 });
 
 // app.get('/shul/:id', (req, res) => {

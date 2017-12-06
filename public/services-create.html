@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Services Info">
+    <title>Services</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:500|Crimson+Text:700|Montserrat" rel="stylesheet">
+          <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+          <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+          <link href="style.css" rel="stylesheet" type="text/css" />
+          <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin=" anonymous"></script>
+    </head>
+
+    <body>
+      <h1>This is the Services Page</h1>
+
+      <form name="servicesForm" action="/services" method="get">
+
+          <fieldset> <legend>Date:</legend>
+             <br>
+             <label for="parsha">Parsha:</label> <br>
+             <input type="text" id="parsha" name="parsha"> <br>
+             <br>
+             <label for="hebDate">Hebrew Date:</label>
+             <input type="text" id="hebDate" name="hebDate">
+             <br>
+             <label for="engDate">Secular Date:</label>
+             <input type="text" id="engDate" name="engDate">
+             <br>
+             <label for="speaker">Speaker:</label>
+             <input type="text" id="speaker" name="speaker">
+             <br>
+          </fieldset> <br>
+
+          <fieldset> <legend>Davening:</legend>
+            <br>
+            <label for="ledKabShabb">Led kabolas Shabbos:</label> <br>
+            <input type="text" id="ledKabShabb" name="ledKabShabb"> <br>
+            <br>
+            <label for="ledShacharis">Led Shacharis:</label>
+            <input type="text" id="ledShacharis" name="ledShacharis">
+            <br>
+            <label for="ledMusaf">Led Musaf:</label>
+            <input type="text" id="ledMusaf" name="ledMusaf">
+            <br>
+            <label for="ledMincha">Led Mincha:</label>
+            <input type="text" id="ledMincha" name="ledMincha">
+            <br>
+          </fieldset> <br>
+
+          <fieldset> <legend>Aliyos:</legend>
+             <br>
+             <fieldset> <legend>Shacharis:</legend>
+               <label for="shaKohen">Kohen:</label> <br>
+               <input type="text" id="shaKohen" name="shaKohen"> <br>
+               <label for="kohenPledge">Pledge:</label>
+               <input type="text" id="kohenPledge" name="kohenPledge">
+               <br>
+               <label for="shaLevi">Levi:</label>
+               <input type="text" id="shaLevi" name="shaLevi">
+               <label for="leviPledge">Pledge:</label>
+               <input type="text" id="leviPledge" name="leviPledge">
+               <br>
+               <label for="sha3">Shlishi:</label> <br>
+               <input type="text" id="sha3" name="sha3"> <br>
+               <label for="pledge3">Pledge:</label>
+               <input type="text" id="pledge3" name="pledge3">
+               <br>
+               <label for="sha4">Revii:</label>
+               <input type="text" id="sha4" name="sha4">
+               <label for="pledge4">Pledge:</label>
+               <input type="text" id="pledge4" name="pledge4">
+               <br>
+               <label for="sha5">Chamishi:</label> <br>
+               <input type="text" id="sha5" name="sha5"> <br>
+               <label for="pledge5">Pledge:</label>
+               <input type="text" id="pledge5" name="pledge5">
+               <br>
+               <label for="sha6">Shishi:</label>
+               <input type="text" id="sha6" name="sha6">
+               <label for="pledge6">Pledge:</label>
+               <input type="text" id="pledge6" name="pledge6">
+               <br>
+               <label for="sha7">Shivii:</label> <br>
+               <input type="text" id="sha7" name="sha7"> <br>
+               <label for="pledge7">Pledge:</label>
+               <input type="text" id="pledge7" name="pledge7">
+               <br>
+               <label for="shaMaftir">Maftir:</label>
+               <input type="text" id="shaMaftir" name="shaMaftir">
+               <label for="maftirPledge">Pledge:</label>
+               <input type="text" id="maftirPledge" name="maftirPledge">
+               <br>
+             </fieldset> <br>
+
+             <fieldset> <legend>Mincha:</legend>
+                 <label for="minchaKohen">Kohen:</label> <br>
+                 <input type="text" id="minchaKohen" name="minchaKohen"> <br>
+                 <br>
+                 <label for="minchaLevi">Levi:</label>
+                 <input type="text" id="minchaLevi" name="minchaLevi">
+                 <br>
+                 <label for="minchaShlishi">Shlishi:</label>
+                 <input type="text" id="minchaShlishi" name="minchaShlishi">
+                 <br>
+             </fieldset> <br>
+
+          </fieldset> <br>
+
+          <fieldset> <legend>Kiddush:</legend>
+             <br>
+             <label for="kiddushMade">Kiddush:</label> <br>
+             <input type="text" id="kiddushMade" name="kiddushMade"> <br>
+             <br>
+             <label for="kiddushSponsor">Kiddush Sponsor:</label>
+             <input type="text" id="kiddushSponsor" name="kiddushSponsor">
+             <br>
+             <label for="kiddushPledge">Kiddush Pledge:</label>
+             <input type="text" id="kiddushPledge" name="kiddushPledge">
+             <br>
+             <label for="pledgePaid">Pledge Paid:</label>
+             <input type="text" id="pledgePaid" name="pledgePaid">
+             <br>
+          </fieldset> <br>
+
+          <fieldset> <legend>Notes:</legend>
+            <br>
+            <textarea wrap="hard" name="notes"></textarea><br>
+            <br>
+          </fieldset> <br>
+
+      </form>
+      <script src='services.js' type='text/javascript'></script>
+    </body>
+</html>
