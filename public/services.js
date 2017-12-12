@@ -4,6 +4,7 @@ var MOCK_SERVICES_DATA = {
 	"servicesData": [
         {
           "id": "1111111",
+				  "shulId": "1111111",
           "parsha": "Breishis",
           "dateHebrew": "23 Tishrei, 5718",
           "dateEnglish": "Oct. 3, 2017",
@@ -63,6 +64,7 @@ var MOCK_SERVICES_DATA = {
       },
       {
         "id": "2222222",
+				"shulId": "1111111",
         "parsha": "Noach",
         "dateHebrew": "27 Tishrei, 5718",
         "dateEnglish": "Oct. 10, 2017",

@@ -4,6 +4,7 @@ var MOCK_MEMBER_DATA = {
 	"memberData": [
     {
       "id": "1111111",
+			"shulId": "1111111",
       "familyName": "Metz",
       "hebrewNameFull": "Yehuda Bentzion",
       "englishName": "Jerry",
@@ -39,15 +40,15 @@ var MOCK_MEMBER_DATA = {
       "occaisions": [
        { "name": "Jewish Birthday",
          "month": "Shevat",
-         "day": "10",
+         "day": "10"
        },
        { "name": "yortzeit Father",
          "month": "Teves",
-         "day": "19",
+         "day": "19"
        },
        { "name": "yortzeit Mother",
          "month": "Av",
-         "day": "23",
+         "day": "23"
        },
        { "name": "yortzeit bubby Ester bas Yaakov",
          "month": "Av",
@@ -56,12 +57,13 @@ var MOCK_MEMBER_DATA = {
        { "name": "wedding anniversary",
          "month": "Tammuz",
          "day": "10"
-       },
+       }
 		 ],
       "notes": "not anything really."
     },
     {
       "id": "2222222",
+			"shulId": "1111111",
       "familyName": "Katz",
       "hebrewNameFull": "Binyomin Eliezer Lipa",
       "englishName": "Benjamin",
@@ -97,7 +99,7 @@ var MOCK_MEMBER_DATA = {
       "occaisions": [
        { "name": "Jewish Birthday",
          "month": "Iyyar",
-         "day": "5",
+         "day": "5" 
        },
        { "name": "yortzeit zeidy Koppel Gneivish ben Aharon",
          "month": "Elul",
@@ -106,12 +108,13 @@ var MOCK_MEMBER_DATA = {
        { "name": "wedding anniversary",
          "month": "Elul",
          "day": "7"
-       },
+       }
 		 ],
       "notes": "something something else"
     },
     {
       "id": "3333333",
+			"shulId": "1111111",
       "familyName": "Levine",
       "hebrewNameFull": "Avrohom",
       "englishName": "Abraham",
@@ -147,16 +150,16 @@ var MOCK_MEMBER_DATA = {
       "occaisions": [
        { "name": "Jewish Birthday",
          "month": "Sivan",
-         "day": "29",
+         "day": "29"
        },
        { "name": "yortzeit Father",
          "month": "Cheshvan",
-         "day": "20",
+         "day": "20"
        },
        { "name": "wedding anniversary",
          "month": "Kislev",
          "day": "4"
-       },
+       }
 		 ],
       "notes": "something something"
     }
