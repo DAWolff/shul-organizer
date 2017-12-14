@@ -129,7 +129,7 @@ servicesSchema.methods.apiRepr = function() {
       shlishi: this.shlishi
     },
     notes: this.notes,
-  });
+  };
 }
 
 const Services = mongoose.model('Services', servicesSchema);

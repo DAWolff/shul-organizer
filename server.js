@@ -32,7 +32,7 @@ app.use('*', function(req, res) {
 
 app.get("/user", (req, res) => {
   res.status(200)
-  .sendFile(__dirname + '/public/shul-read.html');
+  .sendFile(__dirname + '/public/index.html');
 });
 
 // check password validity on user collection
