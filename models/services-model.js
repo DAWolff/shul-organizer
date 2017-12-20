@@ -9,7 +9,7 @@ const servicesSchema = mongoose.Schema({
   shulId: {type: String, required: true},
   parsha: {type: String, required: true},
   dateHebrew: {type: String, required: true},
-  dateEnglish: String,
+  dateEnglish: {type: Date, required: true},
   kiddush: {
     made: Boolean,
     sponsor: String,

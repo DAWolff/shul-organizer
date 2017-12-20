@@ -59,6 +59,15 @@ float: right;
   height: 10vh;
 }
 
+#copyright {
+  margin-left: 4.5%;
+}
+
+#copyright img {
+    height: 15px;
+    width: 15px;
+}
+
 .buttonz {
   float: left;
   width: 50% !important;

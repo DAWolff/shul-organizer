@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
   pw: {type: String, required: true},
   shulId: {type: String, required: true},
   accessLevel: {type: Number, required: true},
-  createDate: {type: Date, required: false}
+  createDate: {type: Date, required: false, default: Date.now}
 
 });
 

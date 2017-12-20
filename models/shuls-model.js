@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 // ---------------------------------------------
 
 const shulSchema = mongoose.Schema({
-
   adminEmail: {type: String, required: true},
   name: {type: String, required: true},
   called: {type: String, required: true},
