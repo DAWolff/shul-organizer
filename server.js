@@ -1,8 +1,9 @@
 'use strict'
 
-var express = require('express');
-var app = express();
-app.use(express.static('public'));
+const express = require('express');
+const fs = require('fs');
+const app = express();
+// app.use(express.static('public'))
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -26,11 +27,23 @@ const {Services} = require('./models/services-model.js');
 //  home / landing page
 // **********************************
 
-app.get("/", (req, res) => {
-  res.status(200)
-  .sendFile(__dirname + '/public/index.html');
-});
+let templates = {
+  main: null
+};
 
+let initialized = false;
+function initialize() {
+  if( initialized )
+    return initialized;
+  templates.main = fs.readFileSync(__dirname + '/public/index.html');
+  initialized = true;
+  return true;
+}
+
+app.get("/", (req, res) => {
+  initialize();
+  res.status(200).sendFile(__dirname + '/public/index.html');
+});
 
 // **********************************
 //    user endpoints
@@ -40,6 +53,7 @@ app.get("/", (req, res) => {
 //   GET
 // --------------
 
+// localhost:8080/user/gabbai.frankelshul@gmail.com/pw/pooper-scooper
 app.get('/user/:email/pw/:pswd', (req, res) => {
   User
     .findOne({email: req.params.email})
@@ -56,7 +70,7 @@ app.get('/user/:email/pw/:pswd', (req, res) => {
             })
       }
       else {
-          res.status(402).json({error: 'Password not valid'});
+          res.status(400).json({error: 'Password not valid'});
       };
     })
     .catch(err => {
@@ -69,31 +83,34 @@ app.get('/user/:email/pw/:pswd', (req, res) => {
 //   POST
 // --------------
 
-app.post('/user', (req, res) => {
-  const requiredFields = ['email', 'pw', 'shulId', 'accessLevel'];
-  for (let i=0; i<requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`
-      console.error(message);
-      return res.status(400).send(message);
-    }
-  }
 
-  User
+app.post ('/newUser/:newEmail/pw/:pswd/shulName/:shulName/shulCalled/:shulCalled', (req, res) => {
+  Shul
     .create({
-      email: req.body.email,
-      pw: req.body.pw,
-      shulId: req.body.shulId,
-      accessLevel: req.body.accessLevel
+      adminEmail: req.params.newEmail,
+      name: req.params.shulName,
+      called: req.params.shulCalled
     })
-    .then(user => res.status(201).json(user))
+    .then(newShul => {
+      console.log("ZZZZ" + newShul.id + " =ID");
+      User
+        .create({
+          email: req.params.newEmail,
+          pw: req.params.pswd,
+          shulId: newShul.id,
+          accessLevel: 3
+        })
+        .then((newUser)=>{
+          let data = [newShul, newUser];
+          res.status(201).json(data);
+        })
+    })
     .catch(err => {
         console.error(err);
-        res.status(500).json({error: 'Internal error with Create_New_User'});
+        res.status(500).json({error: 'Internal error with Create_New_UserShul'});
     });
-
 });
+
 
 // --------------
 //   PUT
@@ -153,9 +170,23 @@ app.get('/shul-all', (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      res.status(500).json({error: 'something went terribly wrong'});
+      res.status(500).json({error: 'something went terribly wrong with GET_all_Shuls'});
     });
 });
+
+
+app.get('/shul-all-public', (req, res) => {
+  Shul
+    .find({public: true})
+    .then((shuls)=>{
+      res.status(201).json(shuls);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({error: 'something went terribly wrong with GET_all_public_Shuls'});
+    });
+});
+
 
 app.get("/shul/:id", (req, res) => {
   Shul
@@ -165,7 +196,7 @@ app.get("/shul/:id", (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      res.status(500).json({error: 'something went horribly awry'});
+      res.status(500).json({error: 'something went horribly awry with GET_Shul_by_ID'});
     });
 });
 
@@ -174,7 +205,7 @@ app.get("/shul/:id", (req, res) => {
 // --------------
 
 app.post('/shul', (req, res) => {
-  const requiredFields = ['email', 'pw', 'shulId', 'accessLevel'];
+  const requiredFields = ['adminEmail', 'name', 'called'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -185,12 +216,7 @@ app.post('/shul', (req, res) => {
   }
 
   Shul
-    .create({
-      email: req.body.email,
-      pw: req.body.pw,
-      shulId: req.body.shulId,
-      accessLevel: req.body.accessLevel
-    })
+    .create(req.body)
     .then(shul => res.status(201).json(shul))
     .catch(err => {
         console.error(err);
@@ -209,17 +235,15 @@ app.put('/shul/:id', (req, res) => {
       error: 'Request path id and request body id values must match'
     });
   }
-
-  const updated = {};
-  const updateableFields = ['email', 'pw', 'shulId', 'accessLevel'];
-  updateableFields.forEach(field => {
-    if (field in req.body) {
-      updated[field] = req.body[field];
-    }
-  });
-
+  // const toUpdate = {};
+  // const updateableFields = ['email', 'pw', 'shulId', 'accessLevel'];
+  // updateableFields.forEach(field => {
+  //   if (field in req.body) {
+  //     toUpdate[field] = req.body[field];
+  //   }
+  // });
   Shul
-    .findByIdAndUpdate(req.params.id, {$set: updated}, {new: true})
+    .findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true})
     .then(updatedPost => res.status(204).end())
     .catch(err => res.status(500).json({message: 'Something went wrong with Shul update'}));
 });
@@ -389,6 +413,8 @@ app.get('/services/:shulId', (req, res) => {
 //   res.status(404).json({message: 'Not Found'});
 // });
 // ********************
+
+app.use(express.static('public'));
 
 app.use('*', function(req, res) {
   res.status(404).json({message: 'Not Found'});

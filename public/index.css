@@ -73,7 +73,7 @@ float: right;
   width: 50% !important;
 }
 
-.flat-form {
+#login-container {
   background: #7D5979;
   margin: 0 auto;
   padding-top: 10px;
@@ -121,7 +121,8 @@ form input[type=password] {
   outline: none;
 }
 
-#register {
+#js-register,
+#js-new-shul {
   background: #1c2833;
 }
 
@@ -146,4 +147,8 @@ form input[type=password] {
 .button:active {
   background: #136899;
   box-shadow: 0 3px 1px #0f608c;
+}
+
+.hide {
+  display: none;
 }

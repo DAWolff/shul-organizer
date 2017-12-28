@@ -4,6 +4,7 @@
   "description": "a shul organizer",
   "main": "server.js",
   "scripts": {
+    "debug": "node inspect server.js",
     "test": "mocha"
   },
   "author": "",

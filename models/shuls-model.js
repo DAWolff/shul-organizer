@@ -8,15 +8,16 @@ const shulSchema = mongoose.Schema({
   adminEmail: {type: String, required: true},
   name: {type: String, required: true},
   called: {type: String, required: true},
+  public: {type: Boolean},
   address: {
     street: String,
     city: String,
     state: String,
     zip: String
   },
-  rabbi: {type: String, required: true},
-  asstRabbi: {type: String, required: true},
-  chazan: {type: String, required: true},
+  rabbi: String,
+  asstRabbi: String,
+  chazan: String,
   board: [{
     title: Date,
     person: String

@@ -18,10 +18,6 @@
     </head>
 
     <body>
-        <!-- <header role="banner"></header> -->
-        <!-- <div>
-          <h2>Homepage</h2>
-        </div> -->
 
         <div  id="navbar" class="row">
           <div class="col-12">
@@ -36,24 +32,28 @@
         </div>
 
         <div id="content" class="row">
-
           <div class="col-3">
             <div id="info-login" class="box">
-                  <div class="flat-form">
+                  <div id="login-container">
                       <div id="login" class="form-action">
-                          <h1>Login (or Register)</h1>
+                        <h1>Login (or Register)</h1>
                           <p>
                             The Gabai's resource for "all things Shul" <br>
                             Shul schedule - individual members data - records of aliyos and services... <br>
                             Reminders of upcoming occaisions and events
                           </p>
-                          <form>
+                          <form id="js-login-form">
                             <ul>
-                              <li><input type="text" name="email" required placeholder="Email" /></li>
-                              <li><input type="password" name="pw" required placeholder="Password" /></li>
-                              <li>
-                                <input type="submit" value="Login" class="button buttonz" />
-                                <input type="submit" value="New User" class="button buttonz" id="register"/>
+                              <li><input type="text" name="email" required placeholder="Email" autocomplete="username email"/></li>
+                              <li><input type="password" name="pw" required placeholder="Password" autocomplete="current-password"/></li>
+                              <li><input class="register hide" type="text" name="shul-name" required placeholder="Official Shul Name"/></li>
+                              <li><input class="register hide" type="text" name="shul-called" required placeholder="Shul Nickname"/></li>
+                              <li class="login">
+                                <input id="js-login" type="submit" value="Login" class="button buttonz" />
+                                <input id="js-new-shul" type="submit" value="New User" class="button buttonz"/>
+                              </li>
+                              <li class="register hide">
+                                <input id="js-register" type="submit" value="Register New Shul" class="button buttonz" />
                               </li>
                             </ul>
                           </form>
@@ -65,7 +65,6 @@
           <div class="col-4">
             <div class="box imge"></div>
           </div>
-
         </div>   <!-- content -->
 
         <div  id="footer" class="row">
