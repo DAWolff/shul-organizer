@@ -79,10 +79,21 @@ app.get('/user/:email/pw/:pswd', (req, res) => {
     });
 });
 
+app.get('/user-all', (req, res) => {
+  User
+    .find()
+    .then((users)=>{
+      res.status(201).json(users);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({error: 'something went terribly wrong with GET_all_Users'});
+    });
+});
+
 // --------------
 //   POST
 // --------------
-
 
 app.post ('/newUser/:newEmail/pw/:pswd/shulName/:shulName/shulCalled/:shulCalled', (req, res) => {
   Shul
@@ -124,7 +135,7 @@ app.put('/user/:id', (req, res) => {
   }
 
   const toUpdate = {};
-  const updateableFields = ['email', 'pw', 'shulId', 'accessLevel'];
+  const updateableFields = ['schemaType','email', 'pw', 'shulId', 'accessLevel'];
   updateableFields.forEach(field => {
     if (field in req.body) {
       toUpdate[field] = req.body[field];

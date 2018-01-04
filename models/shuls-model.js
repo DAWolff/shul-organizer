@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 // ---------------------------------------------
 
 const shulSchema = mongoose.Schema({
+  schemaType: { type: String, default: 'shul' },
   adminEmail: {type: String, required: true},
   name: {type: String, required: true},
   called: {type: String, required: true},

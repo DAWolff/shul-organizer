@@ -18,15 +18,19 @@ ul,li { list-style-type: none;
         padding:0;
 }
 
+h2 {
+  margin: 2%;
+}
+
 #content {
   height: 80vh;
 }
 
 .imge {
   /*background-image: url(images/aron-hakodesh.jpg);*/
-  background-image: url(images/touro-synagogue-national-historic-site-1.jpg);
   /*background-image: url(images/spanish.jpg);*/
   /*background-image: url(images/curacas.jpg);*/
+  background-image: url(images/touro-synagogue-national-historic-site-1.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 5px;
@@ -88,11 +92,11 @@ float: right;
   position: relative;
 }
 
-
 h1 {
   font-size: 2em;
   padding-bottom: 10px;
 }
+
 .form-action p {
   font-size: 1em;
   padding-bottom: 10px;
@@ -126,6 +130,50 @@ form input[type=password] {
   background: #1c2833;
 }
 
+.js-result-field {
+  background: #7D5979;
+  margin: 2%;
+  margin-bottom: 15px;
+  padding: 10px 10px 12px 1px;
+  position: relative;
+  font-family: 'Roboto';
+  color: white;
+  border-radius: 4px;
+}
+
+.js-result-label {
+  font-size: 1.5em;
+  margin-left: 10px;
+}
+
+.js-result-button {
+  background: #7D5979;
+  position: relative;
+}
+
+.select {
+  background: #1c2833;
+  padding: 1%;
+  margin-bottom: 2px;
+  color: white;
+  border: none;
+  display: block;
+  text-align: center;
+  border-radius: 5px;
+  transition: all 0.15s linear;
+}
+
+.js-result-content {
+  vertical-align: middle;
+  padding: 15px 7px 10px 10px;
+  background: #557ca2;
+  font-size: 1.6em;
+  color: white;
+  height: 10vh;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
 .button {
     border: none;
     display: block;
@@ -135,12 +183,12 @@ form input[type=password] {
     color: #ffffff;
     text-align: center;
     border-radius: 5px;
-    /*box-shadow: 0px 3px 1px #2075aa;*/
 	  transition: all 0.15s linear;
 }
 
-.button:hover {
-  background: #1e75aa;
+.button:hover,
+.select:hover {
+  /* background: #1e75aa; */
   box-shadow: 0 3px 1px #237bb2;
 }
 

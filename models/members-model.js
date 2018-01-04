@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 // ---------------------------------------------
 
 const memberSchema = mongoose.Schema({
-
+  schemaType: { type: String, default: 'member' },
   shulId: {type: String, required: true},
   familyName: {type: String, required: true},
   hebrewNameFull: {type: String, required: true},
