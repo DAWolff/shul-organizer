@@ -20,7 +20,7 @@ const shulSchema = mongoose.Schema({
   asstRabbi: String,
   chazan: String,
   board: [{
-    title: Date,
+    title: String,
     person: String
   }],
   shabbos: {

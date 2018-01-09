@@ -7,7 +7,10 @@ const mongoose = require('mongoose');
 const servicesSchema = mongoose.Schema({
   schemaType: { type: String, default: 'services' },
   shulId: {type: String, required: true},
-  parsha: {type: String, required: true},
+  when: {
+    parsha: {type: String, required: true},
+    year: {type: String, required: true}
+  },
   dateHebrew: {type: String, required: true},
   dateEnglish: {type: Date, required: true},
   kiddush: {

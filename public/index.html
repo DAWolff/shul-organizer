@@ -19,36 +19,36 @@
 
     <body>
 
-        <div  id="navbar" class="row">
+        <div  id="js-navbar" class="row">
           <div class="col-12">
             <div class="box">
               <ul>
-                <li><img id="shul-icon" class="icons" src="images/grey-shul2.png" alt="Shul Icon"></li>
-                <li><img id="member-icon" class="icons" src="images/grey-person.png" alt="Member Icon"></li>
-                <li><img id="services-icon" class="icons" src="images/grey-siddur.png" alt="Services Icon"></li>
+                <li><img id="js-shul-icon" class="icons" src="images/grey-shul2.png" alt="Shul Icon"></li>
+                <li><img id="js-member-icon" class="icons" src="images/grey-person.png" alt="Member Icon"></li>
+                <li><img id="js-services-icon" class="icons" src="images/grey-siddur.png" alt="Services Icon"></li>
               </ul>
             </div>
           </div>
         </div>
 
-        <div id="content" class="row">
+        <div id="js-login-row" class="row">
 
           <div class="col-3">
-            <div id="info-login" class="box">
-                  <div id="login-container">
-                      <div id="login" class="form-action">
+            <div class="box">
+                  <div id="js-login-container">
+                      <div class="form-action">
                         <h1>Login (or Register)</h1>
                           <p>
                             The Gabai's resource for "all things Shul" <br>
                             Shul schedule - individual members data - records of aliyos and services... <br>
                             Reminders of upcoming occaisions and events
                           </p>
-                          <form id="js-login-form">
+                          <form>
                             <ul>
                               <li><input type="text" name="email" required placeholder="Email" autocomplete="username email"/></li>
                               <li><input type="password" name="pw" required placeholder="Password" autocomplete="current-password"/></li>
-                              <li><input class="register hide" type="text" name="shul-name" required placeholder="Official Shul Name"/></li>
-                              <li><input class="register hide" type="text" name="shul-called" required placeholder="Shul Nickname"/></li>
+                              <li><input class="register hide" type="text" name="shulname" required placeholder="Official Shul Name"/></li>
+                              <li><input class="register hide" type="text" name="shulcalled" required placeholder="Shul Nickname"/></li>
                               <li class="login">
                                 <input id="js-login" type="submit" value="Login" class="button buttonz" />
                                 <input id="js-new-shul" type="submit" value="New User" class="button buttonz"/>
@@ -59,41 +59,19 @@
                             </ul>
                           </form>
                       </div>  <!--  login -->
-                  </div>  <!--  login-container -->
-            </div> <!--  info-login -->
+                  </div>  <!--  js-login-container -->
+            </div>  <!--  box -->
           </div>  <!--  col-3 -->
 
           <div class="col-4">
             <div class="box imge"></div>
           </div>
 
-        </div>   <!-- content -->
+        </div>   <!-- js-login-row -->
 
         <div id="js-results" class="hide"></div>
 
-<!-- zz -->
-      <!-- <div class="js-result-field">
-        <div class="js-result-button">
-          <input type="submit" value="Frankel Shul" class="select" />
-        </div>
-        <div class="js-result-content">
-          Congregation Solomon Zalman 1699 President St. Brooklyn, NY
-        </div>
-      </div> -->
-<!-- zz -->
-        <!-- <div class="col-12">
-          <div class="box">
-            <div class="js-result-field">
-              <div class="js-result-label">Shul Admin
-                <div class="js-result-content">
-                  tzvi.dinnerman@gmail.com
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-        <div  id="footer" class="row">
+        <div  id="js-footer" class="row">
           <div class="col-12">
             <div class="box">
               <p id="copyright">©2018 WOLFFdesign <img src="images/wolf-print.png"> All Rights Reserved</p>

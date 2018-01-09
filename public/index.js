@@ -1,28 +1,35 @@
 'use strict'
 // window.location.href = "../shul-read.html"
-var LOCAL_HOST = 'http://localhost:8080';
 var loggedIn = false;
 var accessLevel = 0;
 var shulID = "";
 const query = "";
 
+
 function watchLoginSubmit() {
+
   $('#js-login').click(event => {
     event.preventDefault();
     let email = $( "input[name='email']" ).val();
     let pw =  $( "input[name='pw']" ).val();
+    // do I need to check for nulls?
     getLoginCredentials(email, pw);
   });
 }
 
+
 function getLoginCredentials(email, pw) {
-  let loginURL = LOCAL_HOST + '/user/' + email + '/pw/' + pw;
-  $.getJSON(loginURL, function( data ) {
-      // console.log(data);
-      const results = data.map((item, index) => {
+
+  accessLevel = 0;
+  shulID = "";
+  loggedIn = false;
+  let route = '/user/' + email + '/pw/' + pw;
+
+  $.getJSON(route, function( data ) {
+
+      data.map((item, index) => {
         if (typeof(item) == 'undefined' || item == null) {
-          // modal - invalid login
-          console.log('invalid login');
+          console.log('invalid login. Index: ' + index);
         }
         else {
           if (item.schemaType === 'user') {
@@ -30,31 +37,62 @@ function getLoginCredentials(email, pw) {
             shulID = item.shulId;
             loggedIn = true;
             console.log('logged in. access: ' + accessLevel + ' shulID: ' + shulID);
+
+            if (accessLevel <= 1) {
+              if (shulID) {
+                displayShulData(shulID);
+              }
+              else {
+                let route = '/shul-all-public';
+                $.getJSON(route, function( data ) {
+                    renderShulList(data);
+                });
+              }
+            };
+
             if (accessLevel === 3) {
               displayShulData(shulID);
-            }
-            }
+            };
+
+            if (accessLevel >= 5) {
+              let route = '/shul-all';
+              shulID = "";
+              $.getJSON(route, function( data ) {
+                  renderShulList(data);
+              });
+            };
+
+          };  // user object returned
         };
-      });
-  });
+      });  // .map
+  });  // getJSON call
+  // if (!loggedIn) { display an error messagge }
 }
 
+
 function watchRegisterSubmit() {
+
   $('#js-register').click(event => {
     event.preventDefault();
     let email = $( "input[name='email']" ).val();
     let pw =  $( "input[name='pw']" ).val();
     let shulName = $( "input[name='shul-name']" ).val();
     let shulCalled = $( "input[name='shul-called']" ).val();
-    registerNewGabbaiAndShul(email, pw, shulName, shulCalled);
+
+    if (email && pw && shulName && shulCalled)
+      registerNewGabbaiAndShul(email, pw, shulName, shulCalled);
+    else { //  error message required fields missing
+    };
   });
 }
 
+
 function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
-  let postURL = LOCAL_HOST + '/newUser/' + email + '/pw/' + pw + '/shulName/' + shulName + '/shulCalled/' + shulCalled;
-  $.post(postURL, function( data ) {
+
+  let route = '/newUser/' + email + '/pw/' + pw + '/shulName/' + shulName + '/shulCalled/' + shulCalled;
+  $.post(route, function( data ) {
       // console.log(data);
-      const results = data.map((item, index) => {
+      data.map((item, index) => {
         if (typeof(item) == 'undefined' || item == null) {
           // modal - invalid login
           console.log('invalid register-new-shul');
@@ -66,21 +104,25 @@ function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
             loggedIn = true;
             console.log('registered! access: ' + accessLevel + ' shulID: ' + shulID);
             // if this is a gabbai, display shul update screen.....
-            }
+          };
         };
       });
   });
 }
 
+
 function watchNewUserClick() {
+
+  //  expand login area to include shul information
   $('#js-new-shul').click(event => {
     event.preventDefault();
     $( "input[name='email']" ).attr('placeholder', "Gabbai's email");
-    $('#login-container').height("73vh");
+    $('#js-login-container').height("73vh");
     $('.login').toggleClass( "hide" );
     $('.register').toggleClass( "hide" );
   });
 }
+
 
 function watchNavbarClicks() {
 
@@ -90,56 +132,70 @@ function watchNavbarClicks() {
 // 3 = gabbai of shul
 // 5 = site admin
 
-  $('#shul-icon').click(event => {
+//     CLICKED SHUL ICON
+  $('#js-shul-icon').click(event => {
     event.preventDefault();
 
     if (accessLevel <= 1) {
-      let targetURL = LOCAL_HOST + '/shul-all-public';
-      $.getJSON(targetURL, function( data ) {
+      let route = '/shul-all-public';
+      $.getJSON(route, function( data ) {
           renderShulList(data);
       });
     };
 
     if (accessLevel === 3) {
-      displayShulData(shulID);
-    }
+      if (shulID)
+        displayShulData(shulID);
+    };
 
     if (accessLevel >= 5) {
-      let targetURL = LOCAL_HOST + '/shul-all';
-      $.getJSON(targetURL, function( data ) {
+      let route = '/shul-all';
+      $.getJSON(route, function( data ) {
           renderShulList(data);
       });
-    }
+    };
   });
 
-  $('#member-icon').click(event => {
+//     CLICKED MEMBER ICON
+  $('#js-member-icon').click(event => {
     event.preventDefault();
-    console.log("you hit the member icon");
-    // $('#content').toggleClass( "hide" );
-
+    if (accessLevel === 3 || accessLevel >= 5) {
+      let route = '/member-all/' + shulID ;
+      $.getJSON(route, function( data ) {
+          renderMemberList(data);
+      });
+    };
   });
 
-  $('#services-icon').click(event => {
+//     CLICKED SERVICES ICON
+  $('#js-services-icon').click(event => {
     event.preventDefault();
-    console.log('you hit the services icon');
-
+    if (accessLevel === 3 || accessLevel >= 5) {
+      if (shulID) {
+        let route = '/services-all/' + shulID ;
+        $.getJSON(route, function( data ) {
+            renderServicesList(data);
+        });
+      }
+      else
+        console.log("ERROR: Cannot Display Services Without ShulID!");
+    };
   });
+
 }
+
 
 function renderShulList(result) {
 
   let content = `<h2>Click Shul name for detail</h2>`;
   let shulLine = "";
 
-  // var itemElements = result.map(function(oneShul) {
   result.map(function(oneShul) {
-    if (typeof(oneShul.called) == 'undefined' || typeof(oneShul.called) == null) {}
-    else {
+    if (oneShul.called) {
       let street = " ";
       let city = " ";
       let state = " ";
-      if (typeof(oneShul.address) == 'undefined' || typeof(oneShul.address) == null) {}
-      else {
+      if (oneShul.address) {
         street = oneShul.address.street;
         city = oneShul.address.city;
         state = oneShul.address.state;
@@ -147,38 +203,40 @@ function renderShulList(result) {
       shulLine = `
               <div class="js-result-field">
                 <div class="js-result-button">
-                  <input type="submit" value="${oneShul.called}" class="select" data-shulid="${oneShul._id}"/>
+                  <input type="submit" value="${oneShul.called}" class="select" data-itemid="${oneShul._id}"/>
                 </div>
                 <div class="js-result-content">
                  ${oneShul.name} &nbsp ${street} &nbsp ${city}, &nbsp ${state}
                 </div>
               </div>
           `
-      content = content + shulLine
-    };  // else
+      content = content + shulLine;
+    };
   });   // map
-  $('#navbar').css( "border-bottom", "3px solid #1c2833" );
-  $('#footer').css( "border-top", "3px solid #1c2833" );
-  $('#content').toggleClass( "hide" );
+  // $('#js-navbar').css( "border-bottom", "3px solid #1c2833" );
+  // $('#js-footer').css( "border-top", "3px solid #1c2833" );
   $('#js-results').html(content);
-  $('#js-results').toggleClass( "hide" );
+  hideLoginRevealResults();
   $(watchShulselection);
 }
 
+
 function watchShulselection() {
+
     $( "#js-results" ).on( "click", "input", function( event ) {
       event.preventDefault();
-      // console.log( $( this ).text() );  // zz
       let element = event.currentTarget;
-      let shulID = element.dataset.shulid;
+      shulID = element.dataset.itemid;
       displayShulData(shulID);
     });
 }
 
+
 function displayShulData(shulIdIn) {
+
   console.log('shul ID: ' + shulIdIn);
-  let targetURL = LOCAL_HOST + '/shul/' + shulIdIn;
-  $.getJSON(targetURL, function( data ) {
+  let route = '/shul/' + shulIdIn;
+  $.getJSON(route, function( data ) {
       if (data == 'undefined' || data == null) {
           // modal - invalid shul ID
           console.log('could not find shulID:' + shulIdIn);
@@ -190,10 +248,11 @@ function displayShulData(shulIdIn) {
   });
 }
 
+
 function renderShulData(shul) {
-  // $('#navbar').css( "border-bottom", "1px solid black" );   this is already done
-  // $('#footer').css( "border-top", "1px solid black" );
+
   let content = "";
+
   let shulLine = `
         <div class="js-result-field">
             <div class="js-result-label">Shul Name
@@ -218,70 +277,721 @@ function renderShulData(shul) {
         </div>   `
   content = content + shulLine
 
-  if (typeof(shul.public) == 'undefined' || typeof(shul.public) == null)
-      {}
-  else {
+  if (shul.public) {
     shulLine = `
         <div class="js-result-field">
             <div class="js-result-label">Publicly visible?
               <div class="js-result-content">${shul.public}</div>
             </div>
-        </div>   `
+        </div>
+        `;
     content = content + shulLine
+  };
+
+  if (shul.address) {
+    let street = shul.address.street || " ";
+    let city = shul.address.city || " ";
+    let state = shul.address.state || " ";
+    shulLine = `
+        <div class="js-result-field">
+            <div class="js-result-label">Address
+              <div class="js-result-content">${street} &nbsp ${city}, &nbsp ${state}</div>
+            </div>
+        </div>
+        `;
+    content = content + shulLine;
+  };
+
+  if (shul.rabbi) {
+    shulLine = `
+        <div class="js-result-field">
+            <div class="js-result-label">Rabbi
+              <div class="js-result-content">${shul.rabbi}</div>
+            </div>
+        </div>
+        `;
+    content = content + shulLine;
+  };
+
+  if (shul.asstRabbi) {
+    shulLine = `
+        <div class="js-result-field">
+            <div class="js-result-label">Assistant Rabbi
+              <div class="js-result-content">${shul.asstRabbi}</div>
+            </div>
+        </div>
+        `;
+    content = content + shulLine;
+  };
+
+  if (shul.chazan) {
+    shulLine = `
+        <div class="js-result-field">
+            <div class="js-result-label">Chazan
+              <div class="js-result-content">${shul.chazan}</div>
+            </div>
+        </div>
+        `;
+    content = content + shulLine;
+  };
+
+  if (shul.shabbos) {
+    let minchaErevShabbos = " ";
+    let kabolasShabbos = " ";
+    let shacharis = " ";
+    let mincha = " ";
+    let maariv = " ";
+    if (shul.shabbos.minchaErevShabbos)
+      minchaErevShabbos = shul.shabbos.minchaErevShabbos;
+    if (shul.shabbos.kabolasShabbos)
+      kabolasShabbos = shul.shabbos.kabolasShabbos;
+    if (shul.shabbos.shacharis)
+      shacharis = shul.shabbos.shacharis;
+    if (shul.shabbos.mincha)
+      mincha = shul.shabbos.mincha;
+    if (shul.shabbos.maariv)
+      maariv = shul.shabbos.maariv;
+    shulLine = `
+        <div class="js-result-field">
+          <div class="js-result-label">Shabbos Davening
+            <div class="js-result-content">
+              <p class="result-sub-label">Mincha Erev Shabbos: &nbsp</p>
+              ${minchaErevShabbos}
+            </div>
+            <div class="js-result-content">
+              <p class="result-sub-label">Kabolas Shabbos: &nbsp</p>
+                ${kabolasShabbos}
+            </div>
+            <div class="js-result-content">
+              <p class="result-sub-label">Shacharis: &nbsp</p>
+                ${shacharis}
+            </div>
+            <div class="js-result-content">
+              <p class="result-sub-label">Mincha: &nbsp</p>
+                ${mincha}
+            </div>
+            <div class="js-result-content">
+              <p class="result-sub-label">Maariv Motzei Shabbos: &nbsp</p>
+                ${maariv}
+            </div>
+          </div>
+        </div>
+        `;
+    content = content + shulLine;
+  };
+
+  if (shul.weekday) {
+    let shacharis1 = "n/a";
+    let shacharis2 = "n/a";
+    let shacharis3 = "n/a";
+    let mincha = "n/a";
+    let maariv1 = "n/a";
+    let maariv2 = "n/a";
+    if (shul.weekday.shacharis1)
+      shacharis1 = shul.weekday.shacharis1;
+    if (shul.weekday.shacharis2)
+      shacharis2 = shul.weekday.shacharis2;
+    if (shul.weekday.shacharis3)
+      shacharis3 = shul.weekday.shacharis3;
+    if (shul.weekday.mincha)
+      mincha = shul.weekday.mincha;
+    if (shul.weekday.maariv1)
+      maariv1 = shul.weekday.maariv1;
+    if (shul.weekday.maariv2)
+      maariv2 = shul.weekday.maariv2;
+
+    shulLine = `
+      <div class="js-result-field">
+        <div class="js-result-label">Weekday Davening
+          <div class="js-result-content">
+            <p class="result-sub-label">First Shacharis: &nbsp</p>
+            ${shacharis1}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">Second Shacharis: &nbsp</p>
+            ${shacharis2}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">Third Shacharis: &nbsp</p>
+            ${shacharis3}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">Mincha: &nbsp</p>
+              ${mincha}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">First Maariv: &nbsp</p>
+              ${maariv1}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">Second Maariv: &nbsp</p>
+              ${maariv2}
+          </div>
+        </div>
+      </div>
+      `;
+    content = content + shulLine;
     };
 
-    let street = ""; let city = ""; let state = "";
-    if (typeof(shul.address) == 'undefined' || typeof(shul.address) == null) {}
-    else {
-      street = shul.address.street;
-      city = shul.address.city;
-      state = shul.address.state;
+
+  if (shul.sundayLegalHoliday) {
+    let shacharis1 = "n/a";
+    let shacharis2 = "n/a";
+    let shacharis3 = "n/a";
+    if (shul.sundayLegalHoliday.shacharis1)
+      shacharis1 = shul.sundayLegalHoliday.shacharis1;
+    if (shul.sundayLegalHoliday.shacharis2)
+      shacharis2 = shul.sundayLegalHoliday.shacharis2;
+    if (shul.sundayLegalHoliday.shacharis3)
+      shacharis3 = shul.sundayLegalHoliday.shacharis3;
+
+    shulLine = `
+      <div class="js-result-field">
+        <div class="js-result-label">Sunday & Legal Holiday
+          <div class="js-result-content">
+            <p class="result-sub-label">First Shacharis: &nbsp</p>
+            ${shacharis1}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">Second Shacharis: &nbsp</p>
+            ${shacharis2}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">Third Shacharis: &nbsp</p>
+            ${shacharis3}
+          </div>
+        </div>
+      </div>
+      `;
+    content = content + shulLine;
+  };
+
+  if (shul.events[0]) {
+    let label = "";
+    let date = "";
+    let desc = "desc";
+
+    content = content + `
+      <div class="js-result-field">
+        <div class="js-result-label">Shul Events `;
+
+    shul.events.map((shulEvent, index) => {
       shulLine = `
-          <div class="js-result-field">
-              <div class="js-result-label">Address
-                <div class="js-result-content">${street} &nbsp ${city}, &nbsp ${state}</div>
+            <div class="js-result-content expand">
+              ${shulEvent.label} <br>
+              ${shulEvent.date} <br>
+              ${shulEvent.desc}
+            </div> `;
+    content = content + shulLine;
+    });
+    content = content + `</div>  </div>   `;
+  };
+
+  if (shul.board[0]) {
+    let title = "";
+    let person = "";
+
+    content = content + `
+      <div class="js-result-field">
+        <div class="js-result-label">Shul Board `;
+
+    shul.board.map((boardMember, index) => {
+      title = boardMember.title;
+      person = boardMember.person;
+      shulLine = `
+            <div class="js-result-content">
+              <p class="result-sub-label">${title}: &nbsp</p>
+              ${person}
+            </div>
+            `;
+      content = content + shulLine;
+    });
+
+    content = content + `</div>  </div>   `;
+  };
+
+  if (shul.notes)  {
+    shulLine = `
+        <div class="js-result-field">
+            <div class="js-result-label">Notes
+              <div class="js-result-content expand">${shul.notes}</div>
+            </div>
+        </div>   `;
+    content = content + shulLine;
+    };
+
+  $('#js-results').html(content);
+  hideLoginRevealResults();
+}
+
+
+function renderMemberList(result) {
+
+  let content = `<h2>Click Member name for detail</h2>`;
+  let memberLine = "";
+
+  result.map(function(oneMember) {
+    if (oneMember.shulId) {
+
+      let cell = " ";
+      if (oneMember.contactInfo.cellPhone)
+        cell = formatPhone(oneMember.contactInfo.cellPhone);
+
+      let email = oneMember.contactInfo.eMail || " ";
+
+      memberLine = `
+              <div class="js-result-field">
+                <div class="js-result-button">
+                  <input type="submit" value="${oneMember.called}" class="select" data-itemid="${oneMember._id}"/>
+                </div>
+                <div class="js-result-content expand">
+                 ${oneMember.englishName} &nbsp ${oneMember.familyName} <br>
+                 ${oneMember.hebrewNameFull} &nbsp ${email} &nbsp ${cell}
+                </div>
               </div>
-          </div>   `
-      content = content + shulLine
+          `;
+      content = content + memberLine;
+    };
+
+  });   // map
+
+  $('#js-results').html(content);
+  hideLoginRevealResults();
+  $(watchMemberSelection);
+}
+
+
+function watchMemberSelection() {
+
+    $( "#js-results" ).on( "click", "input", function( event ) {
+      event.preventDefault();
+      let element = event.currentTarget;
+      let memberID = element.dataset.itemid;
+      displayMemberData(memberID);
+    });
+}
+
+
+function displayMemberData(memberID) {
+
+  console.log('member ID: ' + memberID);
+  let route = '/member/' + memberID;
+  $.getJSON(route, function( data ) {
+      if (data == 'undefined' || data == null) {
+          // modal - invalid member ID
+          console.log('could not find memberID:' + memberID);
+          return;
+      };
+      if (data.schemaType === 'member') {
+          renderMemberData(data);
+      };
+  });
+}
+
+
+function renderMemberData(member) {
+
+  if (member.schemaType != 'member') {
+      console.log("error in renderMemberData-invalid paramemter passed in.");
+      return;
+  }
+
+  let content = "";
+
+  let prefix = member.title || "";
+  let suffix = "";
+  if (member.kohen)  suffix = "HaKohen";
+  if (member.levi)   suffix = "HaLevi";
+
+  let memberLine = `
+      <div class="js-result-field">
+        <div class="js-result-label">Member
+          <div class="js-result-content">
+            <p class="result-sub-label">Called: &nbsp</p>
+            ${prefix} &nbsp ${member.called}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">Hebrew Name: &nbsp</p>
+            ${member.hebrewNameFull} &nbsp ${suffix}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">English Name: &nbsp</p>
+            ${member.englishName} &nbsp  ${member.familyName}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">Regular?: &nbsp</p>
+            ${member.regular}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">Can Lead Davening?: &nbsp</p>
+            ${member.canLeadDavening}
+          </div>
+        </div>
+      </div>
+      `;
+  content = content + memberLine;
+
+  if (member.contactInfo) {
+    let street = member.contactInfo.homeAddress.street || " ";
+    let city = member.contactInfo.homeAddress.city || " ";
+    let state = member.contactInfo.homeAddress.state || " ";
+    let zip = member.contactInfo.homeAddress.zip || " ";
+    let notes = member.contactInfo.homeAddress.addrNotes || " ";
+
+    let cell = " ";
+    if (member.contactInfo.cellPhone)
+      cell = formatPhone(member.contactInfo.cellPhone);
+
+    memberLine = `
+        <div class="js-result-field">
+          <div class="js-result-label">Contact Info
+            <div class="js-result-content">
+              <p class="result-sub-label">Email: &nbsp</p>
+              ${member.contactInfo.eMail}
+            </div>
+            <div class="js-result-content">
+              <p class="result-sub-label">Cell: &nbsp</p>
+              ${cell}
+            </div>
+            <div class="js-result-content">
+              ${street} &nbsp ${city}, &nbsp ${state} &nbsp ${zip}
+            </div>
+            <div class="js-result-content">
+              <p class="result-sub-label">Notes: &nbsp</p>
+              ${notes}
+            </div>
+          </div>
+        </div>
+        `;
+    content = content + memberLine;
+  };
+
+  if (member.fatherHebrewName || member.motherHebrewName)  {
+    memberLine = `
+        <div class="js-result-field">
+            <div class="js-result-label">Parent's Names
+              <div class="js-result-content">
+                <p class="result-sub-label">Father's Name: &nbsp</p>
+                ${member.fatherHebrewName}
+              </div>
+              <div class="js-result-content">
+                <p class="result-sub-label">Mother's Name: &nbsp</p>
+                ${member.motherHebrewName}
+              </div>
+            </div>
+        </div>
+        `;
+    content = content + memberLine;
+  };
+
+  if (member.occaisions[0]) {
+    let name = "";
+    let day = "";
+    let month = "";
+
+    content = content + `
+      <div class="js-result-field">
+        <div class="js-result-label">Member Occaisions`;
+
+    member.occaisions.map((memberOccaision, index) => {
+      memberLine = `
+            <div class="js-result-content expand">
+              ${memberOccaision.name} <br>
+              ${memberOccaision.day} &nbsp ${memberOccaision.month}
+            </div>
+            `;
+    content = content + memberLine;
+    });
+
+    content = content + `</div>  </div> `;
+  };
+
+  if (member.lastAliya) {
+    memberLine = `
+      <div class="js-result-field">
+        <div class="js-result-label">Last Aliya
+            <div class="js-result-content">
+              ${member.lastAliya.aliya} &nbsp ${member.lastAliya.parsha}, &nbsp ${member.lastAliya.year}
+            </div>
+        </div>
+      </div>
+      `;
+    content = content + memberLine;
+  };
+
+  if (member.lastLedDavening) {
+    memberLine = `
+      <div class="js-result-field">
+        <div class="js-result-label">Last Led Davening
+            <div class="js-result-content">
+              ${member.lastLedDavening.tefilla} &nbsp ${member.lastLedDavening.parsha}, &nbsp ${member.lastLedDavening.year}
+            </div>
+        </div>
+      </div>
+      `;
+    content = content + memberLine;
+  };
+
+  if (member.notes)  {
+    memberLine = `
+        <div class="js-result-field">
+            <div class="js-result-label">Notes
+              <div class="js-result-content expand">${member.notes}</div>
+            </div>
+        </div>
+        `;
+    content = content + memberLine;
   };
 
   $('#js-results').html(content);
+  hideLoginRevealResults();
 }
-//   rabbi: String,
-//   asstRabbi: String,
-//   chazan: String,
-//   board: [{
-//     title: Date,
-//     person: String
-//   }],
-//   shabbos: {
-//     minchaErevShabbos: String,
-//     kabolasShabbos: String,
-//     shacharis: String,
-//     mincha: String,
-//     maariv: String
-//   },
-//   weekday: {
-//     shacharis1: String,
-//     shacharis2: String,
-//     shacharis3: String,
-//     mincha: String,
-//     maariv1: String,
-//     maariv2: String
-//   },
-//   sundayLegalHoliday: {
-//     shacharis1: String,
-//     shacharis2: String,
-//     shacharis3: String
-//   },
-//   events: [{
-//     label: String,
-//     date: String,
-//     desc: String
-//   }],
-//   notes: String
-// });
 
+
+function renderServicesList(result) {
+
+  let content = `<h2>Click Services date for detail</h2>`;
+  let servicesLine = "";
+
+  result.map(function(oneService) {
+    if (oneService.shulId) {
+
+      let when = oneService.when.parsha + " " + oneService.when.year;
+      let date = new Date(oneService.dateEnglish);
+      let formattedDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+      let kohen = oneService.aliyosShacharis.kohen.member || " ";
+      let levi = oneService.aliyosShacharis.levi.member || " ";
+      let shlishi = oneService.aliyosShacharis.shlishi.member || " ";
+      let revii = oneService.aliyosShacharis.revii.member || " ";
+      let chamishi = oneService.aliyosShacharis.chamishi.member || " ";
+      let shishi = oneService.aliyosShacharis.shishi.member || " ";
+      let shevii = oneService.aliyosShacharis.shevii.member || " ";
+      let maftir = oneService.aliyosShacharis.maftir.member || " ";
+
+      servicesLine = `
+              <div class="js-result-field">
+                <div class="js-result-button">
+                  <input type="submit" value="${when}" class="select" data-itemid="${oneService._id}"/>
+                </div>
+                <div class="js-result-content expand">
+                 ${oneService.dateHebrew} &nbsp ${formattedDate} <br>
+                 <p class="result-sub-label">Kohen: &nbsp</p>${kohen} &nbsp &nbsp
+                 <p class="result-sub-label">Levi: &nbsp</p>${levi} &nbsp &nbsp
+                 <p class="result-sub-label">Shlishi: &nbsp</p>${shlishi} <br>
+                 <p class="result-sub-label">Revii: &nbsp</p>${revii} &nbsp &nbsp
+                 <p class="result-sub-label">Chamishi: &nbsp</p>${chamishi} &nbsp &nbsp
+                 <p class="result-sub-label">Shishi: &nbsp</p>${shishi} <br>
+                 <p class="result-sub-label">Shevii: &nbsp</p>${shevii} &nbsp &nbsp
+                 <p class="result-sub-label">Maftir: &nbsp</p>${maftir}
+                </div>
+              </div>
+          `;
+      content = content + servicesLine;
+    };
+  });   // map
+
+  $('#js-results').html(content);
+  hideLoginRevealResults();
+  $(watchServicesSelection);
+}
+
+
+function watchServicesSelection() {
+
+  $( "#js-results" ).on( "click", "input", function( event ) {
+    event.preventDefault();
+    let element = event.currentTarget;
+    let servicesID = element.dataset.itemid;
+    displayServicesData(servicesID);
+  });
+}
+
+
+function displayServicesData(servicesID) {
+
+  console.log('services ID: ' + servicesID);
+  let route = '/services/' + servicesID;
+  $.getJSON(route, function( data ) {
+      if (data == 'undefined' || data == null) {
+          // modal - invalid services ID
+          console.log('could not find servicesID:' + servicesID);
+          return;
+      };
+      if (data.schemaType === 'services') {
+          renderServicesData(data);
+      };
+  });
+}
+
+
+function renderServicesData(services) {
+
+  if (services.schemaType != 'services') {
+      console.log("error in renderServicesData--invalid object passed in.");
+      return;
+  };
+
+  let when = services.when.parsha + " " + services.when.year;
+  let date = new Date(services.dateEnglish);
+  let formattedDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+
+  let kabolasShabbos = services.ledDavening.kabolasShabbos || " ";
+  let shacharis = services.ledDavening.shacharis || " ";
+  let musaf = services.ledDavening.musaf || " ";
+  let mincha = services.ledDavening.mincha || " ";
+
+  let kohen = services.aliyosShacharis.kohen.member || " ";
+  let levi = services.aliyosShacharis.levi.member || " ";
+  let shlishi = services.aliyosShacharis.shlishi.member || " ";
+  let revii = services.aliyosShacharis.revii.member || " ";
+  let chamishi = services.aliyosShacharis.chamishi.member || " ";
+  let shishi = services.aliyosShacharis.shishi.member || " ";
+  let shevii = services.aliyosShacharis.shevii.member || " ";
+  let maftir = services.aliyosShacharis.maftir.member || " ";
+
+  let content = "";
+
+  let servicesLine = `
+      <div class="js-result-field">
+        <div class="js-result-label">${when}
+          <div class="js-result-content">
+            <p class="result-sub-label">Hebrew Date: &nbsp</p>
+             ${services.dateHebrew}
+          </div>
+          <div class="js-result-content">
+            <p class="result-sub-label">English Date: &nbsp</p>
+             ${formattedDate}
+          </div>
+        </div>
+      </div>
+      `;
+  content = content + servicesLine;
+
+  if (services.ledDavening) {
+    servicesLine = `
+        <div class="js-result-field">
+          <div class="js-result-label">Led Davening
+            <div class="js-result-content expand">
+             <p class="result-sub-label">Kabolas Shabbos: &nbsp</p>${kabolasShabbos} <br>
+             <p class="result-sub-label">Shacharis: &nbsp</p>${shacharis} &nbsp &nbsp
+             <p class="result-sub-label">Musaf: &nbsp</p>${musaf}    <br>
+             <p class="result-sub-label">Mincha: &nbsp</p>${mincha}
+            </div>
+          </div>
+        </div>
+        `;
+    content = content + servicesLine;
+  };
+
+  if (services.aliyosShacharis) {
+    servicesLine = `
+        <div class="js-result-field">
+          <div class="js-result-label">Shacharis Aliyos
+            <div class="js-result-content expand">
+             <p class="result-sub-label">Kohen: &nbsp</p>${kohen} &nbsp &nbsp
+             <p class="result-sub-label">Levi: &nbsp</p>${levi} &nbsp &nbsp
+             <p class="result-sub-label">Shlishi: &nbsp</p>${shlishi}    <br>
+             <p class="result-sub-label">Revii: &nbsp</p>${revii} &nbsp &nbsp
+             <p class="result-sub-label">Chamishi: &nbsp</p>${chamishi} &nbsp &nbsp
+             <p class="result-sub-label">Shishi: &nbsp</p>${shishi}     <br>
+             <p class="result-sub-label">Shevii: &nbsp</p>${shevii} &nbsp &nbsp
+             <p class="result-sub-label">Maftir: &nbsp</p>${maftir}
+            </div>
+          </div>
+        </div>
+        `;
+    content = content + servicesLine;
+  };
+
+  if (services.aliyosMincha) {
+    servicesLine = `
+        <div class="js-result-field">
+          <div class="js-result-label">Mincha Aliyos
+            <div class="js-result-content expand">
+             <p class="result-sub-label">Kohen: &nbsp</p>${services.aliyosMincha.kohen} &nbsp &nbsp
+             <p class="result-sub-label">Levi: &nbsp</p>${services.aliyosMincha.levi} <br>
+             <p class="result-sub-label">Shlishi: &nbsp</p>${services.aliyosMincha.shlishi}
+            </div>
+          </div>
+        </div>
+        `;
+    content = content + servicesLine;
+  };
+
+  if (services.kiddush) {
+    servicesLine = `
+        <div class="js-result-field">
+          <div class="js-result-label">Mincha Aliyos
+            <div class="js-result-content expand">
+             <p class="result-sub-label">Kiddush?: &nbsp</p>${services.kiddush.made} &nbsp &nbsp
+             <p class="result-sub-label">Sponsor: &nbsp</p>${services.kiddush.sponsor} <br>
+             <p class="result-sub-label">Pledge: &nbsp</p>${services.kiddush.pledge} &nbsp &nbsp
+             <p class="result-sub-label">Paid: &nbsp</p>${services.kiddush.paid}
+            </div>
+          </div>
+        </div>
+        `;
+    content = content + servicesLine;
+  };
+
+  if (services.speaker) {
+    servicesLine = `
+        <div class="js-result-field">
+          <div class="js-result-label">speaker
+            <div class="js-result-content">
+                ${services.speaker}
+            </div>
+          </div>
+        </div>
+        `;
+    content = content + servicesLine;
+  };
+
+  if (services.notes)  {
+    servicesLine = `
+        <div class="js-result-field">
+            <div class="js-result-label">Notes
+              <div class="js-result-content expand">${services.notes}</div>
+            </div>
+        </div>
+        `;
+    content = content + servicesLine;
+  };
+  $('#js-results').html(content);
+  hideLoginRevealResults();
+}
+
+
+function formatPhone(input) {
+        input = input.toString();
+        // Strip all characters from the input except digits
+        input = input.replace(/\D/g,'');
+        // Trim the remaining input to ten characters, to preserve phone number format
+        input = input.substring(0,10);
+        // Based upon the length of the string, we add formatting as necessary
+        var size = input.length;
+        if(size == 0){
+                input = input;
+        }else if(size < 4){
+                input = '('+input;
+        }else if(size < 7){
+                input = '('+input.substring(0,3)+') '+input.substring(3,6);
+        }else{
+                input = '('+input.substring(0,3)+') '+input.substring(3,6)+'-'+input.substring(6,10);
+        }
+        return input;
+}
+
+
+function hideLoginRevealResults() {
+  if ( ! $('#js-login-row').hasClass("hide") ) {
+    $('#js-login-row').addClass("hide");
+  };
+
+  if ( $('#js-results').hasClass("hide") ) {
+    $('#js-results').removeClass("hide");
+  };
+}
 
 
 $(watchLoginSubmit);

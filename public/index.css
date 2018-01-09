@@ -2,11 +2,11 @@
   box-sizing: border-box;
 }
 
-html, body {
+body {
   background-color: #B1B1B1;
   background-image: url(images/dark-wood.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
+  /* background-size: cover; */
   min-height: 100vh;
   color: white;
   font-family: 'Roboto';
@@ -18,11 +18,16 @@ ul,li { list-style-type: none;
         padding:0;
 }
 
+h1 {
+  font-size: 2em;
+  padding-bottom: 10px;
+}
+
 h2 {
   margin: 2%;
 }
 
-#content {
+#js-login-row {
   height: 80vh;
 }
 
@@ -43,23 +48,23 @@ h2 {
   padding-top: 10px;
 }
 
-#navbar {
+#js-navbar {
   height: 10vh;
 }
 
-#navbar ul {
+#js-navbar ul {
 margin: 0px;
 padding: 0px;
 float: right;
 }
 
-#navbar li {
+#js-navbar li {
   list-style-type: none;
   display: inline;
   margin-right: 40px;
 }
 
-#footer {
+#js-footer {
   height: 10vh;
 }
 
@@ -77,7 +82,7 @@ float: right;
   width: 50% !important;
 }
 
-#login-container {
+#js-login-container {
   background: #7D5979;
   margin: 0 auto;
   padding-top: 10px;
@@ -90,11 +95,6 @@ float: right;
 .form-action {
   padding: 0 20px;
   position: relative;
-}
-
-h1 {
-  font-size: 2em;
-  padding-bottom: 10px;
 }
 
 .form-action p {
@@ -174,6 +174,11 @@ form input[type=password] {
   border-radius: 4px;
 }
 
+.result-sub-label {
+  display: inline;
+  color: #1c2833;
+}
+
 .button {
     border: none;
     display: block;
@@ -195,6 +200,11 @@ form input[type=password] {
 .button:active {
   background: #136899;
   box-shadow: 0 3px 1px #0f608c;
+}
+
+.expand {
+  height: auto;
+  min-height: 100% !important;
 }
 
 .hide {
