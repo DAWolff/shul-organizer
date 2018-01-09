@@ -5,11 +5,14 @@ const mongoose = require('mongoose');
 // ---------------------------------------------
 
 const servicesSchema = mongoose.Schema({
-
+  schemaType: { type: String, default: 'services' },
   shulId: {type: String, required: true},
-  parsha: {type: String, required: true},
+  when: {
+    parsha: {type: String, required: true},
+    year: {type: String, required: true}
+  },
   dateHebrew: {type: String, required: true},
-  dateEnglish: String,
+  dateEnglish: {type: Date, required: true},
   kiddush: {
     made: Boolean,
     sponsor: String,
@@ -129,7 +132,7 @@ servicesSchema.methods.apiRepr = function() {
       shlishi: this.shlishi
     },
     notes: this.notes,
-  });
+  };
 }
 
 const Services = mongoose.model('Services', servicesSchema);

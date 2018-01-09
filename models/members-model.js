@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 // ---------------------------------------------
 
 const memberSchema = mongoose.Schema({
-
+  schemaType: { type: String, default: 'member' },
   shulId: {type: String, required: true},
   familyName: {type: String, required: true},
   hebrewNameFull: {type: String, required: true},
@@ -39,12 +39,12 @@ const memberSchema = mongoose.Schema({
     year: String,
     tefilla: String
   },
+  notes: String,
   occaisions: [{
      name: String,
      month: String,
      day: String
- ],
-  notes: String
+ }]
 });
 
 memberSchema.virtual('memberAddress').get(function() {
@@ -91,10 +91,10 @@ memberSchema.methods.apiRepr = function() {
        name: this.name,
        month: this.month,
        day: this.day
-   ],
+   }],
     notes: this.notes,
-    memberAddress, this.memberAddress
-  });
+    memberAddress: this.memberAddress
+  };
 }
 
 const Member = mongoose.model('Member', memberSchema);

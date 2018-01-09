@@ -25,6 +25,15 @@ describe('GET endpoints', function() {
         res.should.be.html;
       })
   });
+  it('should return the homepage html and status code of 200', function() {
+    let res;
+    return chai.request(app)
+      .get('/user')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.html;
+      })
+  });  
 
   it('should return Shul html and status code of 200', function() {
     let res;

@@ -5,12 +5,12 @@ const mongoose = require('mongoose');
 // ---------------------------------------------
 
 const userSchema = mongoose.Schema({
-
+  schemaType: { type: String, default: 'user' },
   email: {type: String, required: true},
   pw: {type: String, required: true},
   shulId: {type: String, required: true},
   accessLevel: {type: Number, required: true},
-  createDate: {type: Date, required: false}
+  createDate: {type: Date, required: false, default: Date.now}
 
 });
 
