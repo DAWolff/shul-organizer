@@ -45,10 +45,31 @@
                           </p>
                           <form>
                             <ul>
-                              <li><input type="text" name="email" required placeholder="Email" autocomplete="username email"/></li>
-                              <li><input type="password" name="pw" required placeholder="Password" autocomplete="current-password"/></li>
-                              <li><input class="register hide" type="text" name="shulname" required placeholder="Official Shul Name"/></li>
-                              <li><input class="register hide" type="text" name="shulcalled" required placeholder="Shul Nickname"/></li>
+                              <div id="js-email-error" class="hide" >
+                                <div class="error-box">
+                                    <span class="closebtn">&times;</span>
+                                    <span id="js-email-error-txt">User ID must be valid email format</span>
+                                </div>
+                                <div class="error-triangle"></div>
+                              </div>
+                              <li><input type="text" name="email" placeholder="Email" autocomplete="username email"/></li>
+                              <div id="js-pw-error" class="hide" >
+                                <div class="error-box">
+                                    <span class="closebtn">&times;</span>
+                                    <span id="js-pw-error-txt">Password is invalid</span>
+                                </div>
+                                <div class="error-triangle"></div>
+                              </div>
+                              <li><input type="password" name="pw" placeholder="Password" autocomplete="current-password"/></li>
+                              <div id="js-newshul-error" class="hide" >
+                                <div class="error-box">
+                                    <span class="closebtn">&times;</span>
+                                    <span>Both Shul names are required</span>
+                                </div>
+                                <div class="error-triangle"></div>
+                              </div>
+                              <li><input class="register hide" type="text" name="shulname" placeholder="Official Shul Name (required)"/></li>
+                              <li><input class="register hide" type="text" name="shulcalled" placeholder="Shul Nickname (required)"/></li>
                               <li class="login">
                                 <input id="js-login" type="submit" value="Login" class="button buttonz" />
                                 <input id="js-new-shul" type="submit" value="New User" class="button buttonz"/>

@@ -193,13 +193,15 @@ form input[type=password] {
 
 .button:hover,
 .select:hover {
-  /* background: #1e75aa; */
-  box-shadow: 0 3px 1px #237bb2;
+  background: #2A002A;
+  box-shadow: 0 3px 1px white;
+  /* box-shadow: 0 3px 1px #237bb2; */
 }
 
 .button:active {
-  background: #136899;
-  box-shadow: 0 3px 1px #0f608c;
+  background: #2A002A;
+  /* background: #136899; */
+  box-shadow: 0 3px 1px #0f608c, 0 3px 1px #0f608c;
 }
 
 .expand {
@@ -209,4 +211,36 @@ form input[type=password] {
 
 .hide {
   display: none;
+}
+
+.error-box {
+    padding: 10px 10px 10px 20px;
+    background-color: #f44336;
+    color: white;
+    height: 40px;
+    font-weight: bold;
+}
+
+.error-triangle {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #f44336;
+  margin-left: 40%;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
 }

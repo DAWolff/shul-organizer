@@ -10,13 +10,46 @@ function watchLoginSubmit() {
 
   $('#js-login').click(event => {
     event.preventDefault();
+    // validate email format
     let email = $( "input[name='email']" ).val();
+    if (validateEmail(email)) {
+      if ( ! $('#js-email-error').hasClass("hide") )
+        $('#js-email-error').addClass("hide");
+    }
+    else {
+      $('#js-email-error').removeClass("hide");
+      $('#js-login-container').height("65vh");
+      watchCloseError();
+      return;
+    };
+    // validate pw format
     let pw =  $( "input[name='pw']" ).val();
-    // do I need to check for nulls?
-    getLoginCredentials(email, pw);
+    if (pw && pw.length > 5)
+      getLoginCredentials(email, pw);
+    else {
+      $('#js-pw-error').removeClass("hide");
+      $('#js-login-container').height("65vh");
+      watchCloseError();
+    };
   });
 }
 
+
+function watchCloseError() {
+
+  $('#js-email-error').click(event => {
+    event.preventDefault();
+    $('#js-email-error').addClass("hide");
+  });
+  $('#js-pw-error').click(event => {
+    event.preventDefault();
+    $('#js-pw-error').addClass("hide");
+  });
+  $('#js-newshul-error').click(event => {
+    event.preventDefault();
+    $('#js-newshul-error').addClass("hide");
+  });
+}
 
 function getLoginCredentials(email, pw) {
 
@@ -25,48 +58,63 @@ function getLoginCredentials(email, pw) {
   loggedIn = false;
   let route = '/user/' + email + '/pw/' + pw;
 
-  $.getJSON(route, function( data ) {
+  $.getJSON(route, function( user ) {
 
-      data.map((item, index) => {
-        if (typeof(item) == 'undefined' || item == null) {
-          console.log('invalid login. Index: ' + index);
+    if (user.error) {
+      if (user.error.type === 'user') {
+        $('#js-email-error-txt').text(user.error.msg);
+        $('#js-email-error').removeClass("hide");
+        $('#js-login-container').height("65vh");
+        watchCloseError();
+        return;
+      }
+      if (user.error.type === 'password') {
+        $('#js-pw-error-txt').text(user.error.msg);
+        $('#js-pw-error').removeClass("hide");
+        $('#js-login-container').height("65vh");
+        watchCloseError();
+        return;
+      }
+      console.log("Error type: " + user.error.type + " Msg: " + user.error.msg )
+      $('#js-email-error-txt').text("Login failed.  Unknown error- notify admin");
+      $('#js-email-error').removeClass("hide");
+      $('#js-login-container').height("65vh");
+      watchCloseError();
+      return;
+    }
+
+    if (user.schemaType) {
+      accessLevel = user.accessLevel;
+      shulID = user.shulId;
+      loggedIn = true;
+      console.log('logged in. access: ' + accessLevel + ' shulID: ' + shulID);
+
+      if (accessLevel <= 1) {
+        if (shulID) {
+          displayShulData(shulID);
         }
         else {
-          if (item.schemaType === 'user') {
-            accessLevel = item.accessLevel;
-            shulID = item.shulId;
-            loggedIn = true;
-            console.log('logged in. access: ' + accessLevel + ' shulID: ' + shulID);
+          let route = '/shul-all-public';
+          $.getJSON(route, function( data ) {
+              renderShulList(data);
+          });
+        }
+      };
 
-            if (accessLevel <= 1) {
-              if (shulID) {
-                displayShulData(shulID);
-              }
-              else {
-                let route = '/shul-all-public';
-                $.getJSON(route, function( data ) {
-                    renderShulList(data);
-                });
-              }
-            };
+      if (accessLevel === 3) {
+        displayShulData(shulID);
+      };
 
-            if (accessLevel === 3) {
-              displayShulData(shulID);
-            };
+      if (accessLevel >= 5) {
+        let route = '/shul-all';
+        shulID = "";
+        $.getJSON(route, function( data ) {
+            renderShulList(data);
+        });
+      };
 
-            if (accessLevel >= 5) {
-              let route = '/shul-all';
-              shulID = "";
-              $.getJSON(route, function( data ) {
-                  renderShulList(data);
-              });
-            };
-
-          };  // user object returned
-        };
-      });  // .map
+    };  // user object returned
   });  // getJSON call
-  // if (!loggedIn) { display an error messagge }
 }
 
 
@@ -74,16 +122,64 @@ function watchRegisterSubmit() {
 
   $('#js-register').click(event => {
     event.preventDefault();
-    let email = $( "input[name='email']" ).val();
-    let pw =  $( "input[name='pw']" ).val();
-    let shulName = $( "input[name='shul-name']" ).val();
-    let shulCalled = $( "input[name='shul-called']" ).val();
+    $('#js-login-container').height("73vh");
 
-    if (email && pw && shulName && shulCalled)
-      registerNewGabbaiAndShul(email, pw, shulName, shulCalled);
-    else { //  error message required fields missing
+    // close any validation errors and start over from the top...
+    if ( ! $('#js-email-error').hasClass("hide") )
+      $('#js-email-error').addClass("hide");
+    if ( ! $('#js-pw-error').hasClass("hide") )
+      $('#js-pw-error').addClass("hide");
+    if ( ! $('#js-newshul-error').hasClass("hide") )
+      $('#js-newshul-error').addClass("hide");
+
+    // validate email format
+    let email = $( "input[name='email']" ).val();
+    if ( ! validateEmail(email) ) {
+      $('#js-email-error').removeClass("hide");
+      $('#js-login-container').height("80vh");
+      watchCloseError();
+      return;
     };
+
+    // validate pw format
+    let pw =  $( "input[name='pw']" ).val();
+    if (pw && pw.length > 5) { }
+    else {
+      $('#js-pw-error').removeClass("hide");
+      $('#js-login-container').height("80vh");
+      watchCloseError();
+      return;
+    };
+
+    // validate (required) Shul fields
+    let shulName =  $( "input[name='shulname']" ).val();
+    let shulCalled =  $( "input[name='shulcalled']" ).val();
+    if (shulName.length > 2 && shulCalled)
+      registerNewGabbaiAndShul(email, pw, shulName, shulCalled);
+    else {
+      $('#js-newshul-error').removeClass("hide");
+      $('#js-login-container').height("80vh");
+      watchCloseError();
+      return;
+    };
+
   });
+  // $('#js-register').click(event => {
+  //   event.preventDefault();
+  //   if ( ! $('#js-email-error').hasClass("hide") )
+  //     $('#js-email-error').addClass("hide");
+  //   if ( ! $('#js-pw-error').hasClass("hide") )
+  //     $('#js-pw-error').addClass("hide");
+  //   let email = $( "input[name='email']" ).val();
+  //   let pw =  $( "input[name='pw']" ).val();
+  //   let shulName = $( "input[name='shul-name']" ).val();
+  //   let shulCalled = $( "input[name='shul-called']" ).val();
+  //
+  //   if (email && pw && shulName && shulCalled)
+  //     registerNewGabbaiAndShul(email, pw, shulName, shulCalled);
+  //   else { //  alert to missing fields
+  //   };
+  // });
 }
 
 
@@ -116,6 +212,15 @@ function watchNewUserClick() {
   //  expand login area to include shul information
   $('#js-new-shul').click(event => {
     event.preventDefault();
+    
+    // close any validation errors and start over from the top...
+    if ( ! $('#js-email-error').hasClass("hide") )
+      $('#js-email-error').addClass("hide");
+    if ( ! $('#js-pw-error').hasClass("hide") )
+      $('#js-pw-error').addClass("hide");
+    if ( ! $('#js-newshul-error').hasClass("hide") )
+      $('#js-newshul-error').addClass("hide");
+
     $( "input[name='email']" ).attr('placeholder', "Gabbai's email");
     $('#js-login-container').height("73vh");
     $('.login').toggleClass( "hide" );
@@ -889,11 +994,11 @@ function renderServicesData(services) {
           <div class="js-result-label">Shacharis Aliyos
             <div class="js-result-content expand">
              <p class="result-sub-label">Kohen: &nbsp</p>${kohen} &nbsp &nbsp
-             <p class="result-sub-label">Levi: &nbsp</p>${levi} &nbsp &nbsp
-             <p class="result-sub-label">Shlishi: &nbsp</p>${shlishi}    <br>
-             <p class="result-sub-label">Revii: &nbsp</p>${revii} &nbsp &nbsp
+             <p class="result-sub-label">Levi: &nbsp</p>${levi}       <br>
+             <p class="result-sub-label">Shlishi: &nbsp</p>${shlishi} &nbsp &nbsp
+             <p class="result-sub-label">Revii: &nbsp</p>${revii}     <br>
              <p class="result-sub-label">Chamishi: &nbsp</p>${chamishi} &nbsp &nbsp
-             <p class="result-sub-label">Shishi: &nbsp</p>${shishi}     <br>
+             <p class="result-sub-label">Shishi: &nbsp</p>${shishi}   <br>
              <p class="result-sub-label">Shevii: &nbsp</p>${shevii} &nbsp &nbsp
              <p class="result-sub-label">Maftir: &nbsp</p>${maftir}
             </div>
@@ -921,7 +1026,7 @@ function renderServicesData(services) {
   if (services.kiddush) {
     servicesLine = `
         <div class="js-result-field">
-          <div class="js-result-label">Mincha Aliyos
+          <div class="js-result-label">Kiddush
             <div class="js-result-content expand">
              <p class="result-sub-label">Kiddush?: &nbsp</p>${services.kiddush.made} &nbsp &nbsp
              <p class="result-sub-label">Sponsor: &nbsp</p>${services.kiddush.sponsor} <br>
@@ -993,6 +1098,11 @@ function hideLoginRevealResults() {
   };
 }
 
+function validateEmail(mail) {
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+  { return (true) };
+return (false);
+}
 
 $(watchLoginSubmit);
 $(watchNewUserClick);
