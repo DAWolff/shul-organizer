@@ -67,7 +67,7 @@ app.get('/user/:email/pw/:pswd', (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      res.status(222).json({error: {type: "user", msg: "User is not registered"} });
+      res.status(401).json({error: {type: "user", msg: "User is not registered"} });
     });
 });
 

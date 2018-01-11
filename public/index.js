@@ -114,7 +114,13 @@ function getLoginCredentials(email, pw) {
       };
 
     };  // user object returned
-  });  // getJSON call
+  })
+  .fail(function(err) {
+    // responseJSON   status 
+
+    console.log(err);
+  }
+  );  // getJSON call
 }
 
 
@@ -212,7 +218,7 @@ function watchNewUserClick() {
   //  expand login area to include shul information
   $('#js-new-shul').click(event => {
     event.preventDefault();
-    
+
     // close any validation errors and start over from the top...
     if ( ! $('#js-email-error').hasClass("hide") )
       $('#js-email-error').addClass("hide");

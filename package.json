@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "debug": "node inspect server.js",
-    "test": "mocha"
+    "test": "mocha --exit"
   },
   "author": "",
   "license": "ISC",
