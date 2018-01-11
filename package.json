@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "debug": "node inspect server.js",
-    "test": "mocha"
+    "test": "mocha --exit"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.16.2"
   },
   "devDependencies": {

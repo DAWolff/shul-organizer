@@ -58,24 +58,16 @@ app.get('/user/:email/pw/:pswd', (req, res) => {
   User
     .findOne({email: req.params.email})
     .then(function(user) {
-      if (typeof(user) == 'undefined' || user == null) {
-          res.status(401).json({error: `Invalid email: ${req.parmams.email}`});
-      };
       if (user.pw === req.params.pswd) {
-          Shul
-            .findOne({id: user.shulId})
-            .then((shulObj)=>{
-              var data = [shulObj, user];
-              res.status(201).json(data);
-            })
+        res.status(201).json(user);
       }
       else {
-          res.status(400).json({error: `Password not valid for User: ${req.parmams.email}`});
+        res.status(206).json({error: {type: "password", msg: "Password not valid for UserID"} });
       };
     })
     .catch(err => {
       console.error(err);
-      res.status(500).json({error: 'something went terribly wrong with the login!'});
+      res.status(401).json({error: {type: "user", msg: "User is not registered"} });
     });
 });
 
@@ -481,7 +473,8 @@ app.delete('/services/:id', (req, res) => {
 app.use(express.static('public'));
 
 app.use('*', function(req, res) {
-  res.status(404).json({message: 'Not Found'});
+  let msg = `{ error: "Path not found: \`${req.path}\`" }`;
+  res.status(404).json(msg);
 });
 
 let server;
