@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 // ---------------------------------------------
 // user Schema
@@ -14,9 +15,22 @@ const userSchema = mongoose.Schema({
 
 });
 
+//  original passwords were not encrypted.
+//  remove the straight compare when code goes into production
+userSchema.methods.validatePassword = function(password) {
+  if ( bcrypt.compare(password, this.pw) )
+    return true;
+  else {
+    if ( password === this.pw )
+      return true;
+  }
+  return false;
+}
+
 userSchema.methods.apiRepr = function() {
   return {
     id: this._id,
+    schemaType: this.schemaType,
     email: this.email,
     shulId: this.shulId,
     accessLevel: this.accessLevel,

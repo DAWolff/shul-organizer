@@ -6,7 +6,6 @@ body {
   background-color: #B1B1B1;
   background-image: url(images/dark-wood.jpg);
   background-repeat: repeat;
-  /* background-size: cover; */
   min-height: 100vh;
   color: white;
   font-family: 'Roboto';
@@ -111,6 +110,7 @@ form input[type=text],
 form input[type=password],
 form input[type=submit] {
   font-family: 'Roboto';
+  font-weight: bold;
 }
 
 form input[type=text],
@@ -121,8 +121,12 @@ form input[type=password] {
   padding-left: 15px;
   background: #fff;
   border: none;
-  color: #353535;
+  color: #1c2833;
   outline: none;
+}
+
+input::placeholder {
+  color: #7D5979;
 }
 
 #js-register,

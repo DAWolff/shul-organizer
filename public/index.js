@@ -11,7 +11,7 @@ function watchLoginSubmit() {
   $('#js-login').click(event => {
     event.preventDefault();
     // validate email format
-    let email = $( "input[name='email']" ).val();
+    let email = $( "input[name='email']" ).val().trim();
     if (validateEmail(email)) {
       if ( ! $('#js-email-error').hasClass("hide") )
         $('#js-email-error').addClass("hide");
@@ -23,7 +23,7 @@ function watchLoginSubmit() {
       return;
     };
     // validate pw format
-    let pw =  $( "input[name='pw']" ).val();
+    let pw =  $( "input[name='pw']" ).val().trim();
     if (pw && pw.length > 5)
       getLoginCredentials(email, pw);
     else {
@@ -116,7 +116,7 @@ function getLoginCredentials(email, pw) {
     };  // user object returned
   })
   .fail(function(err) {
-    // responseJSON   status 
+    // responseJSON   status
 
     console.log(err);
   }
@@ -129,6 +129,8 @@ function watchRegisterSubmit() {
   $('#js-register').click(event => {
     event.preventDefault();
     $('#js-login-container').height("73vh");
+    var email = "";
+    var pw = "";
 
     // close any validation errors and start over from the top...
     if ( ! $('#js-email-error').hasClass("hide") )
@@ -139,8 +141,9 @@ function watchRegisterSubmit() {
       $('#js-newshul-error').addClass("hide");
 
     // validate email format
-    let email = $( "input[name='email']" ).val();
+    email = $( "input[name='email']" ).val().trim();
     if ( ! validateEmail(email) ) {
+      $('#js-email-error-txt').text("User ID must be valid email format");
       $('#js-email-error').removeClass("hide");
       $('#js-login-container').height("80vh");
       watchCloseError();
@@ -148,9 +151,10 @@ function watchRegisterSubmit() {
     };
 
     // validate pw format
-    let pw =  $( "input[name='pw']" ).val();
+    pw =  $( "input[name='pw']" ).val().trim();
     if (pw && pw.length > 5) { }
     else {
+      $('#js-pw-error-txt').text("Password is invalid");
       $('#js-pw-error').removeClass("hide");
       $('#js-login-container').height("80vh");
       watchCloseError();
@@ -158,10 +162,9 @@ function watchRegisterSubmit() {
     };
 
     // validate (required) Shul fields
-    let shulName =  $( "input[name='shulname']" ).val();
-    let shulCalled =  $( "input[name='shulcalled']" ).val();
-    if (shulName.length > 2 && shulCalled)
-      registerNewGabbaiAndShul(email, pw, shulName, shulCalled);
+    let shulName =  $( "input[name='shulname']" ).val().trim();
+    let shulCalled =  $( "input[name='shulcalled']" ).val().trim();
+    if (shulName.length > 2 && shulCalled) { }
     else {
       $('#js-newshul-error').removeClass("hide");
       $('#js-login-container').height("80vh");
@@ -169,46 +172,59 @@ function watchRegisterSubmit() {
       return;
     };
 
+    // verify user does not already exist
+    let route = '/user/' + email;
+    $.getJSON(route, function( response ) {
+      if (response.message === "User is not registered") {
+        registerNewGabbaiAndShul(email, pw, shulName, shulCalled);
+      }
+      else {
+        if (response.error) {
+          if (response.error.type === 'user') {
+            $('#js-email-error-txt').text(`${response.error.msg}`);
+            $('#js-email-error').removeClass("hide");
+            $('#js-login-container').height("80vh");
+            watchCloseError();
+            return;
+          };
+        };
+      };
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log('getJSON find User failed! ' + textStatus);
+      $('#js-email-error-txt').text("getJSON find User failed!");
+      $('#js-email-error').removeClass("hide");
+      $('#js-login-container').height("80vh");
+      watchCloseError();
+      return;
+    });
   });
-  // $('#js-register').click(event => {
-  //   event.preventDefault();
-  //   if ( ! $('#js-email-error').hasClass("hide") )
-  //     $('#js-email-error').addClass("hide");
-  //   if ( ! $('#js-pw-error').hasClass("hide") )
-  //     $('#js-pw-error').addClass("hide");
-  //   let email = $( "input[name='email']" ).val();
-  //   let pw =  $( "input[name='pw']" ).val();
-  //   let shulName = $( "input[name='shul-name']" ).val();
-  //   let shulCalled = $( "input[name='shul-called']" ).val();
-  //
-  //   if (email && pw && shulName && shulCalled)
-  //     registerNewGabbaiAndShul(email, pw, shulName, shulCalled);
-  //   else { //  alert to missing fields
-  //   };
-  // });
 }
 
 
 function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
 
-  let route = '/newUser/' + email + '/pw/' + pw + '/shulName/' + shulName + '/shulCalled/' + shulCalled;
-  $.post(route, function( data ) {
-      // console.log(data);
-      data.map((item, index) => {
-        if (typeof(item) == 'undefined' || item == null) {
-          // modal - invalid login
-          console.log('invalid register-new-shul');
-        }
-        else {
-          if (item.schemaType === 'user') {
-            accessLevel = item.accessLevel;
-            shulID = item.shulId;
-            loggedIn = true;
-            console.log('registered! access: ' + accessLevel + ' shulID: ' + shulID);
-            // if this is a gabbai, display shul update screen.....
-          };
-        };
-      });
+  let route = '/newUserShul';
+  let data = { "email": email,
+               "pw": pw,
+               "name": shulName,
+               "called": shulCalled };
+
+
+  $.post(route, data, function(data,status,xhr) {
+    console.log(data);
+    console.log(status);
+    console.log(xhr);
+    // function(data,status,xhr)  [do something if success]
+      // data - contains the resulting data from the request
+      // status - contains the status of the request
+      //     ("success", "notmodified", "error", "timeout", or "parsererror")
+      // xhr - contains the XMLHttpRequest object
+  }, 'json')
+  .fail(function(err) {
+    // responseJSON   status
+
+    console.log(err);
   });
 }
 
@@ -1109,6 +1125,46 @@ function validateEmail(mail) {
   { return (true) };
 return (false);
 }
+
+
+function storageAvailable(type) {
+    try {
+        var storage = window[type],
+            x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage.length !== 0;
+    }
+}
+
+//
+// if (storageAvailable('sessionStorage')) {
+//   // Yippee! We can use sessionStorage awesomeness
+// 	sessionStorage.setItem('myCat', 'Tom');
+//   // The syntax for reading the sessionStorage item is as follows:
+//   var cat = sessionStorage.getItem("myCat");
+//   console.log(cat);
+//   // The syntax for removing the sessionStorage item is as follows:
+//   sessionStorage.removeItem("myCat");
+// }
+// else {
+//   // Too bad, no sessionStorage for us
+// }
+
 
 $(watchLoginSubmit);
 $(watchNewUserClick);

@@ -3,8 +3,7 @@
 const express = require('express');
 const fs = require('fs');
 const app = express();
-// app.use(express.static('public'))
-
+const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
@@ -40,6 +39,10 @@ function initialize() {
   return true;
 }
 
+function hashPassword (password) {
+  return bcrypt.hashSync(password, 10);
+};
+
 app.get("/", (req, res) => {
   initialize();
   res.status(200).sendFile(__dirname + '/public/index.html');
@@ -53,12 +56,38 @@ app.get("/", (req, res) => {
 //   GET
 // --------------
 
+// check if user already exists
+app.get('/user/:email', (req, res) => {
+  User
+  .find({email: req.params.email})
+  .count()
+  .then(count => {
+            if (count > 0) {
+                // There is an existing user with the same email
+                res.status(207).json({error: {type: "user", msg: "Username already taken"} });
+            }
+            else
+              // If there is no existing user, return 200
+              res.status(200).json({message: "User is not registered"});
+  })
+  .catch(err => {
+    // Forward validation errors on to the client, otherwise give a 500
+    // error because something unexpected has happened
+    // if (err.reason === 'ValidationError') {
+    //     return res.status(err.code).json(err);
+    // }
+    res.status(500).json({code: 500, message: 'Internal server error'});
+  });
+});
+
+
 // localhost:8080/user/gabbai.frankelshul@gmail.com/pw/pooper-scooper
 app.get('/user/:email/pw/:pswd', (req, res) => {
   User
     .findOne({email: req.params.email})
     .then(function(user) {
-      if (user.pw === req.params.pswd) {
+      // if (user.pw === req.params.pswd) {
+      if ( user.validatePassword(req.params.pswd) ) {
         res.status(201).json(user);
       }
       else {
@@ -67,7 +96,7 @@ app.get('/user/:email/pw/:pswd', (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      res.status(401).json({error: {type: "user", msg: "User is not registered"} });
+      res.status(208).json({error: {type: "user", msg: "User is not registered"} });
     });
 });
 
@@ -87,32 +116,48 @@ app.get('/user-all', (req, res) => {
 //   POST
 // --------------
 
-app.post ('/newUser/:newEmail/pw/:pswd/shulName/:shulName/shulCalled/:shulCalled', (req, res) => {
-  Shul
-    .create({
-      adminEmail: req.params.newEmail,
-      name: req.params.shulName,
-      called: req.params.shulCalled
-    })
-    .then(newShul => {
-      console.log("ZZZZ" + newShul.id + " =ID");
-      User
-        .create({
-          email: req.params.newEmail,
-          pw: req.params.pswd,
-          shulId: newShul.id,
-          accessLevel: 3
-        })
-        .then((newUser)=>{
-          let data = [newShul, newUser];
-          res.status(201).json(data);
-        })
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).json({error: 'Internal error with Create_New_UserShul'});
-    });
+app.post ('/newUserShul', (req, res) => {
+
+    const requiredFields = ['email', 'pw', 'name', 'called'];
+    const missingField = requiredFields.find(field => !(field in req.body));
+
+    if (missingField) {
+        return res.status(422).json({
+            code: 422,
+            reason: 'ValidationError',
+            message: 'Missing field',
+            location: missingField
+        });
+    };
+
+    let hashPW = hashPassword(req.body.pw);
+    console.log("hashed:" + hashPW);
+
+    Shul
+      .create({
+        adminEmail: req.body.email,
+        name: req.body.name,
+        called: req.body.called
+      })
+      .then(newShul => {
+        User
+          .create({
+            email: req.body.email,
+            pw: hashPW,
+            shulId: newShul.id,
+            accessLevel: 3
+          })
+          .then((newUser)=>{
+            let data = [newShul, newUser];
+            res.status(201).json(data);
+          })
+      })
+      .catch(err => {
+          console.error(err);
+          res.status(500).json({error: 'Internal error with Create_New_UserShul'});
+      });
 });
+
 
 // --------------
 //   PUT
