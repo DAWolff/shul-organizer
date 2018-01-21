@@ -1,144 +1,40 @@
 'use strict'
-// this is mock data, but when we create our API
-// we'll have it return data that looks like this
-var MOCK_SHUL_DATA = {
-	"shulData": [
-        {
-            "id": "1111111",
-            "adminEmail": "tzvi.dinnerman@gmail.com",
-            "name": "Congregation B'nai Solomon Zalman",
-            "called": "Frankel Shul",
-						"public": "true",
-            "address": {
-              "street": "1699 President St.",
-              "city": "Brooklyn",
-              "state": "NY",
-              "zip": "11213"
-            	},
-						"rabbi": "Moshe Homestein",
-						"asstRabbi": "Levi Stone",
-						"chazan": "Abe Sherman",
-						"board": [
-							{"title": "President",
-							 "person": "Jack Rosenstein"
-							},
-							{"title": "Vice President",
-							 "person": "Hershel Neuman"
-						 	},
-							{"title": "Treasurer",
-							 "person": "Mordy Meyers"
-						 	},
-							{"title": "Gabbai",
-							 "person": "Tzvi Dinnerman"
-							}
-						],
-            "shabbos": {
-              "minchaErevShabbos": "lichtzen",
-              "kabolasShabbos": "50 min. after licht bentchn",
-              "shacharis": "10:00 am",
-              "mincha": "10 minutes before licht bentchn",
-              "maariv": "1 hr. after licht bentchn"
-            },
-            "weekday": {
-              "shacharis1": "6:30 am",
-              "shacharis2": "7:30 am",
-              "shacharis3": "",
-              "mincha": "10 minutes before prev licht bentchn",
-              "maariv1": "55 minutes after mincha",
-              "maariv2": "9:00 pm"
-            },
-            "sundayLegalHoliday": {
-              "shacharis1": "7:30 am",
-              "shacharis2": "8:30 am",
-	            "shacharis3": ""
-            },
-            "events": [
-                {
-                "label": "Shiur Moshiach and Geulah",
-                "date": "Sunday evenings 8:30 pm",
-                "desc": "by R. Yehudah Zirkind"
-                },
-                {
-                "label": "Avos U'Banim",
-                "date": "one hour after Shabbos ends",
-                "desc": "Fathers and Sons learning program"
-                }
-            ],
-            "notes": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-        }
-    ]
+
+var storage_data = {
+  "user_email": "",
+  "access_level": "0",
+  "logged_in": false,
+  "user_id": "",
+  "shul_id": "",
+  "shul_name": "",
+  "member_id": "",
+  "services_id": "",
 };
 
-// this function's name and argument can stay the
-// same after we have a live API, but its internal
-// implementation will change. Instead of using a
-// timeout function that returns mock data, it will
-// use jQuery's AJAX functionality to make a call
-// to the server and then run the callbackFn
-function getShulData(callbackFn) {
-    // we use a `setTimeout` to make this asynchronous
-    // as it would be with a real AJAX call.
-	setTimeout(function(){ callbackFn(MOCK_SHUL_DATA)}, 1);
+function getLocalStorage() {
+
+  if (storageAvailable('sessionStorage')) {
+    let data = sessionStorage.getItem("local_storage");
+    console.log(data);
+    if (data) {
+      storage_data = JSON.parse(data);
+			getShulData(storage_data.shul_id);
+    } else {
+        alert("Warning--Local storage is empty!");
+    };
+  } else {
+    alert("No local storage available!  Many functions will not work....");
+  };
 }
 
-// this function stays the same when we connect
-// to real API later
-function displayShulData(data) {
 
-	var i;
-	for (i in data.shulData) {
-		 console.log(data.shulData[i].id);
-		 document.shulForm.adminEmail.value = data.shulData[i].adminEmail;
-		 document.shulForm.name.value = data.shulData[i].name;
-		 document.shulForm.called.value = data.shulData[i].called;
-		 document.shulForm.street.value = data.shulData[i].address.street;
-		 document.shulForm.city.value = data.shulData[i].address.city;
-		 document.shulForm.state.value = data.shulData[i].address.state;
-		 document.shulForm.zip.value = data.shulData[i].address.zip;
-		 document.shulForm.rabbi.value = data.shulData[i].rabbi;
-		 document.shulForm.asstRabbi.value = data.shulData[i].asstRabbi;
-		 document.shulForm.chazan.value = data.shulData[i].chazan;
+function setLocalStorage() {
 
-		 for (j in data.shulData.board) {
-			 let titl = data.shulData[i].board[j].title;
-			 let persn = data.shulData[i].board[j].person;
-			 let nam = 'official' + j;
-			 $('#officials').append( `
-				 <label for="${nam}">"${titl}":</label><br>
-				 <input type="text" id="${nam}" name="${nam}" value="${persn}">
-				 <br>
-				`);
-		 }
-
-		 document.shulForm.minchaErevShabbos.value = data.shulData[i].shabbos.minchaErevShabbos;
-		 document.shulForm.kabolasShabbos.value = data.shulData[i].shabbos.kabolasShabbos;
-		 document.shulForm.shacharis.value = data.shulData[i].shabbos.shacharis;
-		 document.shulForm.mincha.value = data.shulData[i].shabbos.mincha;
-		 document.shulForm.maariv.value = data.shulData[i].shabbos.maariv;
-
-		 document.shulForm.shacharis1.value = data.shulData[i].weekday.shacharis1;
-		 document.shulForm.shacharis2.value = data.shulData[i].weekday.shacharis2;
-		 document.shulForm.shacharis3.value = data.shulData[i].weekday.shacharis3;
-		 document.shulForm.minchaW.value = data.shulData[i].weekday.mincha;
-		 document.shulForm.maariv1.value = data.shulData[i].weekday.maariv1;
-		 document.shulForm.maariv2.value = data.shulData[i].weekday.maariv2;
-		 document.shulForm.shacharisS1.value = data.shulData[i].sundayLegalHoliday.shacharis1;
-		 document.shulForm.shacharisS2.value = data.shulData[i].sundayLegalHoliday.shacharis2;
-		 document.shulForm.shacharisS3.value = data.shulData[i].sundayLegalHoliday.shacharis3;
-
-		//  for (k in data.shulData.events) {
-		for (var k = 0; k < data.shulData[i].events.length; k++) {
-			 let event = data.shulData[i].events[k].label + '\r\n' +
-			 						 data.shulData[i].events[k].desc + '\r\n' +
-			  				 	 data.shulData[i].events[k].date;
-
-			 $('#events').append( `
-				 <textarea wrap="hard" name="events" rows="3">${event}</textarea><br>
-			 `);
-		 };
-
-	 	 document.shulForm.notes.value = data.shulData[i].notes;
-	}
+  if (storageAvailable('sessionStorage')) {
+    sessionStorage.setItem("local_storage", JSON.stringify(storage_data));
+  } else {
+    alert("No local storage available!  Many functions will not work....");
+  };
 }
 
 
@@ -167,27 +63,259 @@ function storageAvailable(type) {
 }
 
 
-if (storageAvailable('sessionStorage')) {
-  // Yippee! We can use sessionStorage awesomeness
-	sessionStorage.setItem('myCat', 'Tom');
-// The syntax for reading the sessionStorage item is as follows:
-var cat = sessionStorage.getItem("myCat");
+function displayShulData(data) {
 
-// The syntax for removing the sessionStorage item is as follows:
-sessionStorage.removeItem("myCat");
+		 console.log("shul ID: " + data._id);
+		 document.shulForm.adminEmail.value = data.adminEmail;
+		 document.shulForm.name.value = data.name;
+		 document.shulForm.called.value = data.called;
+		 document.shulForm.street.value = data.address.street;
+		 document.shulForm.city.value = data.address.city;
+		 document.shulForm.state.value = data.address.state;
+		 document.shulForm.zip.value = data.address.zip;
+		 document.shulForm.rabbi.value = data.rabbi;
+		 document.shulForm.asstRabbi.value = data.asstRabbi;
+		 document.shulForm.chazan.value = data.chazan;
+
+		 for (var j in data.board) {
+			 let titl = data.board[j].title;
+			 let persn = data.board[j].person;
+			 let nam = 'official' + j;
+			 $('#officials').append( `
+				 <label for="${nam}">"${titl}":</label><br>
+				 <input type="text" id="${nam}" name="${nam}" value="${persn}">
+				 <br>
+				`);
+		 }
+
+		 document.shulForm.minchaErevShabbos.value = data.shabbos.minchaErevShabbos;
+		 document.shulForm.kabolasShabbos.value = data.shabbos.kabolasShabbos;
+		 document.shulForm.shacharis.value = data.shabbos.shacharis;
+		 document.shulForm.mincha.value = data.shabbos.mincha;
+		 document.shulForm.maariv.value = data.shabbos.maariv;
+
+		 document.shulForm.shacharis1.value = data.weekday.shacharis1;
+		 document.shulForm.shacharis2.value = data.weekday.shacharis2;
+		 document.shulForm.shacharis3.value = data.weekday.shacharis3;
+		 document.shulForm.minchaW.value = data.weekday.mincha;
+		 document.shulForm.maariv1.value = data.weekday.maariv1;
+		 document.shulForm.maariv2.value = data.weekday.maariv2;
+		 document.shulForm.shacharisS1.value = data.sundayLegalHoliday.shacharis1;
+		 document.shulForm.shacharisS2.value = data.sundayLegalHoliday.shacharis2;
+		 document.shulForm.shacharisS3.value = data.sundayLegalHoliday.shacharis3;
+
+		//  for (k in data.events) {
+		for (var k = 0; k < data.events.length; k++) {
+			 let event = data.events[k].label + '\r\n' +
+			 						 data.events[k].desc + '\r\n' +
+			  				 	 data.events[k].date;
+
+			 $('#events').append( `
+				 <textarea wrap="hard" name="events" rows="3">${event}</textarea><br>
+			 `);
+		 };
+
+	 	 document.shulForm.notes.value = data.notes;
 }
-else {
-  // Too bad, no sessionStorage for us
+
+
+function getShulData(shulIdIn) {
+
+  console.log('shul ID: ' + shulIdIn);
+  let route = '/shul/' + shulIdIn;
+  $.getJSON(route, function( data ) {
+      if (data == 'undefined' || data == null) {
+          // modal - invalid shul ID
+          console.log('could not find shulID:' + shulIdIn);
+          return;
+      };
+      if (data.schemaType === 'shul') {
+          displayShulData(data);
+      };
+  });
 }
 
 
-// this function can stay the same even when we
-// are connecting to real API
-function getAndDisplayShulData() {
-	getShulData(displayShulData);
+function watchNavbarClicks() {
+
+// --- access level will determine results -----
+// 0 = not logged in
+// 1 = regular member (not a shul gabbai)
+// 3 = gabbai of shul
+// 5 = site admin
+
+	return;  // need to work out logic.....
+
+	//     CLICKED SHUL ICON
+  $('#js-shul-icon').click(event => {
+    event.preventDefault();
+
+    if (storage_data.access_level <= 1) {
+      let route = '/shul-all-public';
+      $.getJSON(route, function( data ) {
+          renderShulList(data);
+      });
+    };
+
+    if (storage_data.access_level === 3) {
+      if (storage_data.shul_id)
+        displayShulData(storage_data.shul_id);
+    };
+
+    if (storage_data.access_level >= 5) {
+      let route = '/shul-all';
+      $.getJSON(route, function( data ) {
+          renderShulList(data);
+      });
+    };
+  });
+
+	//     CLICKED MEMBER ICON
+  $('#js-member-icon').click(event => {
+    event.preventDefault();
+    if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
+      let route = '/member-all/' + storage_data.shul_id ;
+      $.getJSON(route, function( data ) {
+          renderMemberList(data);
+      });
+    };
+  });
+
+	//     CLICKED SERVICES ICON
+  $('#js-services-icon').click(event => {
+    event.preventDefault();
+    if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
+      if (storage_data.shul_id) {
+        let route = '/services-all/' + storage_data.shul_id ;
+        $.getJSON(route, function( data ) {
+            renderServicesList(data);
+        });
+      } else {
+        console.log("ERROR: Cannot Display Services Without ShulID!");
+      };
+    };
+  });
+
 }
 
-//  on page load do this
-$(function() {
-	getAndDisplayShulData();
-})
+
+$(getLocalStorage);
+$(watchNavbarClicks);
+
+// function watchXxxxxxSubmit() {
+//
+//   $('#js-login').click(event => {
+//     event.preventDefault();
+//     // validate email format
+//   });
+// }
+//
+//
+// function getLoginCredentials(email, pw) {
+// // use this as a model for the POST/PUT
+//
+//   let route = '/user-login/';
+//   let data = { "emailIn": email, "pwIn": pw};
+//
+//   // $.getJSON(route, data, function( user ) {
+//   $.ajax({
+//     url: route,
+//     method: "POST",
+//     processData: false,
+//     data: JSON.stringify(data),
+//     dataType: "json",
+//     contentType: "application/json" })
+//     .done (function( user ) {
+//       console.log(user);
+//       if (user.error) {
+//         if (user.error.type === 'user') {
+//           $('#js-email-error-txt').text(user.error.msg);
+//           $('#js-email-error').removeClass("hide");
+//           $('#js-login-container').height("65vh");
+//           watchCloseError();
+//           return;
+//         }
+//         if (user.error.type === 'password') {
+//           $('#js-pw-error-txt').text(user.error.msg);
+//           $('#js-pw-error').removeClass("hide");
+//           $('#js-login-container').height("65vh");
+//           watchCloseError();
+//           return;
+//         }
+//         console.log("Error type: " + user.error.type + " Msg: " + user.error.msg )
+//         $('#js-email-error-txt').text("Login failed.  Unknown error- notify admin");
+//         $('#js-email-error').removeClass("hide");
+//         $('#js-login-container').height("65vh");
+//         watchCloseError();
+//         return;
+//       };
+//
+//       if (user.schemaType) {
+//         storage_data.user_email = user.email;
+//         storage_data.access_level = user.accessLevel;
+//         storage_data.logged_in = true;
+//         storage_data.user_id = user.id;
+//         storage_data.shul_id = user.shulId;
+//         // storage_data.member_id = user.email;
+//         // storage_data.services_id = user.email;
+//         // storage_data.shul_name = shul
+//
+//         if (storage_data.access_level <= 1) {
+//           if (storage_data.shul_id) {
+//             displayShulData(storage_data.shul_id);
+//           } else {
+//             let route = '/shul-all-public';
+//             $.getJSON(route, function( data ) {
+//                 renderShulList(data);
+//             });
+//           };
+//         };
+//
+//         if (storage_data.access_level === 3) {
+//           displayShulData(storage_data.shul_id);
+//         };
+//
+//         if (storage_data.access_level >= 5) {
+//           let route = '/shul-all';
+//           storage_data.shul_id = "";
+//           $.getJSON(route, function( data ) {
+//               renderShulList(data);
+//           });
+//         };
+//
+//       };  // user object returned
+//     })
+//   .fail(function(err) {
+//     // responseJSON   status
+//
+//     console.log(err);
+//   });
+// }
+//
+//
+// function formatPhone(input) {
+//         input = input.toString();
+//         // Strip all characters from the input except digits
+//         input = input.replace(/\D/g,'');
+//         // Trim the remaining input to ten characters, to preserve phone number format
+//         input = input.substring(0,10);
+//         // Based upon the length of the string, we add formatting as necessary
+//         var size = input.length;
+//         if(size == 0){
+//                 input = input;
+//         }else if(size < 4){
+//                 input = '('+input;
+//         }else if(size < 7){
+//                 input = '('+input.substring(0,3)+') '+input.substring(3,6);
+//         }else{
+//                 input = '('+input.substring(0,3)+') '+input.substring(3,6)+'-'+input.substring(6,10);
+//         }
+//         return input;
+// }
+//
+//
+// function validateEmail(mail) {
+//  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+//   { return (true) };
+// return (false);
+// }

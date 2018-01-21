@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Shul Info">
+    <title>Shul</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:500|Crimson+Text:700|Montserrat" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="shul-steps.css" rel="stylesheet" type="text/css" />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin=" anonymous"></script>
+  </head>
+
+  <body>
+    <div  id="js-navbar" class="row">
+      <div class="col-12">
+        <div class="box">
+          <ul>
+            <li><img id="js-shul-icon" class="icons" src="images/grey-shul2.png" alt="Shul Icon"></li>
+            <li><img id="js-member-icon" class="icons" src="images/grey-person.png" alt="Member Icon"></li>
+            <li><img id="js-services-icon" class="icons" src="images/grey-siddur.png" alt="Services Icon"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- multistep form -->
+    <form name="shulform" id="msform">
+      <!-- progressbar -->
+      <ul id="progressbar">
+        <li class="active">General Setup</li>
+        <li>Officials</li>
+        <li>Shabbos Davening</li>
+        <li>Weekday Davening</li>
+        <li>Events and Notes</li>
+      </ul>
+      <!-- fieldsets -->
+      <fieldset>
+        <h2 class="fs-title">Shul</h2>
+        <h3 class="fs-subtitle">General Information</h3>
+        <input type="text" name="admin" placeholder="Admin Email" />
+        <input type="text" name="name" placeholder="Official Shul Name" />
+        <input type="text" name="called" placeholder="Shul Nickname" />
+        <input type="text" name="street" placeholder="Address - Street & Number" />
+        <input type="text" name="city" placeholder="City" />
+        <div class="onerow">
+          <input class="label" type="text" name="state" placeholder="State"/>
+          <input class="content" type="text" name="zip" placeholder="Zip" />
+        </div>
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+
+      <fieldset>
+        <h2 class="fs-title">Shul</h2>
+        <h3 class="fs-subtitle">Officials</h3>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Rabbi"/>
+          <input class="content" type="text" name="rabbi" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Asst. Rabbi"/>
+          <input class="content" type="text" name="asstrabbi" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Chazan"/>
+          <input class="content" type="text" name="chazan" />
+        </div>
+        <span  id="officials"></span>
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+
+      <fieldset>
+        <h2 class="fs-title">Shul</h2>
+        <h3 class="fs-subtitle">Shabbos Davening Schedule</h3>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Mincha Erev Shabbos"/>
+          <input class="content" type="text" name="minchafri" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Kabolas Shabbos"/>
+          <input class="content" type="text" name="kabolo" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Shacharis"/>
+          <input class="content" type="text" name="shshacharis" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Mincha"/>
+          <input class="content" type="text" name="shmincha" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Maariv Motzoei Shabbos"/>
+          <input class="content" type="text" name="shmaariv" />
+        </div>
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+
+      <fieldset>
+        <h2 class="fs-title">Shul</h2>
+        <h3 class="fs-subtitle">Weekday Davening Schedule</h3>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="1st Shachris (Mon-Fri)"/>
+          <input class="content" type="text" name="wkshach1" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="2nd Shachris (Mon-Fri)"/>
+          <input class="content" type="text" name="wkshach2" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="3rd Shachris (Mon-Fri)"/>
+          <input class="content" type="text" name="wkshach3" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Weekday Mincha (Sun-Fri)"/>
+          <input class="content" type="text" name="wkmincha" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="1st Maariv"/>
+          <input class="content" type="text" name="wkmaariv1" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="2nd Maariv"/>
+          <input class="content" type="text" name="wkmaariv2" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="1st Shachris (Sunday)"/>
+          <input class="content" type="text" name="sushach1" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="2nd Shachris (Sunday)"/>
+          <input class="content" type="text" name="sushach2" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="3rd Shachris (Sunday)"/>
+          <input class="content" type="text" name="sushach3" />
+        </div>
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+
+      <fieldset>
+        <h2 class="fs-title">Shul</h2>
+        <h3 class="fs-subtitle">Events and Notes</h3>
+        <span  id="events"></span>
+        <textarea id="notes" placeholder="Notes"></textarea>
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="submit" name="submit" class="submit action-button" value="Submit" />
+      </fieldset>
+
+    </form>
+
+    <script src="shul-steps.js" type='text/javascript'></script>
+  </body>
+</html>

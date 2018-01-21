@@ -5,6 +5,7 @@ const fs = require('fs');
 const app = express();
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const morgan = require('morgan');
@@ -63,7 +64,6 @@ app.get('/user/:email', (req, res) => {
   .count()
   .then(count => {
             if (count > 0) {
-                // There is an existing user with the same email
                 res.status(207).json({error: {type: "user", msg: "Username already taken"} });
             }
             else
@@ -71,33 +71,8 @@ app.get('/user/:email', (req, res) => {
               res.status(200).json({message: "User is not registered"});
   })
   .catch(err => {
-    // Forward validation errors on to the client, otherwise give a 500
-    // error because something unexpected has happened
-    // if (err.reason === 'ValidationError') {
-    //     return res.status(err.code).json(err);
-    // }
     res.status(500).json({code: 500, message: 'Internal server error'});
   });
-});
-
-
-// localhost:8080/user/gabbai.frankelshul@gmail.com/pw/pooper-scooper
-app.get('/user/:email/pw/:pswd', (req, res) => {
-  User
-    .findOne({email: req.params.email})
-    .then(function(user) {
-      // if (user.pw === req.params.pswd) {
-      if ( user.validatePassword(req.params.pswd) ) {
-        res.status(201).json(user);
-      }
-      else {
-        res.status(206).json({error: {type: "password", msg: "Password not valid for UserID"} });
-      };
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(208).json({error: {type: "user", msg: "User is not registered"} });
-    });
 });
 
 app.get('/user-all', (req, res) => {
@@ -116,12 +91,30 @@ app.get('/user-all', (req, res) => {
 //   POST
 // --------------
 
+app.post('/user-login/', (req, res) => {
+  User
+    .findOne({email: req.body.emailIn})
+    .then(function(user) {
+      if ( user.validatePassword(req.body.pwIn) ) {
+        res.status(201).json(user.apiRepr());
+      }
+      else {
+        res.status(206).json({error: {type: "password", msg: "Password not valid for UserID"} });
+      };
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(208).json({error: {type: "user", msg: "User is not registered"} });
+    });
+});
+
 app.post ('/newUserShul', (req, res) => {
 
     const requiredFields = ['email', 'pw', 'name', 'called'];
     const missingField = requiredFields.find(field => !(field in req.body));
 
     if (missingField) {
+        console.log("missing field: " + missingField);
         return res.status(422).json({
             code: 422,
             reason: 'ValidationError',
@@ -131,7 +124,6 @@ app.post ('/newUserShul', (req, res) => {
     };
 
     let hashPW = hashPassword(req.body.pw);
-    console.log("hashed:" + hashPW);
 
     Shul
       .create({
@@ -148,7 +140,12 @@ app.post ('/newUserShul', (req, res) => {
             accessLevel: 3
           })
           .then((newUser)=>{
-            let data = [newShul, newUser];
+            let data = {"userId": newUser.id,
+                        "email": newUser.email,
+                        "accessLevel": newUser.accessLevel,
+                        "shulId": newUser.shulId,
+                        "shulName": newShul.name
+                       };
             res.status(201).json(data);
           })
       })

@@ -1,9 +1,42 @@
 'use strict'
-// window.location.href = "../shul-read.html"
-var loggedIn = false;
-var accessLevel = 0;
-var shulID = "";
-const query = "";
+
+var storage_data = {
+  "user_email": "",
+  "access_level": "0",
+  "logged_in": false,
+  "user_id": "",
+  "shul_id": "",
+  "shul_name": "",
+  "member_id": "",
+  "services_id": "",
+};
+
+
+function getLocalStorage() {
+
+  if (storageAvailable('sessionStorage')) {
+    let data = sessionStorage.getItem("local_storage");
+    console.log(data);
+    if (data) {
+      storage_data = JSON.parse(data);
+    } else {  // reset to empty strings
+      setLocalStorage();
+    };
+  } else {
+    alert("No local storage available!  Many functions will not work....");
+  };
+}
+
+
+function setLocalStorage() {
+
+  if (storageAvailable('sessionStorage')) {
+    sessionStorage.setItem("local_storage", JSON.stringify(storage_data));
+  } else {
+    alert("No local storage available!  Many functions will not work....");
+  };
+}
+
 
 
 function watchLoginSubmit() {
@@ -15,8 +48,7 @@ function watchLoginSubmit() {
     if (validateEmail(email)) {
       if ( ! $('#js-email-error').hasClass("hide") )
         $('#js-email-error').addClass("hide");
-    }
-    else {
+    } else {
       $('#js-email-error').removeClass("hide");
       $('#js-login-container').height("65vh");
       watchCloseError();
@@ -51,76 +83,85 @@ function watchCloseError() {
   });
 }
 
+
 function getLoginCredentials(email, pw) {
 
-  accessLevel = 0;
-  shulID = "";
-  loggedIn = false;
-  let route = '/user/' + email + '/pw/' + pw;
+  let route = '/user-login/';
+  let data = { "emailIn": email, "pwIn": pw};
 
-  $.getJSON(route, function( user ) {
-
-    if (user.error) {
-      if (user.error.type === 'user') {
-        $('#js-email-error-txt').text(user.error.msg);
+  // $.getJSON(route, data, function( user ) {
+  $.ajax({
+    url: route,
+    method: "POST",
+    processData: false,
+    data: JSON.stringify(data),
+    dataType: "json",
+    contentType: "application/json" })
+    .done (function( user ) {
+      console.log(user);
+      if (user.error) {
+        if (user.error.type === 'user') {
+          $('#js-email-error-txt').text(user.error.msg);
+          $('#js-email-error').removeClass("hide");
+          $('#js-login-container').height("65vh");
+          watchCloseError();
+          return;
+        }
+        if (user.error.type === 'password') {
+          $('#js-pw-error-txt').text(user.error.msg);
+          $('#js-pw-error').removeClass("hide");
+          $('#js-login-container').height("65vh");
+          watchCloseError();
+          return;
+        }
+        console.log("Error type: " + user.error.type + " Msg: " + user.error.msg )
+        $('#js-email-error-txt').text("Login failed.  Unknown error- notify admin");
         $('#js-email-error').removeClass("hide");
         $('#js-login-container').height("65vh");
         watchCloseError();
         return;
-      }
-      if (user.error.type === 'password') {
-        $('#js-pw-error-txt').text(user.error.msg);
-        $('#js-pw-error').removeClass("hide");
-        $('#js-login-container').height("65vh");
-        watchCloseError();
-        return;
-      }
-      console.log("Error type: " + user.error.type + " Msg: " + user.error.msg )
-      $('#js-email-error-txt').text("Login failed.  Unknown error- notify admin");
-      $('#js-email-error').removeClass("hide");
-      $('#js-login-container').height("65vh");
-      watchCloseError();
-      return;
-    }
+      };
 
-    if (user.schemaType) {
-      accessLevel = user.accessLevel;
-      shulID = user.shulId;
-      loggedIn = true;
-      console.log('logged in. access: ' + accessLevel + ' shulID: ' + shulID);
+      if (user.schemaType) {
+        storage_data.user_email = user.email;
+        storage_data.access_level = user.accessLevel;
+        storage_data.logged_in = true;
+        storage_data.user_id = user.id;
+        storage_data.shul_id = user.shulId;
+        // storage_data.member_id = user.email;
+        // storage_data.services_id = user.email;
+        // storage_data.shul_name = shul
 
-      if (accessLevel <= 1) {
-        if (shulID) {
-          displayShulData(shulID);
-        }
-        else {
-          let route = '/shul-all-public';
+        if (storage_data.access_level <= 1) {
+          if (storage_data.shul_id) {
+            displayShulData(storage_data.shul_id);
+          } else {
+            let route = '/shul-all-public';
+            $.getJSON(route, function( data ) {
+                renderShulList(data);
+            });
+          };
+        };
+
+        if (storage_data.access_level === 3) {
+          displayShulData(storage_data.shul_id);
+        };
+
+        if (storage_data.access_level >= 5) {
+          let route = '/shul-all';
+          storage_data.shul_id = "";
           $.getJSON(route, function( data ) {
               renderShulList(data);
           });
-        }
-      };
+        };
 
-      if (accessLevel === 3) {
-        displayShulData(shulID);
-      };
-
-      if (accessLevel >= 5) {
-        let route = '/shul-all';
-        shulID = "";
-        $.getJSON(route, function( data ) {
-            renderShulList(data);
-        });
-      };
-
-    };  // user object returned
-  })
+      };  // user object returned
+    })
   .fail(function(err) {
     // responseJSON   status
 
     console.log(err);
-  }
-  );  // getJSON call
+  });
 }
 
 
@@ -177,8 +218,7 @@ function watchRegisterSubmit() {
     $.getJSON(route, function( response ) {
       if (response.message === "User is not registered") {
         registerNewGabbaiAndShul(email, pw, shulName, shulCalled);
-      }
-      else {
+      } else {
         if (response.error) {
           if (response.error.type === 'user') {
             $('#js-email-error-txt').text(`${response.error.msg}`);
@@ -205,25 +245,28 @@ function watchRegisterSubmit() {
 function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
 
   let route = '/newUserShul';
-  let data = { "email": email,
+  let body = { "email": email,
                "pw": pw,
                "name": shulName,
                "called": shulCalled };
 
-
-  $.post(route, data, function(data,status,xhr) {
-    console.log(data);
-    console.log(status);
-    console.log(xhr);
-    // function(data,status,xhr)  [do something if success]
-      // data - contains the resulting data from the request
-      // status - contains the status of the request
-      //     ("success", "notmodified", "error", "timeout", or "parsererror")
-      // xhr - contains the XMLHttpRequest object
-  }, 'json')
+  $.post(route, body, function(data,status,xhr) {
+      console.log(data.userId + " "
+                + data.email + " "
+                + data.accessLevel + " "
+                + data.shulId + " "
+                + data.shulName )
+      storage_data.user_email = data.email;
+      storage_data.access_level = data.accessLevel;
+      storage_data.logged_in = true;
+      storage_data.user_id = data.userId;
+      storage_data.shul_id = data.shulId;
+      storage_data.shul_name = data.shulName;
+      setLocalStorage();
+      window.location.href = "shul-steps.html";
+      })
   .fail(function(err) {
     // responseJSON   status
-
     console.log(err);
   });
 }
@@ -263,31 +306,36 @@ function watchNavbarClicks() {
   $('#js-shul-icon').click(event => {
     event.preventDefault();
 
-    if (accessLevel <= 1) {
+    if (storage_data.access_level <= 1) {
       let route = '/shul-all-public';
       $.getJSON(route, function( data ) {
           renderShulList(data);
       });
     };
 
-    if (accessLevel === 3) {
-      if (shulID)
-        displayShulData(shulID);
+    if (storage_data.access_level === 3) {
+      if (storage_data.shul_id)
+        displayShulData(storage_data.shul_id);
     };
 
-    if (accessLevel >= 5) {
-      let route = '/shul-all';
-      $.getJSON(route, function( data ) {
-          renderShulList(data);
-      });
+    if (storage_data.access_level >= 5) {
+      if (storage_data.shul_id) {
+        setLocalStorage();
+        window.location.href = "shul-steps.html";
+      } else {
+        let route = '/shul-all';
+        $.getJSON(route, function( data ) {
+            renderShulList(data);
+        });
+      };
     };
   });
 
 //     CLICKED MEMBER ICON
   $('#js-member-icon').click(event => {
     event.preventDefault();
-    if (accessLevel === 3 || accessLevel >= 5) {
-      let route = '/member-all/' + shulID ;
+    if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
+      let route = '/member-all/' + storage_data.shul_id ;
       $.getJSON(route, function( data ) {
           renderMemberList(data);
       });
@@ -297,15 +345,15 @@ function watchNavbarClicks() {
 //     CLICKED SERVICES ICON
   $('#js-services-icon').click(event => {
     event.preventDefault();
-    if (accessLevel === 3 || accessLevel >= 5) {
-      if (shulID) {
-        let route = '/services-all/' + shulID ;
+    if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
+      if (storage_data.shul_id) {
+        let route = '/services-all/' + storage_data.shul_id ;
         $.getJSON(route, function( data ) {
             renderServicesList(data);
         });
-      }
-      else
+      } else {
         console.log("ERROR: Cannot Display Services Without ShulID!");
+      };
     };
   });
 
@@ -353,8 +401,8 @@ function watchShulselection() {
     $( "#js-results" ).on( "click", "input", function( event ) {
       event.preventDefault();
       let element = event.currentTarget;
-      shulID = element.dataset.itemid;
-      displayShulData(shulID);
+      storage_data.shul_id = element.dataset.itemid;
+      displayShulData(storage_data.shul_id);
     });
 }
 
@@ -1151,21 +1199,7 @@ function storageAvailable(type) {
     }
 }
 
-//
-// if (storageAvailable('sessionStorage')) {
-//   // Yippee! We can use sessionStorage awesomeness
-// 	sessionStorage.setItem('myCat', 'Tom');
-//   // The syntax for reading the sessionStorage item is as follows:
-//   var cat = sessionStorage.getItem("myCat");
-//   console.log(cat);
-//   // The syntax for removing the sessionStorage item is as follows:
-//   sessionStorage.removeItem("myCat");
-// }
-// else {
-//   // Too bad, no sessionStorage for us
-// }
-
-
+$(getLocalStorage);
 $(watchLoginSubmit);
 $(watchNewUserClick);
 $(watchRegisterSubmit);
