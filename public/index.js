@@ -1,14 +1,15 @@
 'use strict'
 
 var storage_data = {
-  "user_email": "",
-  "access_level": "0",
-  "logged_in": false,
-  "user_id": "",
-  "shul_id": "",
-  "shul_name": "",
-  "member_id": "",
-  "services_id": "",
+    "user_email": "",
+    "access_level": "0",
+    "logged_in": false,
+    "user_id": "",
+    "shul_id": "",
+    "shul_name": "",
+    "member_id": "",
+    "services_id": "",
+  	"create_or_update": ""
 };
 
 
@@ -262,6 +263,7 @@ function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
       storage_data.user_id = data.userId;
       storage_data.shul_id = data.shulId;
       storage_data.shul_name = data.shulName;
+      storage_data.create_or_update = "update";
       setLocalStorage();
       window.location.href = "shul-steps.html";
       })
@@ -320,6 +322,7 @@ function watchNavbarClicks() {
 
     if (storage_data.access_level >= 5) {
       if (storage_data.shul_id) {
+        storage_data.create_or_update = "update";
         setLocalStorage();
         window.location.href = "shul-steps.html";
       } else {
