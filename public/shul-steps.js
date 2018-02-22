@@ -1,7 +1,7 @@
 "use strict";
 
 var shul_document = {
-	schemaType: "",
+	schemaType: "shul",
 	adminEmail: "",
 	name: "",
 	called: "",
@@ -50,13 +50,14 @@ var shul_document = {
 var storage_data = {
   "user_email": "",
   "access_level": "0",
-  "logged_in": false,
+  "logged_in": true,
   "user_id": "",
   "shul_id": "",
   "shul_name": "",
   "member_id": "",
   "services_id": "",
-	"create_or_update": "update"
+	"action": "update",
+	"target": "shul"
 };
 
 var current_fs, next_fs, previous_fs; //fieldsets
@@ -206,6 +207,7 @@ function watchCloseError() {
 
 
 $("#add-event").click (function() {
+
 		event.preventDefault();
 		let count = $("#events div").length;    // events already on the Page
 		let evlabl = '#evlabl0';
@@ -333,61 +335,9 @@ function watchUpdateSubmit() {
 
 		console.log(shul_document);
 
-		// postShulDocument(shul_document);
+		updateShulDocument(storage_data.shul_id);
 
 	})
-}
-
-function getLocalStorage() {
-
-  if (storageAvailable('sessionStorage')) {
-    let data = sessionStorage.getItem("local_storage");
-    console.log("local_storage:");
-    console.log(data);
-    if (data) {
-      storage_data = JSON.parse(data);
-			getShulData(storage_data.shul_id);
-    } else {
-        alert("Warning--Local storage is empty!");
-    };
-  } else {
-    alert("No local storage available!  Many functions will not work....");
-  };
-}
-
-
-function setLocalStorage() {
-
-  if (storageAvailable('sessionStorage')) {
-    sessionStorage.setItem("local_storage", JSON.stringify(storage_data));
-  } else {
-    alert("No local storage available!  Many functions will not work....");
-  };
-}
-
-
-function storageAvailable(type) {
-    try {
-        var storage = window[type],
-            x = '__storage_test__';
-        storage.setItem(x, x);
-        storage.removeItem(x);
-        return true;
-    }
-    catch(e) {
-        return e instanceof DOMException && (
-            // everything except Firefox
-            e.code === 22 ||
-            // Firefox
-            e.code === 1014 ||
-            // test name field too, because code might not be present
-            // everything except Firefox
-            e.name === 'QuotaExceededError' ||
-            // Firefox
-            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-            // acknowledge QuotaExceededError only if there's something already stored
-            storage.length !== 0;
-    }
 }
 
 
@@ -501,7 +451,6 @@ function getShulData(shulIdIn) {
   let route = '/shul/' + shulIdIn;
   $.getJSON(route, function( data ) {
       if (data == 'undefined' || data == null) {
-          // modal - invalid shul ID
           console.log('could not find shulID:' + shulIdIn);
           return;
       };
@@ -509,8 +458,41 @@ function getShulData(shulIdIn) {
 					let merge = Object.assign(shul_document, data);
 				  shul_document = merge;
           displayShulData(shul_document);
-      };
+			} else {
+					console.log("Error with shul-id: " + shulIdIn + " - Invalid schemaType: " + data.schemaType);
+			};
   });
+}
+
+
+function updateShulDocument(shulId) {
+
+	if ( ! shulId) {
+		console.log("Error - cannot update Shul Document with no shul-id!");
+		return;
+	}
+
+	let route = '/shul/' + shulId;
+  let data = shul_document;
+
+	$.ajax({
+	   url: route,
+	   data: data,
+	   dataType: 'json',
+	   success: function(shul) {
+			  console.log("successful update for Shul-Id: " + shulId);
+ 				storage_data.logged_in = true;
+ 				storage_data.target = "shul";
+ 				storage_data.action = "display";
+				storage_data.shul_id = shulId;
+				setLocalStorage();
+				window.location.href = "index.html";
+	   },
+		 error: function() {
+			 console.log("Update failed for Shul-Id: " + shulId);
+		 },
+	   type: 'PUT'
+	});
 }
 
 
@@ -522,29 +504,49 @@ function watchNavbarClicks() {
 // 3 = gabbai of shul
 // 5 = site admin
 
-	return;  // need to work out logic.....
+	if ( (!storage_data.access_level) || storage_data.access_level <= 1) {
+		console.log("ERROR: User with 0 or 1 access level should not have UPDT access!");
+		storage_data.logged_in = false;
+		storage_data.user_id = "";
+		storage_data.shul_id = "";
+		storage_data.shul_name = "";
+		storage_data.member_id = "";
+		storage_data.services_id = "";
+		storage_data.target = "";
+		storage_data.action = "";
+		setLocalStorage();
+		window.location.href = "index.html";
+	};
 
 	//     CLICKED SHUL ICON
   $('#js-shul-icon').click(event => {
     event.preventDefault();
 
-    if (storage_data.access_level <= 1) {
-      let route = '/shul-all-public';
-      $.getJSON(route, function( data ) {
-          renderShulList(data);
-      });
-    };
-
     if (storage_data.access_level === 3) {
-      if (storage_data.shul_id)
-        displayShulData(storage_data.shul_id);
+			if (storage_data.shul_id) {
+				storage_data.logged_in = true;
+				storage_data.target = "shul";
+				storage_data.action = "display";
+			} else {  // Something is wrong, make user log in again...
+				storage_data.logged_in = false;
+				storage_data.user_id = "";
+				storage_data.shul_id = "";
+				storage_data.shul_name = "";
+				storage_data.member_id = "";
+				storage_data.services_id = "";
+				storage_data.target = "";
+				storage_data.action = "";
+			}
+			setLocalStorage();
+			window.location.href = "index.html";
     };
 
     if (storage_data.access_level >= 5) {
-      let route = '/shul-all';
-      $.getJSON(route, function( data ) {
-          renderShulList(data);
-      });
+			storage_data.logged_in = true;
+			storage_data.target = "shul";
+			storage_data.action = "display-all";
+			setLocalStorage();
+			window.location.href = "index.html";
     };
   });
 
@@ -552,32 +554,195 @@ function watchNavbarClicks() {
   $('#js-member-icon').click(event => {
     event.preventDefault();
     if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
-      let route = '/member-all/' + storage_data.shul_id ;
-      $.getJSON(route, function( data ) {
-          renderMemberList(data);
-      });
+			if (storage_data.shul_id) {
+				storage_data.logged_in = true;
+				storage_data.target = "member";
+				storage_data.action = "display-all";
+			} else {  // Something is wrong, make user log in again...
+				storage_data.logged_in = false;
+				storage_data.user_id = "";
+				storage_data.shul_id = "";
+				storage_data.shul_name = "";
+				storage_data.member_id = "";
+				storage_data.services_id = "";
+				storage_data.target = "";
+				storage_data.action = "";
+			}
+			setLocalStorage();
+			window.location.href = "index.html";
+    };
+  });
+
+	//     CLICKED MEMBER UPDATE ICON
+	$('#js-member-upd-icon').click(event => {
+		event.preventDefault();
+    if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
+			if (storage_data.shul_id) {
+				storage_data.logged_in = true;
+				storage_data.target = "member";
+				storage_data.action = "display-all";
+			} else {  // Something is wrong, make user log in again...
+				storage_data.logged_in = false;
+				storage_data.user_id = "";
+				storage_data.shul_id = "";
+				storage_data.shul_name = "";
+				storage_data.member_id = "";
+				storage_data.services_id = "";
+				storage_data.target = "";
+				storage_data.action = "";
+			}
+			setLocalStorage();
+			window.location.href = "index.html";
     };
   });
 
 	//     CLICKED SERVICES ICON
   $('#js-services-icon').click(event => {
     event.preventDefault();
-    if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
-      if (storage_data.shul_id) {
-        let route = '/services-all/' + storage_data.shul_id ;
-        $.getJSON(route, function( data ) {
-            renderServicesList(data);
-        });
-      } else {
-        console.log("ERROR: Cannot Display Services Without ShulID!");
-      };
+		if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
+			if (storage_data.shul_id) {
+				storage_data.logged_in = true;
+				storage_data.target = "services";
+				storage_data.action = "display-all";
+			} else {  // Something is wrong, make user log in again...
+				storage_data.logged_in = false;
+				storage_data.user_id = "";
+				storage_data.shul_id = "";
+				storage_data.shul_name = "";
+				storage_data.member_id = "";
+				storage_data.services_id = "";
+				storage_data.target = "";
+				storage_data.action = "";
+			}
+			setLocalStorage();
+			window.location.href = "index.html";
     };
   });
+
+	//     CLICKED SERVICES UPD ICON
+	$('#js-services-upd-icon').click(event => {
+		event.preventDefault();
+		if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
+			if (storage_data.shul_id) {
+				storage_data.logged_in = true;
+				storage_data.target = "services";
+				storage_data.action = "display-all";
+			} else {  // Something is wrong, make user log in again...
+				storage_data.logged_in = false;
+				storage_data.user_id = "";
+				storage_data.shul_id = "";
+				storage_data.shul_name = "";
+				storage_data.member_id = "";
+				storage_data.services_id = "";
+				storage_data.target = "";
+				storage_data.action = "";
+			}
+			setLocalStorage();
+			window.location.href = "index.html";
+    };
+  });
+
 }
 
-$(getLocalStorage);
-$(watchNavbarClicks);
-$(watchUpdateSubmit);
+
+function getLocalStorage() {
+
+  if ( !storageAvailable('sessionStorage') ) {
+    alert("No local storage available!  Many functions will not work....");
+		window.location.href = "index.html";
+	};
+
+  let data = sessionStorage.getItem("local_storage");
+  console.log("local_storage:");
+  console.log(data);
+
+  if ( !data ) {
+		console.log("ERROR: Local storage is empty, send them back to login...");
+		storage_data.logged_in = false;
+		storage_data.user_id = "";
+		storage_data.shul_id = "";
+		storage_data.shul_name = "";
+		storage_data.member_id = "";
+		storage_data.services_id = "";
+		storage_data.target = "";
+		storage_data.action = "";
+		setLocalStorage();
+		window.location.href = "index.html";
+	};
+
+	storage_data = JSON.parse(data);
+
+	if (storage_data.shul_name)
+		$(".fs-title").text(storage_data.shul_name);
+
+	if ( ! storage_data.target === "shul" ) {
+		console.log("ERROR: target is not 'shul', send them back to login...");
+		storage_data.logged_in = false;
+		storage_data.user_id = "";
+		storage_data.shul_id = "";
+		storage_data.shul_name = "";
+		storage_data.member_id = "";
+		storage_data.services_id = "";
+		storage_data.target = "";
+		storage_data.action = "";
+		setLocalStorage();
+		window.location.href = "index.html";
+	};
+
+	if (storage_data.action === "update"  &&  (storage_data.shul_id) ) {
+		getShulData(storage_data.shul_id);
+	} else {   //  Note:  there is no 'create' action in this module
+		console.log("ERROR: Invalid 'action' or 'shul-ID', send them back to login...");
+		storage_data.logged_in = false;
+		storage_data.user_id = "";
+		storage_data.shul_id = "";
+		storage_data.shul_name = "";
+		storage_data.member_id = "";
+		storage_data.services_id = "";
+		storage_data.target = "";
+		storage_data.action = "";
+		setLocalStorage();
+		window.location.href = "index.html";
+	};
+
+}
+
+
+function setLocalStorage() {
+
+  if (storageAvailable('sessionStorage')) {
+    sessionStorage.setItem("local_storage", JSON.stringify(storage_data));
+  } else {
+    alert("No local storage available!  Many functions will not work....");
+  };
+}
+
+
+function storageAvailable(type) {
+    try {
+        var storage = window[type],
+            x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage.length !== 0;
+    }
+}
+
+
 // prevent <enter> key from submitting form (does not disable enter in textarea)
 $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
   if(e.keyCode == 13) {
@@ -585,3 +750,8 @@ $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
     return false;
   }
 });
+
+
+$(getLocalStorage);
+$(watchNavbarClicks);
+$(watchUpdateSubmit);

@@ -161,11 +161,6 @@ app.post ('/newUserShul', (req, res) => {
 // --------------
 
 app.put('/user/:id', (req, res) => {
-  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
-    res.status(400).json({
-      error: 'Request path id and request body id values must match'
-    });
-  }
 
   const toUpdate = {};
   const updateableFields = ['schemaType','email', 'pw', 'shulId', 'accessLevel'];
@@ -272,11 +267,6 @@ app.post('/shul', (req, res) => {
 // --------------
 
 app.put('/shul/:id', (req, res) => {
-  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
-    res.status(400).json({
-      error: 'Request path id and request body id values must match'
-    });
-  }
 
   Shul
     .findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true})
@@ -376,11 +366,6 @@ app.post('/member', (req, res) => {
 // --------------
 
 app.put('/member/:id', (req, res) => {
-  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
-    res.status(400).json({
-      error: 'Request path id and request body id values must match'
-    });
-  }
 
   Member
     .findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true})
@@ -481,11 +466,6 @@ app.post('/services', (req, res) => {
 // --------------
 
 app.put('/services/:id', (req, res) => {
-  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
-    res.status(400).json({
-      error: 'Request path id and request body id values must match'
-    });
-  }
 
   Services
     .findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true})

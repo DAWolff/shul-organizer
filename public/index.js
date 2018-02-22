@@ -1,17 +1,17 @@
 'use strict'
 
 var storage_data = {
-    "user_email": "",
-    "access_level": "0",
-    "logged_in": false,
-    "user_id": "",
-    "shul_id": "",
-    "shul_name": "",
-    "member_id": "",
-    "services_id": "",
-  	"create_or_update": ""
+  "user_email": "",
+  "access_level": "0",
+  "logged_in": false,
+  "user_id": "",
+  "shul_id": "",
+  "shul_name": "",
+  "member_id": "",
+  "services_id": "",
+  "action": "",
+	"target": ""
 };
-
 
 function getLocalStorage() {
 
@@ -20,9 +20,58 @@ function getLocalStorage() {
     console.log(data);
     if (data) {
       storage_data = JSON.parse(data);
-    } else {  // reset to empty strings
+
+      if ( storage_data.logged_in ) {
+
+        switch (storage_data.target) {
+
+          case 'shul':
+            if (storage_data.action === "display"  &&  storage_data.shul_id) {
+              displayShulData(storage_data.shul_id);
+            } else {
+              if (storage_data.action === "display-all") {
+                let route = '/shul-all';
+                getShulData (route);
+              }
+            };
+            break;
+
+          case 'member':
+            if (storage_data.action === "display" && storage_data.member_id) {
+              displayMemberData(storage_data.member_id);
+            } else {
+              if (storage_data.action === "display-all") {
+                let route = '/member-all/' + storage_data.shul_id;
+                $.getJSON(route, function( data ) {
+                    renderMemberList(data);
+                });
+              }
+            };
+            break;
+
+          case 'services':
+            if (storage_data.action === "display") {
+              displayServicesData(storage_data.services_id)
+            } else {
+              if (storage_data.action === "display-all") {
+                let route = '/services-all/' + storage_data.shul_id ;
+                $.getJSON(route, function( data ) {
+                    renderServicesList(data);
+                });
+              }
+            };
+            break;
+
+          default:
+            console.log("Invalid action code in Local Storage: " + storage_data.target);
+        };   // switch
+
+      }  // logged-in
+
+    } else {  // not logged in, reset local storage to blank
       setLocalStorage();
     };
+
   } else {
     alert("No local storage available!  Many functions will not work....");
   };
@@ -90,7 +139,6 @@ function getLoginCredentials(email, pw) {
   let route = '/user-login/';
   let data = { "emailIn": email, "pwIn": pw};
 
-  // $.getJSON(route, data, function( user ) {
   $.ajax({
     url: route,
     method: "POST",
@@ -129,31 +177,25 @@ function getLoginCredentials(email, pw) {
         storage_data.logged_in = true;
         storage_data.user_id = user.id;
         storage_data.shul_id = user.shulId;
-        // storage_data.member_id = user.email;
-        // storage_data.services_id = user.email;
-        // storage_data.shul_name = shul
+        setLocalStorage();
 
         if (storage_data.access_level <= 1) {
           if (storage_data.shul_id) {
             displayShulData(storage_data.shul_id);
           } else {
             let route = '/shul-all-public';
-            $.getJSON(route, function( data ) {
-                renderShulList(data);
-            });
+            getShulData (route);
           };
         };
 
-        if (storage_data.access_level === 3) {
+        if (storage_data.access_level === 3  &&  storage_data.shul_id) {
           displayShulData(storage_data.shul_id);
         };
 
         if (storage_data.access_level >= 5) {
-          let route = '/shul-all';
           storage_data.shul_id = "";
-          $.getJSON(route, function( data ) {
-              renderShulList(data);
-          });
+          let route = '/shul-all';
+          getShulData (route);
         };
 
       };  // user object returned
@@ -206,6 +248,8 @@ function watchRegisterSubmit() {
     // validate (required) Shul fields
     let shulName =  $( "input[name='shulname']" ).val().trim();
     let shulCalled =  $( "input[name='shulcalled']" ).val().trim();
+    storage_data.shul_name = shulName;
+
     if (shulName.length > 2 && shulCalled) { }
     else {
       $('#js-newshul-error').removeClass("hide");
@@ -251,7 +295,7 @@ function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
                "name": shulName,
                "called": shulCalled };
 
-  $.post(route, body, function(data,status,xhr) {
+  $.post(route, body, function ( data, status, xhr ) {
       console.log(data.userId + " "
                 + data.email + " "
                 + data.accessLevel + " "
@@ -263,7 +307,8 @@ function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
       storage_data.user_id = data.userId;
       storage_data.shul_id = data.shulId;
       storage_data.shul_name = data.shulName;
-      storage_data.create_or_update = "update";
+      storage_data.action = "update";
+      storage_data.target = "shul";
       setLocalStorage();
       window.location.href = "shul-steps.html";
       })
@@ -310,9 +355,7 @@ function watchNavbarClicks() {
 
     if (storage_data.access_level <= 1) {
       let route = '/shul-all-public';
-      $.getJSON(route, function( data ) {
-          renderShulList(data);
-      });
+      getShulData (route);
     };
 
     if (storage_data.access_level === 3) {
@@ -322,14 +365,13 @@ function watchNavbarClicks() {
 
     if (storage_data.access_level >= 5) {
       if (storage_data.shul_id) {
-        storage_data.create_or_update = "update";
+        storage_data.action = "update";
+        storage_data.target = "shul";
         setLocalStorage();
         window.location.href = "shul-steps.html";
       } else {
         let route = '/shul-all';
-        $.getJSON(route, function( data ) {
-            renderShulList(data);
-        });
+        getShulData (route);
       };
     };
   });
@@ -345,6 +387,17 @@ function watchNavbarClicks() {
     };
   });
 
+//     CLICKED MEMBER UPDATE ICON
+  $('#js-member-upd-icon').click(event => {
+    event.preventDefault();
+    if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
+        storage_data.action = "update";
+        storage_data.target = "member";
+        setLocalStorage();
+        window.location.href = "member-steps.html";
+    };
+  });
+
 //     CLICKED SERVICES ICON
   $('#js-services-icon').click(event => {
     event.preventDefault();
@@ -357,6 +410,17 @@ function watchNavbarClicks() {
       } else {
         console.log("ERROR: Cannot Display Services Without ShulID!");
       };
+    };
+  });
+
+//     CLICKED SERVICES UPD ICON
+  $('#js-services-upd-icon').click(event => {
+    event.preventDefault();
+    if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
+        storage_data.action = "update";
+        storage_data.target = "services";
+        setLocalStorage();
+        window.location.href = "services-steps.html";
     };
   });
 
@@ -379,34 +443,45 @@ function renderShulList(result) {
         state = oneShul.address.state;
       };
       shulLine = `
-              <div class="js-result-field">
-                <div class="js-result-button">
-                  <input type="submit" value="${oneShul.called}" class="select" data-itemid="${oneShul._id}"/>
-                </div>
-                <div class="js-result-content">
-                 ${oneShul.name} &nbsp ${street} &nbsp ${city}, &nbsp ${state}
-                </div>
-              </div>
+          <div class="js-result-field">
+            <div class="js-result-button">
+              <input type="submit" value="${oneShul.called}" class="select" data-oneshulid="${oneShul._id}"/>
+            </div>
+            <div class="js-result-content">
+             ${oneShul.name} &nbsp ${street} &nbsp ${city}, &nbsp ${state}
+            </div>
+          </div>
           `
       content = content + shulLine;
     };
   });   // map
-  // $('#js-navbar').css( "border-bottom", "3px solid #1c2833" );
-  // $('#js-footer').css( "border-top", "3px solid #1c2833" );
-  $('#js-results').html(content);
-  hideLoginRevealResults();
-  $(watchShulselection);
+
+  $('#js-shul-results').html(content);
+  hideLoginRevealResults("shul");
+  $(watchShulSelection);
 }
 
 
-function watchShulselection() {
+function watchShulSelection() {
 
-    $( "#js-results" ).on( "click", "input", function( event ) {
+    $( "#js-shul-results" ).on( "click", "input", function( event ) {
       event.preventDefault();
       let element = event.currentTarget;
-      storage_data.shul_id = element.dataset.itemid;
-      displayShulData(storage_data.shul_id);
+      storage_data.shul_id = element.dataset.oneshulid;
+      // reset member_id and services_id information
+      storage_data.member_id = "";
+      storage_data.services_id = "";
+      if (storage_data.shul_id)
+        displayShulData(storage_data.shul_id);
     });
+}
+
+
+function getShulData (route) {
+
+  $.getJSON(route, function( data ) {
+      renderShulList(data);
+  });
 }
 
 
@@ -416,7 +491,6 @@ function displayShulData(shulIdIn) {
   let route = '/shul/' + shulIdIn;
   $.getJSON(route, function( data ) {
       if (data == 'undefined' || data == null) {
-          // modal - invalid shul ID
           console.log('could not find shulID:' + shulIdIn);
           return;
       };
@@ -428,6 +502,8 @@ function displayShulData(shulIdIn) {
 
 
 function renderShulData(shul) {
+
+  storage_data.shul_name = shul.name;
 
   let content = "";
 
@@ -698,14 +774,16 @@ function renderShulData(shul) {
     content = content + shulLine;
     };
 
-  $('#js-results').html(content);
-  hideLoginRevealResults();
+  $('#js-shul-results').html(content);
+  hideLoginRevealResults("shul");
 }
 
 
 function renderMemberList(result) {
 
-  let content = `<h2>Click Member name for detail</h2>`;
+  let content = `<h2>${storage_data.shul_name}</h2>
+                 <h2>Click Member name for detail</h2>`;
+
   let memberLine = "";
 
   result.map(function(oneMember) {
@@ -720,7 +798,7 @@ function renderMemberList(result) {
       memberLine = `
               <div class="js-result-field">
                 <div class="js-result-button">
-                  <input type="submit" value="${oneMember.called}" class="select" data-itemid="${oneMember._id}"/>
+                  <input type="submit" value="${oneMember.called}" class="select" data-onememid="${oneMember._id}"/>
                 </div>
                 <div class="js-result-content expand">
                  ${oneMember.englishName} &nbsp ${oneMember.familyName} <br>
@@ -733,18 +811,18 @@ function renderMemberList(result) {
 
   });   // map
 
-  $('#js-results').html(content);
-  hideLoginRevealResults();
+  $('#js-member-results').html(content);
+  hideLoginRevealResults("member");
   $(watchMemberSelection);
 }
 
 
 function watchMemberSelection() {
 
-    $( "#js-results" ).on( "click", "input", function( event ) {
+    $( "#js-member-results" ).on( "click", "input", function( event ) {
       event.preventDefault();
       let element = event.currentTarget;
-      let memberID = element.dataset.itemid;
+      let memberID = element.dataset.onememid;
       displayMemberData(memberID);
     });
 }
@@ -753,10 +831,11 @@ function watchMemberSelection() {
 function displayMemberData(memberID) {
 
   console.log('member ID: ' + memberID);
+  storage_data.member_id = memberID;
+
   let route = '/member/' + memberID;
   $.getJSON(route, function( data ) {
       if (data == 'undefined' || data == null) {
-          // modal - invalid member ID
           console.log('could not find memberID:' + memberID);
           return;
       };
@@ -774,7 +853,9 @@ function renderMemberData(member) {
       return;
   }
 
-  let content = "";
+  storage_data.member_id = member._id;
+
+  let content = `<h2>${storage_data.shul_name}</h2>`;
 
   let prefix = member.title || "";
   let suffix = "";
@@ -921,14 +1002,16 @@ function renderMemberData(member) {
     content = content + memberLine;
   };
 
-  $('#js-results').html(content);
-  hideLoginRevealResults();
+  $('#js-member-results').html(content);
+  hideLoginRevealResults("member");
 }
 
 
 function renderServicesList(result) {
 
-  let content = `<h2>Click Services date for detail</h2>`;
+  let content = `<h2>${storage_data.shul_name}</h2>
+                 <h2>Click Services date for detail</h2>`;
+
   let servicesLine = "";
 
   result.map(function(oneService) {
@@ -949,7 +1032,7 @@ function renderServicesList(result) {
       servicesLine = `
               <div class="js-result-field">
                 <div class="js-result-button">
-                  <input type="submit" value="${when}" class="select" data-itemid="${oneService._id}"/>
+                  <input type="submit" value="${when}" class="select" data-oneservid="${oneService._id}"/>
                 </div>
                 <div class="js-result-content expand">
                  ${oneService.dateHebrew} &nbsp ${formattedDate} <br>
@@ -968,18 +1051,18 @@ function renderServicesList(result) {
     };
   });   // map
 
-  $('#js-results').html(content);
-  hideLoginRevealResults();
+  $('#js-services-results').html(content);
+  hideLoginRevealResults("services");
   $(watchServicesSelection);
 }
 
 
 function watchServicesSelection() {
 
-  $( "#js-results" ).on( "click", "input", function( event ) {
+  $( "#js-services-results" ).on( "click", "input", function( event ) {
     event.preventDefault();
     let element = event.currentTarget;
-    let servicesID = element.dataset.itemid;
+    let servicesID = element.dataset.oneservid;
     displayServicesData(servicesID);
   });
 }
@@ -988,10 +1071,11 @@ function watchServicesSelection() {
 function displayServicesData(servicesID) {
 
   console.log('services ID: ' + servicesID);
+  storage_data.services_id = servicesID;
+
   let route = '/services/' + servicesID;
   $.getJSON(route, function( data ) {
       if (data == 'undefined' || data == null) {
-          // modal - invalid services ID
           console.log('could not find servicesID:' + servicesID);
           return;
       };
@@ -1008,6 +1092,8 @@ function renderServicesData(services) {
       console.log("error in renderServicesData--invalid object passed in.");
       return;
   };
+
+  storage_data.services_id = services._id;
 
   let when = services.when.parsha + " " + services.when.year;
   let date = new Date(services.dateEnglish);
@@ -1027,7 +1113,7 @@ function renderServicesData(services) {
   let shevii = services.aliyosShacharis.shevii.member || " ";
   let maftir = services.aliyosShacharis.maftir.member || " ";
 
-  let content = "";
+  let content = `<h2>${storage_data.shul_name}</h2>`;
 
   let servicesLine = `
       <div class="js-result-field">
@@ -1135,8 +1221,8 @@ function renderServicesData(services) {
         `;
     content = content + servicesLine;
   };
-  $('#js-results').html(content);
-  hideLoginRevealResults();
+  $('#js-services-results').html(content);
+  hideLoginRevealResults("services");
 }
 
 
@@ -1161,14 +1247,54 @@ function formatPhone(input) {
 }
 
 
-function hideLoginRevealResults() {
+function hideLoginRevealResults(reveal) {
+
   if ( ! $('#js-login-row').hasClass("hide") ) {
     $('#js-login-row').addClass("hide");
   };
 
-  if ( $('#js-results').hasClass("hide") ) {
-    $('#js-results').removeClass("hide");
-  };
+  switch (reveal) {
+
+    case 'shul':
+      if ( $('#js-shul-results').hasClass("hide") ) {
+        $('#js-shul-results').removeClass("hide");
+      };
+      if ( ! $('#js-member-results').hasClass("hide") ) {
+        $('#js-member-results').addClass("hide");
+      };
+      if ( ! $('#js-services-results').hasClass("hide") ) {
+        $('#js-services-results').addClass("hide");
+      };
+      break;
+
+    case 'member':
+      if ( $('#js-member-results').hasClass("hide") ) {
+        $('#js-member-results').removeClass("hide");
+      };
+      if ( ! $('#js-shul-results').hasClass("hide") ) {
+        $('#js-shul-results').addClass("hide");
+      };
+      if ( ! $('#js-services-results').hasClass("hide") ) {
+        $('#js-services-results').addClass("hide");
+      };
+      break;
+
+    case 'services':
+      if ( $('#js-services-results').hasClass("hide") ) {
+        $('#js-services-results').removeClass("hide");
+      };
+      if ( ! $('#js-member-results').hasClass("hide") ) {
+        $('#js-member-results').addClass("hide");
+      };
+      if ( ! $('#js-shul-results').hasClass("hide") ) {
+        $('#js-shul-results').addClass("hide");
+      };
+      break;
+
+    default:
+      console.log("Invalid value to reveal in hideLoginRevealResults: " + reveal);
+  };   // switch
+
 }
 
 function validateEmail(mail) {

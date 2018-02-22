@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Member Info">
+    <title>Member</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:500|Crimson+Text:700|Montserrat" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="member-steps.css" rel="stylesheet" type="text/css" />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin=" anonymous"></script>
+  </head>
+
+  <body>
+    <div  id="js-navbar" class="row">
+      <div class="col-12">
+        <div class="box">
+          <ul>
+            <li class="tooltip">
+              <img id="js-shul-icon" class="icons" src="images/grey-shul2.png" alt="Shul Icon">
+              <span class="tooltiptext">Display Shul(s)</span>
+            </li>
+            <li class="tooltip">
+              <img id="js-member-icon" class="icons" src="images/people.png" alt="Show Members Icon">
+              <span class="tooltiptext">Display Members</span>
+            </li>
+            <li class="tooltip">
+              <img id="js-member-upd-icon" class="icons" src="images/services-person.png" alt="Update Member Icon">
+              <span class="tooltiptext">Add/Update Member</span>
+            </li>
+            <li class="tooltip">
+              <img id="js-services-icon" class="icons" src="images/white-torah.gif" alt="Show Services Icon">
+              <span class="tooltiptext">Display Services</span>
+            </li>
+            <li class="tooltip">
+              <img id="js-services-upd-icon" class="icons" src="images/licht.png" alt="Update Services Icon">
+              <span class="tooltiptext">Add/Update Services</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div> 
+
+
+    <!-- multistep form -->
+    <form name="memberform" id="msform" >
+      <!-- progressbar -->
+      <ul id="progressbar">
+        <li class="active">Member Info</li>
+        <li>Contact Info</li>
+        <li>Other Info</li>
+        <li>Occaisions and Notes</li>
+      </ul>
+
+      <!-- fieldsets -->
+      <fieldset>
+        <h2 class="fs-title">Member</h2>
+        <h3 class="fs-subtitle">General Information</h3>
+        <div id="js-error-alert" class="error-box hide" >
+          <span class="closebtn">&times;</span>
+          <span id="js-error-txt"></span>
+        </div>
+        <div class="onerow">
+          <input name="title" class="flex1" type="text" placeholder="Title"/>
+          <input name="called" class="flex3" type="text" placeholder="Known-As (Called)"  />
+        </div>
+        <input name="hebrewname" type="text" placeholder="Hebrew Name" />
+        <input name="englishname" type="text" placeholder="English Name" />
+        <input name="familyname" type="text" placeholder="Family Name" />
+        <div class="onerow">
+          <div class="dropdown">
+           <h3>Shul Regular?</h3>
+           <input class="dropinp flex1" type="text" name="regular" placeholder="Shul Regular?"/>
+           <div class="dropdown-content">
+             <a id="reg-yes">Yes</a>
+             <a id="reg-no">No</a>
+           </div>
+          </div>        <!-- canLeadDavening: Boolean, -->
+          <div class="dropdown">
+           <h3>Can Daven?</h3>
+           <input class="dropinp flex1" type="text" name="canlead" placeholder="Can Daven?"/>
+           <div class="dropdown-content">
+             <a id="lead-yes">Yes</a>
+             <a id="lead-no">No</a>
+           </div>
+          </div>
+          <div class="dropdown">
+           <h3>Kohen?</h3>
+           <input class="dropinp flex1" type="text" name="kohen" placeholder="Kohen?"/>
+           <div class="dropdown-content">
+             <a id="koh-yes">Yes</a>
+             <a id="koh-no">No</a>
+           </div>
+          </div>
+          <div class="dropdown">
+           <h3>Levi?</h3>
+           <input class="dropinp flex1" type="text" name="levi" placeholder="Levi?"/>
+           <div class="dropdown-content">
+             <a id="lev-yes">Yes</a>
+             <a id="lev-no">No</a>
+           </div>
+          </div>
+        </div>
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+
+      <fieldset>
+        <h2 class="fs-title">Member</h2>
+        <h3 class="fs-subtitle">Contact Info</h3>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="E-Mail"/>
+          <input class="content" type="text" name="email" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Mobile"/>
+          <input class="content" type="text" name="cell" />
+        </div>
+        <input type="text" name="street" placeholder="Address - Street & Number" />
+        <input type="text" name="city" placeholder="City" />
+        <div class="onerow">
+          <input class="label" type="text" name="state" placeholder="State"/>
+          <input class="content" type="text" name="zip" placeholder="Zip" />
+        </div>
+        <input name="addrnotes" type="text" placeholder="Address Notes" />
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+
+      <fieldset>
+        <h2 class="fs-title">Member</h2>
+        <h3 class="fs-subtitle">Additional Information</h3>
+        <input name="fatherheb" type="text" placeholder="Father's Hebrew Name" />
+        <input name="motherheb" type="text" placeholder="Mother's Hebrew Name" />
+        <h3 class="fs-subtitle">Last Led Davening</h3>
+        <div class="onerow">
+          <input name="ledparsha" class="flex1" type="text" placeholder="Parsha"/>
+          <input name="ledyear" class="flex1" type="text" placeholder="Year"  />
+          <input name="tefilla" class="flex1" type="text" placeholder="Tefilla"  />
+        </div>
+        <h3 class="fs-subtitle">Last Aliya</h3>
+        <div class="onerow">
+          <input name="aliyaparsha" class="flex1" type="text" placeholder="Parsha"/>
+          <input name="aliyayear" class="flex1" type="text" placeholder="Year"  />
+          <input name="aliya" class="flex1" type="text" placeholder="Aliya"  />
+        </div>
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+
+      <fieldset>
+        <h2 class="fs-title">Member</h2>
+        <h3 class="fs-subtitle">Occaisions and Notes</h3>
+        <input type="button" id="add-occaision" class="add action-button" value="Add Occaision" />
+        <span  id="occaisions"></span>
+        <textarea id="notes" rows='3' data-min-rows='3' placeholder="Notes"></textarea>
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="submit" name="submit" class="submit action-button" value="Submit" />
+      </fieldset>
+
+    </form>
+
+    <script src="member-steps.js" type='text/javascript'></script>
+  </body>
+</html>
