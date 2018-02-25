@@ -1,0 +1,310 @@
+/*custom font*/
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+/*basic reset*/
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	height: 100%;
+	/* background:
+		linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6)); */
+  background-color: #B1B1B1;
+  background-image: url(images/dark-wood.jpg);
+  background-repeat: repeat;
+  min-height: 100vh;
+  color: white;
+  /* font-family: 'Roboto'; */
+}
+
+body {
+	font-family: montserrat, arial, verdana;
+}
+
+h3 {
+  font-size: .75em;
+	padding-bottom: 5px;
+}
+
+#js-navbar {
+  height: 10vh;
+}
+
+#js-navbar ul {
+margin: 0px;
+padding: 0px;
+float: right;
+}
+
+#js-navbar li {
+  list-style-type: none;
+  display: inline;
+  margin-right: 40px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+/*form styles*/
+#msform {
+	width: 60%;
+	margin: 10px auto;
+	text-align: center;
+	position: relative;
+}
+#msform fieldset {
+	background: #7D5979;
+	border: 0 none;
+	border-radius: 3px;
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	padding: 20px 30px;
+	width: 80%;
+	margin: 0 10%;
+
+	/*stacking fieldsets above each other*/
+	position: relative;
+}
+/*Hide all except first fieldset*/
+#msform fieldset:not(:first-of-type) {
+	display: none;
+}
+
+#msform input::placeholder {
+	color: #FF0000;
+}
+#msform textarea::placeholder {
+	color: #FF0000;
+}
+/*inputs*/
+#msform input, #msform textarea {
+	padding: 10px;
+	padding-right: 7px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	width: 100%;
+	font-family: montserrat;
+	color: #2C3E50;
+	font-size: 13px;
+	overflow: auto;
+}
+#msform textarea {
+	padding: 5px;
+}
+/*buttons*/
+#msform .action-button {
+	width: 110px;
+	background: #557ca2;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
+	cursor: pointer;
+	padding: 10px 5px;
+	margin: 10px 5px;
+}
+#msform .action-button:hover, #msform .action-button:focus {
+	box-shadow: 0 0 0 2px white, 0 0 0 3px #557ca2;
+}
+#msform .add {
+	background: #2C3E50;
+}
+/*headings*/
+.fs-title {
+	font-size: 15px;
+	text-transform: uppercase;
+	color: white;
+	margin-bottom: 10px;
+}
+.fs-subtitle, .fs-subtitle2 {
+	font-weight: normal;
+	font-size: 13px;
+	color: white;
+	margin-bottom: 20px;
+}
+
+.fs-subtitle2 {
+	text-align: left;
+	margin-bottom: 5px;
+}
+
+/*progressbar*/
+#progressbar {
+	margin-bottom: 30px;
+	overflow: hidden;
+	/*CSS counters to number the steps*/
+	counter-reset: step;
+}
+#progressbar li {
+	list-style-type: none;
+	color: white;
+	text-transform: uppercase;
+	font-size: 9px;
+	width: 25%;
+	float: left;
+	position: relative;
+}
+#progressbar li:before {
+	content: counter(step);
+	counter-increment: step;
+	width: 20px;
+	line-height: 20px;
+	display: block;
+	font-size: 10px;
+	color: #333;
+	background: white;
+	border-radius: 3px;
+	margin: 0 auto 5px auto;
+}
+/*progressbar connectors*/
+#progressbar li:after {
+	content: '';
+	width: 100%;
+	height: 2px;
+	background: white;
+	position: absolute;
+	left: -50%;
+	top: 9px;
+	z-index: -1; /*put it behind the numbers*/
+}
+#progressbar li:first-child:after {
+	/*connector not needed before the first step*/
+	content: none;
+}
+/*marking active/completed steps green*/
+/*The number of the step and the connector before it = green*/
+#progressbar li.active:before,  #progressbar li.active:after{
+	background: #557ca2;
+	color: white;
+}
+
+.error-box {
+  padding: 10px 10px 10px 20px;
+	margin-bottom: 5px;
+  background-color: #f44336;
+  color: white;
+  height: 40px;
+  font-weight: bold;
+}
+.hide {
+	display: none;
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.closebtn:hover {
+  color: black;
+}
+
+.icons {
+  padding-top: 10px;
+}
+
+.onerow {
+	display: flex;
+}
+
+.flex1 {
+	flex: 1;
+}
+.flex3 {
+	flex: 3;
+}
+
+.label {
+	flex: 1;
+}
+.content {
+	flex: 2;
+}
+.nickname {
+	flex: 5;
+}
+.disabl {
+	background-color: #1C2833;
+	color: white !important;
+}
+.expandable {
+	word-wrap: break-word;
+}
+.onerow::after {
+  clear: both;
+}
+
+/* Style The Dropdown */
+.dropinp {
+    /* background-color: Azure; */
+    /* padding: 16px;
+    font-size: 16px;
+    border: none; */
+    cursor: pointer;
+}
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+/* Inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+	background-color: #f1f1f1;
+	border: 2px solid #557ca2;
+	border-radius: 2px;
+}
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: Azure;
+}

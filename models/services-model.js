@@ -7,17 +7,15 @@ const mongoose = require('mongoose');
 const servicesSchema = mongoose.Schema({
   schemaType: { type: String, default: 'services' },
   shulId: {type: String, required: true},
-  when: {
-    parsha: {type: String, required: true},
-    year: {type: String, required: true}
-  },
+  parsha: {type: String, required: true},
+  year: {type: String, required: true},
   dateHebrew: {type: String, required: true},
-  dateEnglish: {type: Date, required: true},
+  dateEnglish: {type: String, required: true},
   kiddush: {
     made: Boolean,
     sponsor: String,
     pledge: String,
-    paid: Boolean
+    paid: String
   },
   speaker: String,
   ledDavening: {
@@ -77,6 +75,7 @@ servicesSchema.methods.apiRepr = function() {
     id: this._id,
     shulId: this.shulId,
     parsha: this.parsha,
+    year: this.year,
     dateHebrew: this.dateHebrew,
     dateEnglish: this.dateEnglish,
     kiddush: {

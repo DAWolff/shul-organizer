@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Services Info">
+    <title>Services</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:500|Crimson+Text:700|Montserrat" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="Services-steps.css" rel="stylesheet" type="text/css" />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin=" anonymous"></script>
+  </head>
+
+  <body>
+    <div  id="js-navbar" class="row">
+      <div class="col-12">
+        <div class="box">
+          <ul>
+            <li class="tooltip">
+              <img id="js-shul-icon" class="icons" src="images/grey-shul2.png" alt="Shul Icon">
+              <span class="tooltiptext">Display Shul(s)</span>
+            </li>
+            <li class="tooltip">
+              <img id="js-member-icon" class="icons" src="images/people.png" alt="Show Members Icon">
+              <span class="tooltiptext">Display Members</span>
+            </li>
+            <li class="tooltip">
+              <img id="js-member-upd-icon" class="icons" src="images/services-person.png" alt="Update Member Icon">
+              <span class="tooltiptext">Add/Update Member</span>
+            </li>
+            <li class="tooltip">
+              <img id="js-services-icon" class="icons" src="images/white-torah.gif" alt="Show Services Icon">
+              <span class="tooltiptext">Display Services</span>
+            </li>
+            <li class="tooltip">
+              <img id="js-services-upd-icon" class="icons" src="images/licht.png" alt="Update Services Icon">
+              <span class="tooltiptext">Add/Update Services</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- multistep form -->
+    <form name="servicesform" id="msform" >
+
+      <!-- progressbar -->
+      <ul id="progressbar">
+        <li class="active">Services Info</li>
+        <li>Aliyos</li>
+        <li>Tefillos</li>
+        <li>Kiddush</li>
+      </ul>
+
+      <!-- fieldsets -->
+      <fieldset>
+        <h2 class="fs-title">Services</h2>
+        <h3 class="fs-subtitle">General Information</h3>
+        <div id="js-error-alert" class="error-box hide" >
+          <span class="closebtn">&times;</span>
+          <span id="js-error-txt"></span>
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Parsha"/>
+          <input class="content" type="text" name="servparsha" placeholder="Parsha"/>
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Year (CCYY)"/>
+          <input class="content" type="text" name="servyear" placeholder="Year"/>
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Jewish Date"/>
+          <input class="content" type="text" name="dateheb" placeholder="Jewish Date"/>
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="English Date"/>
+          <input class="content" type="text" name="dateng" placeholder="English Date"/>
+        </div>
+        <textarea id="notes" rows='3' data-min-rows='3' placeholder="Notes"></textarea>
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+
+      <fieldset>
+        <h2 class="fs-title">Services</h2>
+        <h3 class="fs-subtitle">Aliyos & Pledges</h3>
+        <div class="onerow">
+          <input class="label disabl flex1" type="text" disabled="disabled" value="Kohen"/>
+          <input name="alkohen" class="content flex3" type="text"  placeholder="Member"/>
+          <input name="alkohenplg" class="content flex2" type="text" placeholder="Pledge"/>
+        </div>
+        <div class="onerow">
+          <input class="label disabl flex1" type="text" disabled="disabled" value="Levi"/>
+          <input name="allevi" class="content flex3" type="text" placeholder="Member"/>
+          <input name="alleviplg" class="content flex2" type="text" placeholder="Pledge"  />
+        </div>
+        <div class="onerow">
+          <input class="label disabl flex1" type="text" disabled="disabled" value="Shelishi"/>
+          <input name="al3" class="content flex3" type="text" placeholder="Member"/>
+          <input name="al3plg" class="content flex2" type="text" placeholder="Pledge"  />
+        </div>
+        <div class="onerow">
+          <input class="label disabl flex1" type="text" disabled="disabled" value="Revii"/>
+          <input name="al4" class="content flex3" type="text" placeholder="Member"/>
+          <input name="al4plg" class="content flex2" type="text" placeholder="Pledge"  />
+        </div>
+        <div class="onerow">
+          <input class="label disabl flex1" type="text" disabled="disabled" value="Chamishi"/>
+          <input name="al5" class="content flex3" type="text" placeholder="Member"/>
+          <input name="al5plg" class="content flex2" type="text" placeholder="Pledge"  />
+        </div>
+        <div class="onerow">
+          <input class="label disabl flex1" type="text" disabled="disabled" value="Shishi"/>
+          <input name="al6" class="content flex3" type="text" placeholder="Member"/>
+          <input name="al6plg" class="content flex2" type="text" placeholder="Pledge"  />
+        </div>
+        <div class="onerow">
+          <input class="label disabl flex1" type="text" disabled="disabled" value="Shevii"/>
+          <input name="al7" class="content flex3" type="text" placeholder="Member"/>
+          <input name="al7plg" class="content flex2" type="text" placeholder="Pledge"  />
+        </div>
+        <div class="onerow">
+          <input class="label disabl flex1" type="text" disabled="disabled" value="Maftir"/>
+          <input name="almaftir" class="content flex3" type="text" placeholder="Member"/>
+          <input name="almaftplg" class="content flex2" type="text" placeholder="Pledge"  />
+        </div>
+        <h3 class="fs-subtitle flex1">Mincha Shabbos</h3>
+        <div class="onerow">
+          <h3 class="fs-subtitle2 flex1">Kohen</h3>
+          <h3 class="fs-subtitle2 flex1">Levi</h3>
+          <h3 class="fs-subtitle2 flex1">Shlishi</h3>
+        </div>
+        <div class="onerow">
+          <input name="alminkohen" class="flex1" type="text" placeholder="Kohen"/>
+          <input name="alminlevi" class="flex1" type="text" placeholder="Levi"  />
+          <input name="almin3" class="flex1" type="text" placeholder="Shlishi"  />
+        </div>
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+
+      <fieldset>
+        <h2 class="fs-title">Services</h2>
+        <h3 class="fs-subtitle">Davened From the Amud</h3>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Kabolas Shabbos"/>
+          <input class="content" type="text" name="ledkabshab" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Shacharis"/>
+          <input class="content" type="text" name="ledschach" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Musaf"/>
+          <input class="content" type="text" name="ledmusaf" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Mincha"/>
+          <input class="content" type="text" name="ledmincha" />
+        </div>
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+
+      <fieldset>
+        <h2 class="fs-title">Services</h2>
+        <h3 class="fs-subtitle">Kiddush</h3>
+        <div class="onerow">
+          <div class="dropdown">
+             <h3>Kiddush In Shul?</h3>
+             <input class="dropinp flex1" type="text" name="kiddush" placeholder="Kiddush?"/>
+             <div class="dropdown-content">
+               <a id="kiddush-yes">Yes</a>
+               <a id="kiddush-no">No</a>
+            </div>
+          </div>
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Sponsored By"/>
+          <input class="content" type="text" name="kidsponsor" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Pledge Amount"/>
+          <input class="content" type="text" name="kidpledge" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Amt Pldg Paid"/>
+          <input class="content" type="text" name="kidpaid" />
+        </div>
+        <div class="onerow">
+          <input class="label disabl" type="text" disabled="disabled" value="Speaker"/>
+          <input class="content" type="text" name="speaker" />
+        </div>
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="submit" name="submit" class="submit action-button" value="Submit" />
+      </fieldset>
+
+    </form>
+
+    <script src="services-steps.js" type='text/javascript'></script>
+  </body>
+</html>

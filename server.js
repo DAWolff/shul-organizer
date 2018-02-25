@@ -441,7 +441,7 @@ app.get("/services/:id", (req, res) => {
 // --------------
 
 app.post('/services', (req, res) => {
-  const requiredFields = ['shulId', 'parsha', 'dateHebrew', 'dateEnglish'];
+  const requiredFields = ['shulId', 'parsha', 'year', 'dateHebrew', 'dateEnglish'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {

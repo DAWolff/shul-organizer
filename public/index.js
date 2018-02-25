@@ -376,6 +376,36 @@ function watchNavbarClicks() {
     };
   });
 
+//     CLICKED SHUL UPDATE ICON
+  $('#js-shovel-icon').click(event => {
+    event.preventDefault();
+
+    if (storage_data.access_level <= 1) {
+      return;
+    };
+
+    if (storage_data.access_level === 3) {
+      if (storage_data.shul_id) {
+        storage_data.action = "update";
+        storage_data.target = "shul";
+        setLocalStorage();
+        window.location.href = "shul-steps.html";
+      };
+    };
+
+    if (storage_data.access_level >= 5) {
+      if (storage_data.shul_id) {
+        storage_data.action = "update";
+        storage_data.target = "shul";
+        setLocalStorage();
+        window.location.href = "shul-steps.html";
+      } else {
+        let route = '/shul-all';
+        getShulData (route);
+      };
+    };
+  });
+
 //     CLICKED MEMBER ICON
   $('#js-member-icon').click(event => {
     event.preventDefault();
@@ -1017,7 +1047,7 @@ function renderServicesList(result) {
   result.map(function(oneService) {
     if (oneService.shulId) {
 
-      let when = oneService.when.parsha + " " + oneService.when.year;
+      let when = oneService.parsha + " " + oneService.year;
       let date = new Date(oneService.dateEnglish);
       let formattedDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
       let kohen = oneService.aliyosShacharis.kohen.member || " ";
@@ -1095,7 +1125,7 @@ function renderServicesData(services) {
 
   storage_data.services_id = services._id;
 
-  let when = services.when.parsha + " " + services.when.year;
+  let when = "Parshas " + services.parsha + ", " + services.year;
   let date = new Date(services.dateEnglish);
   let formattedDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
 
