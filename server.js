@@ -57,6 +57,19 @@ app.get("/", (req, res) => {
 //   GET
 // --------------
 
+// get user by ID
+app.get("/user-byid/:id", (req, res) => {
+  User
+    .findById(req.params.id)
+    .then((users)=>{
+      res.status(201).json(user);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({error: 'something went wrong with GET_User_by_ID'});
+    });
+});
+
 // check if user already exists
 app.get('/user/:email', (req, res) => {
   User
