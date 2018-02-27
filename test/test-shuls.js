@@ -97,23 +97,6 @@ describe('USER and SHUL endpoints', function() {
       });
   });
 
-  it('should delete a User by ID', function() {
-    return chai.request(app)
-      .delete(`/user/${USER_ID}`)
-      .then(function(res) {
-        res.should.have.status(204);
-      });
-  });
-
-  //     KEEP THIS NEW SHUL UNTIL THE END OF ALL THE TESTS....
-  // it('should delete a Shul by ID', function() {
-  //   return chai.request(app)
-  //     .delete(`/shul/${SHUL_ID}`)
-  //     .then(function(res) {
-  //       res.should.have.status(204);
-  //     });
-  // });
-
   it('should list all Users on GET', function() {
     return chai.request(app)
       .get('/user-all')
@@ -128,6 +111,14 @@ describe('USER and SHUL endpoints', function() {
           item.should.be.a('object');
           item.should.include.keys(expectedKeys);
         });
+      });
+  });
+
+  it('should delete a User by ID', function() {
+    return chai.request(app)
+      .delete(`/user/${USER_ID}`)
+      .then(function(res) {
+        res.should.have.status(204);
       });
   });
 
@@ -156,7 +147,6 @@ describe('USER and SHUL endpoints', function() {
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('array');
-        res.body.length.should.be.at.least(1);
         const expectedKeys = ['schemaType', 'adminEmail', 'name', 'called'];
         res.body.forEach(function(item) {
           item.should.be.a('object');
