@@ -137,7 +137,7 @@ function watchCloseError() {
 function getLoginCredentials(email, pw) {
 
   let route = '/user-login/';
-  let data = { "emailIn": email, "pwIn": pw};
+  let data = { "emailIn": email, "pwIn": pw };
 
   $.ajax({
     url: route,
@@ -202,7 +202,6 @@ function getLoginCredentials(email, pw) {
     })
   .fail(function(err) {
     // responseJSON   status
-
     console.log(err);
   });
 }
@@ -518,6 +517,7 @@ function getShulData (route) {
 function displayShulData(shulIdIn) {
 
   console.log('shul ID: ' + shulIdIn);
+
   let route = '/shul/' + shulIdIn;
   $.getJSON(route, function( data ) {
       if (data == 'undefined' || data == null) {
@@ -534,6 +534,7 @@ function displayShulData(shulIdIn) {
 function renderShulData(shul) {
 
   storage_data.shul_name = shul.name;
+  storage_data.shul_id = shul._id;
 
   let content = "";
 
@@ -794,6 +795,7 @@ function renderShulData(shul) {
     content = content + `</div>  </div>   `;
   };
 
+
   if (shul.notes)  {
     shulLine = `
         <div class="js-result-field">
@@ -802,10 +804,55 @@ function renderShulData(shul) {
             </div>
         </div>   `;
     content = content + shulLine;
-    };
+  };
+
+  if (storage_data.access_level >= 5) {
+    shulLine = `
+      <div id="js-delete-shul">
+        <div>
+          <input type="submit" value="Delete This Shul" class="select"  id="js-delete-button"/>
+        </div>
+      </div>   `;
+    content = content + shulLine;
+    $('#js-shul-results').off('click');
+    watchShulDelete();
+  };
 
   $('#js-shul-results').html(content);
   hideLoginRevealResults("shul");
+
+}
+
+
+function watchShulDelete() {
+
+  $( "#js-shul-results" ).on( "click", "#js-delete-shul", function( event ) {
+    event.preventDefault();
+
+    let check = confirm("Confirm permanent delete of shul: " + storage_data.shul_name + " ?");
+    if (check == false) { return; }
+
+    let route = '/shul/'+ storage_data.shul_id;
+
+    $.ajax({
+        url: route,
+        method: "DELETE",
+        success: function (data) {
+          console.log("Deleted Shul" + storage_data.shul_name);
+        },
+        error: function (data) {
+          console.log("Delete Shul FAILED: " + storage_data.shul_name + " ID: " + storage_data.shul_id);
+          console.log(err);
+        }
+    });  //  ajax call
+
+    storage_data.action = "display";
+    storage_data.target = "shul";
+    route = '/shul-all';
+    getShulData (route);
+
+  });
+
 }
 
 
@@ -1032,8 +1079,55 @@ function renderMemberData(member) {
     content = content + memberLine;
   };
 
+  memberLine = `
+    <div id="js-delete-member">
+      <div>
+        <input type="submit" value="Delete This Member" class="select"  id="js-delete-button"/>
+      </div>
+    </div>   `;
+  content = content + memberLine;
+
+  $('#js-member-results').off('click');
+  watchMemberDelete();
+
   $('#js-member-results').html(content);
   hideLoginRevealResults("member");
+}
+
+
+function watchMemberDelete() {
+
+  $( "#js-member-results" ).on( "click", "#js-delete-member", function( event ) {
+    event.preventDefault();
+
+    let check = confirm("Confirm *permanent* delete of this Member?");
+    if (check == false) { return; }
+
+    let route = '/member/'+ storage_data.member_id;
+
+    $.ajax({
+        url: route,
+        method: "DELETE",
+        success: function (data) {
+          console.log("Deleted Member" + storage_data.member_id);
+        },
+        error: function (data) {
+          console.log("Delete Member FAILED! ID: " + storage_data.member_id);
+          console.log(err);
+        }
+    });  //  ajax call
+
+    storage_data.action = "display";
+    storage_data.target = "member";
+    if (storage_data.shul_id) {
+      let route = '/member-all/' + storage_data.shul_id;
+      $.getJSON(route, function( data ) {
+          renderMemberList(data);
+      });
+    }
+
+  });
+
 }
 
 
@@ -1251,8 +1345,57 @@ function renderServicesData(services) {
         `;
     content = content + servicesLine;
   };
+
+  servicesLine = `
+    <div id="js-delete-services">
+      <div>
+        <input type="submit" value="Delete This Services" class="select"  id="js-delete-button"/>
+      </div>
+    </div>   `;
+
+  content = content + servicesLine;
+
+  $('#js-services-results').off('click');
+  watchServicesDelete();
+
   $('#js-services-results').html(content);
   hideLoginRevealResults("services");
+}
+
+
+function watchServicesDelete() {
+
+  $( "#js-services-results" ).on( "click", "#js-delete-services", function( event ) {
+    event.preventDefault();
+
+    let check = confirm("Confirm *permanent* delete of this Services instance?");
+    if (check == false) { return; }
+
+    let route = '/services/'+ storage_data.services_id;
+
+    $.ajax({
+        url: route,
+        method: "DELETE",
+        success: function (data) {
+          console.log("Deleted Services" + storage_data.services_id);
+        },
+        error: function (data) {
+          console.log("Delete Services FAILED! ID: " + storage_data.services_id);
+          console.log(err);
+        }
+    });  //  ajax call
+
+    storage_data.action = "display";
+    storage_data.target = "services";
+    if (storage_data.shul_id) {
+      let route = '/services-all/' + storage_data.shul_id;
+      $.getJSON(route, function( data ) {
+          renderServicesList(data);
+      });
+    }
+
+  });
+
 }
 
 

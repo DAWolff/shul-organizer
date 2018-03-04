@@ -235,6 +235,12 @@ input::placeholder {
   box-shadow: 0 3px 1px #0f608c, 0 3px 1px #0f608c;
 }
 
+#js-delete-button {
+  margin: 2%;
+  margin-left: 45%;
+  height: 55px;
+}
+
 .expand {
   height: auto;
   min-height: 100% !important;
