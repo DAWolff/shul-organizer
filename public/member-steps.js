@@ -267,8 +267,14 @@ function watchUpdateSubmit() {
 			member_document.levi = false;
 		}
 
+		let cell = $("input[name='cell']").val().trim();
+
+		if (isNaN(cell)) {
+			cell = 0;
+		}
+
 		member_document.contactInfo.eMail = $("input[name='email']").val().trim();
-		member_document.contactInfo.cellPhone = $("input[name='cell']").val().trim();
+		member_document.contactInfo.cellPhone = cell;
 		member_document.contactInfo.homeAddress.street = $("input[name='street']").val().trim();
 		member_document.contactInfo.homeAddress.city = $("input[name='city']").val().trim();
 		member_document.contactInfo.homeAddress.state = $("input[name='state']").val().trim();
