@@ -308,3 +308,20 @@ float: right;
 .dropdown:hover .dropbtn {
     background-color: Azure;
 }
+
+@media (max-width: 770px) {
+	#msform, fieldset {
+		width: 100%;
+		margin: 0;
+	}
+	#js-error-txt {
+		font-size: .7em;
+	}
+	#progressbar {
+		display: none;
+	}
+	.icons {
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+}

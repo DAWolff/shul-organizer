@@ -12,7 +12,7 @@ body {
 }
 
 ul,li { list-style-type: none;
-        list-style-position:inside;
+        list-style-position: inside;
         margin:0;
         padding:0;
 }
@@ -40,11 +40,11 @@ h2 {
   border-radius: 5px;
   margin-right: 2%;
   height: 80vh;
-
 }
 
 .icons {
   padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .tooltip {
@@ -79,8 +79,8 @@ h2 {
 }
 
 #js-navbar ul {
-margin: 0px;
-padding: 0px;
+margin: 0;
+padding: 0;
 float: right;
 }
 
@@ -127,6 +127,7 @@ float: right;
   font-size: 1em;
   padding-bottom: 10px;
   line-height: 25px;
+  word-wrap: break-word;
 }
 
 form {
@@ -280,4 +281,50 @@ input::placeholder {
 
 .closebtn:hover {
     color: black;
+}
+
+@media (max-width: 770px) {
+  /* Selectors and styles affecting screens UP TO 770px */
+  html {
+    width: 100vw;
+  }
+
+  #js-navbar li {
+    list-style-type: none;
+    display: inline;
+    margin: 0;
+  }
+
+  .icons {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  #js-login-container {
+    margin: 0;
+    padding-top: 10px;
+    width: 100vw;
+  }
+
+  .imge {
+    /*background-image: url(images/aron-hakodesh.jpg);*/
+    /*background-image: url(images/spanish.jpg);*/
+    /*background-image: url(images/curacas.jpg);*/
+    background-image: url(images/touro-synagogue-national-historic-site-1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    margin: 0;
+    margin-top: 10px;
+    /* height: 80vh; */
+    width: 100vw;
+  }
+
+  .row, .col-3, .col-4, .col-12 {
+    clear: both;
+  }
+
+  .js-result-content {
+    font-size: 1em;
+  }
 }

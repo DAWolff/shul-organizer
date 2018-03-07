@@ -116,8 +116,8 @@ To facilitate the running of a Shul by providing a database and CRUD operations 
 
 ## Installation
 
-Project is at GitHub Pages:
-		 https://dawolff.github.io/shul-organizer/
+<!-- Project is at GitHub Pages:
+		 https://dawolff.github.io/shul-organizer/ -->
 
 Code is at GitHub:
 		 https://github.com/DAWolff/shul-organizer.git

@@ -10,14 +10,11 @@
 
 html {
 	height: 100%;
-	/* background:
-		linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6)); */
   background-color: #B1B1B1;
   background-image: url(images/dark-wood.jpg);
   background-repeat: repeat;
   min-height: 100vh;
   color: white;
-  /* font-family: 'Roboto'; */
 }
 
 body {
@@ -296,4 +293,21 @@ float: right;
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
     background-color: Azure;
+}
+
+@media (max-width: 770px) {
+	#msform, fieldset {
+		width: 100%;
+		margin: 0;
+	}
+	#js-error-txt {
+		font-size: .7em;
+	}
+	#progressbar {
+		display: none;
+	}
+	.icons {
+		padding: 10px;
+		margin-bottom: 10px;
+	}
 }
