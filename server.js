@@ -530,9 +530,7 @@ function runServer(databaseUrl=DATABASE_URL, port=PORT) {
   });
 }
 
-// like `runServer`, this function also needs to return a promise.
-// `server.close` does not return a promise on its own, so we manually
-// create one.
+
 function closeServer() {
   return mongoose.disconnect().then(() => {
      return new Promise((resolve, reject) => {
