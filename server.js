@@ -20,9 +20,6 @@ const {Shul} = require('./models/shuls-model.js');
 const {Member} = require('./models/members-model.js');
 const {Services} = require('./models/services-model.js');
 
-// var moment = require('moment');
-// var fomatted_date = moment(photo.date_published).format('YYYY-DD-MM');
-
 // **********************************
 //  home / landing page
 // **********************************

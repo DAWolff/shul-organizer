@@ -7,6 +7,8 @@ To log in, use:
 User:  george@gmail.com
 PW:    george
 
+OR register a new user/Shul 
+
 ## Synopsis
 
 The 'Shul Organizer' enables a Gabbai (Synagogue sexton) to record important information needed to organize and run a Shul (Synagogue).  Data is kept in three collections:  
