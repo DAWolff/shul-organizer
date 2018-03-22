@@ -94,10 +94,10 @@ $(".next").click (function() {
 			//3. increase opacity of next_fs to 1 as it moves in
 			opacity = 1 - now;
 			current_fs.css({
-        'transform': 'scale('+scale+')',
-        'position': 'absolute'
+        "transform": "scale('+scale+')",
+        "position": "absolute"
       });
-			next_fs.css({'left': left, 'opacity': opacity});
+			next_fs.css({"left": left, "opacity": opacity});
 		},
 		duration: 800,
 		complete: function(){
@@ -130,8 +130,8 @@ $(".previous").click (function() {
 			left = ((1-now) * 50)+"%";
 			//3. increase opacity of previous_fs to 1 as it moves in
 			opacity = 1 - now;
-			current_fs.css({'left': left});
-			previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+			current_fs.css({"left": left});
+			previous_fs.css({"transform": "scale('+scale+')", "opacity": opacity});
 		},
 		duration: 800,
 		complete: function(){
@@ -146,11 +146,11 @@ $("#add-official").click (function() {
 
 		event.preventDefault();
 		let count = $("#officials div").length;  // officials already on the Page
-		let offtitle = '#offtitle0';
-		let offpersn = '#offpersn0';
+		let offtitle = "#offtitle0";
+		let offpersn = "#offpersn0";
 		if ( count > 0 ) {
-			offtitle = '#offtitle' + (count -1);
-			offpersn = '#offpersn' + (count -1);
+			offtitle = "#offtitle" + (count -1);
+			offpersn = "#offpersn" + (count -1);
 		};
 		let titleval = $(offtitle).val();
 		let persnval = $(offpersn).val();
@@ -159,9 +159,9 @@ $("#add-official").click (function() {
 		} else {
 			return
 		};
-		offtitle = 'offtitle' + count;
-		offpersn = 'offpersn' + count;
-		$('#officials').append( `
+		offtitle = "offtitle" + count;
+		offpersn = "offpersn" + count;
+		$("#officials").append( `
 		 <div class="onerow">
 			 <input type="text" id="${offtitle}" placeholder="Title" />
 			 <input type="text" id="${offpersn}" placeholder="Person" />
@@ -175,12 +175,12 @@ function requiredFieldsValid() {
 	let email = $("input[name='admin']").val().trim();
 
 	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-		if ( ! $('#js-error-alert').hasClass("hide") ) {
-			$('#js-error-alert').addClass("hide");
+		if ( ! $("#js-error-alert").hasClass("hide") ) {
+			$("#js-error-alert").addClass("hide");
 		}
 	} else {
-		$('#js-error-txt').text("Email invalid or missing.  Please correct");
-		$('#js-error-alert').removeClass("hide");
+		$("#js-error-txt").text("Email invalid or missing.  Please correct");
+		$("#js-error-alert").removeClass("hide");
 		watchCloseError();
 		return false;
 	};
@@ -188,8 +188,8 @@ function requiredFieldsValid() {
 	let name = $("input[name='name']").val().trim();
 	let called = $("input[name='called']").val().trim();
 	if (!(name.length > 2) || !called) {
-		$('#js-error-txt').text("Shul Name & Nickname are required!");
-		$('#js-error-alert').removeClass("hide");
+		$("#js-error-txt").text("Shul Name & Nickname are required!");
+		$("#js-error-alert").removeClass("hide");
 		watchCloseError();
 		return false;
 	}
@@ -199,9 +199,9 @@ function requiredFieldsValid() {
 
 function watchCloseError() {
 
-  $('#js-error-alert').click(event => {
+  $("#js-error-alert").click(event => {
     event.preventDefault();
-    $('#js-error-alert').addClass("hide");
+    $("#js-error-alert").addClass("hide");
   });
 }
 
@@ -210,13 +210,13 @@ $("#add-event").click (function() {
 
 		event.preventDefault();
 		let count = $("#events div").length;    // events already on the Page
-		let evlabl = '#evlabl0';
-		let evdesc = '#evdesc0';
-		let evdate = '#evdate0';
+		let evlabl = "#evlabl0";
+		let evdesc = "#evdesc0";
+		let evdate = "#evdate0";
 		if ( count > 0 ) {
-			evlabl = '#evlabl' + (count -1);
-			evdesc = '#evdesc' + (count -1);
-			evdate = '#evdate' + (count -1);
+			evlabl = "#evlabl" + (count -1);
+			evdesc = "#evdesc" + (count -1);
+			evdate = "#evdate" + (count -1);
 		};
 		let lablval = $(evlabl).val();
 		let descval = $(evdesc).val();
@@ -226,10 +226,10 @@ $("#add-event").click (function() {
 		} else {
 			return
 		};
-		evlabl = 'evlabl' + count;
-		evdesc = 'evdesc' + count;
-		evdate = 'evdate' + count;
-		$('#events').append ( `
+		evlabl = "evlabl" + count;
+		evdesc = "evdesc" + count;
+		evdate = "evdate" + count;
+		$("#events").append ( `
 			<div class="onerow">
 				<textarea class="label" id="${evlabl}" placeholder="Event Name"></textarea>
 				<textarea class="desc" id="${evdesc}" placeholder="Event Description"></textarea>
@@ -271,8 +271,8 @@ function watchUpdateSubmit() {
 			let persnId = "";
 			let boardStr = '{"board": [';
 			for (var i = 0; i < count; i++) {
-				let titleId = '#offtitle' + i;
-				let persnId = '#offpersn' + i;
+				let titleId = "#offtitle" + i;
+				let persnId = "#offpersn" + i;
 				title = $(titleId).val().trim();
 				person = $(persnId).val().trim();
 				boardStr = boardStr + '{"title":' + '"' + title + '"'
@@ -311,9 +311,9 @@ function watchUpdateSubmit() {
 			let dat = "";
 			let eventStr = '{"events": [';
 			for (var i = 0; i < count; i++) {
-				let evlabl = '#evlabl' + i;
-				let evdesc = '#evdesc' + i;
-				let evdate = '#evdate' + i;
+				let evlabl = "#evlabl" + i;
+				let evdesc = "#evdesc" + i;
+				let evdate = "#evdate" + i;
 				label = $(evlabl).val().trim();
 				desc = $(evdesc).val().trim();
 				dat = $(evdate).val().trim();
@@ -332,8 +332,6 @@ function watchUpdateSubmit() {
 		};   // count > 0
 
 		shul_document.notes = $("#notes").val().trim();
-
-		console.log(shul_document);
 
 		updateShulDocument(storage_data.shul_id);
 
@@ -365,9 +363,9 @@ function displayShulData(data) {
 		 for (var j in data.board) {
 			 let title = data.board[j].title;
 			 let person = data.board[j].person;
-			 let offtitle = 'offtitle' + j;
-			 let offpersn = 'offpersn' + j;
-			 $('#officials').append( `
+			 let offtitle = "offtitle" + j;
+			 let offpersn = "offpersn" + j;
+			 $("#officials").append( `
 				<div class="onerow">
 	        <input type="text" id="${offtitle}" placeholder="Title" value="${title}"/>
 	        <input type="text" id="${offpersn}" placeholder="Person" value="${person}"/>
@@ -375,7 +373,7 @@ function displayShulData(data) {
 			 `);
 		 };
 	 } else {
-		 $('#officials').append( `
+		 $("#officials").append( `
 			<div class="onerow">
 				<input type="text" id="offtitle0" placeholder="Title"/>
 				<input type="text" id="offpersn0" placeholder="Person"/>
@@ -400,7 +398,7 @@ function displayShulData(data) {
 	 $("input[name='sushach3']").val(data.sundayLegalHoliday.shacharis3);
 
 	 if (data.events.length === 0) {
-		 $('#events').append(
+		 $("#events").append(
 			 `
 			 <div class="onerow">
 				 <textarea class="label" id="evlabl0" placeholder="Event Name"></textarea>
@@ -413,10 +411,10 @@ function displayShulData(data) {
 			 let label = data.events[k].label;
 			 let desc = data.events[k].desc;
 			 let date = data.events[k].date;
-			 let evlabl = 'evlabl' + k;
-			 let evdesc = 'evdesc' + k;
-			 let evdate = 'evdate' + k;
-			 $('#events').append ( `
+			 let evlabl = "evlabl" + k;
+			 let evdesc = "evdesc" + k;
+			 let evdate = "evdate" + k;
+			 $("#events").append ( `
 				 <div class="onerow">
 				   <textarea class="label" id="${evlabl}" placeholder="Event Name">${label}</textarea>
 				   <textarea class="desc" id="${evdesc}"  placeholder="Event Description">${desc}</textarea>
@@ -434,11 +432,11 @@ function displayShulData(data) {
 
 function watchPublicSelect() {
 
-	$('#pub-yes').click(event => {
+	$("#pub-yes").click(event => {
     event.preventDefault();
 		$("input[name='public']").val("Public");
 	});
-	$('#pub-no').click(event => {
+	$("#pub-no").click(event => {
 		event.preventDefault();
 		$("input[name='public']").val("Not Public");
 	});
@@ -447,14 +445,13 @@ function watchPublicSelect() {
 
 function getShulData(shulIdIn) {
 
-  console.log('shul ID: ' + shulIdIn);
-  let route = '/shul/' + shulIdIn;
+  let route = "/shul/" + shulIdIn;
   $.getJSON(route, function( data ) {
-      if (data == 'undefined' || data == null) {
-          console.log('could not find shulID:' + shulIdIn);
+      if (data == "undefined" || data == null) {
+          console.log("could not find shulID:" + shulIdIn);
           return;
       };
-      if (data.schemaType === 'shul') {
+      if (data.schemaType === "shul") {
 					let merge = Object.assign(shul_document, data);
 				  shul_document = merge;
           displayShulData(shul_document);
@@ -472,15 +469,14 @@ function updateShulDocument(shulId) {
 		return;
 	}
 
-	let route = '/shul/' + shulId;
+	let route = "/shul/" + shulId;
   let data = shul_document;
 
 	$.ajax({
 	   url: route,
 	   data: data,
-	   dataType: 'json',
+	   dataType: "json",
 	   success: function(shul) {
-			  console.log("successful update for Shul-Id: " + shulId);
  				storage_data.logged_in = true;
  				storage_data.target = "shul";
  				storage_data.action = "display";
@@ -491,7 +487,7 @@ function updateShulDocument(shulId) {
 		 error: function() {
 			 console.log("Update failed for Shul-Id: " + shulId);
 		 },
-	   type: 'PUT'
+	   type: "PUT"
 	});
 }
 
@@ -519,7 +515,7 @@ function watchNavbarClicks() {
 	};
 
 	//     CLICKED SHUL ICON
-  $('#js-shul-icon').click(event => {
+  $("#js-shul-icon").click(event => {
     event.preventDefault();
 
     if (storage_data.access_level === 3) {
@@ -551,7 +547,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED MEMBER ICON
-  $('#js-member-icon').click(event => {
+  $("#js-member-icon").click(event => {
     event.preventDefault();
     if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
 			if (storage_data.shul_id) {
@@ -574,7 +570,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED MEMBER UPDATE ICON
-	$('#js-member-upd-icon').click(event => {
+	$("#js-member-upd-icon").click(event => {
 		event.preventDefault();
     if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
 			if (storage_data.shul_id) {
@@ -597,7 +593,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED SERVICES ICON
-  $('#js-services-icon').click(event => {
+  $("#js-services-icon").click(event => {
     event.preventDefault();
 		if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
 			if (storage_data.shul_id) {
@@ -620,7 +616,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED SERVICES UPD ICON
-	$('#js-services-upd-icon').click(event => {
+	$("#js-services-upd-icon").click(event => {
 		event.preventDefault();
 		if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
 			if (storage_data.shul_id) {
@@ -647,7 +643,7 @@ function watchNavbarClicks() {
 
 function getLocalStorage() {
 
-  if ( !storageAvailable('sessionStorage') ) {
+  if ( !storageAvailable("sessionStorage") ) {
     alert("No local storage available!  Many functions will not work....");
 		window.location.href = "index.html";
 	};
@@ -710,7 +706,7 @@ function getLocalStorage() {
 
 function setLocalStorage() {
 
-  if (storageAvailable('sessionStorage')) {
+  if (storageAvailable("sessionStorage")) {
     sessionStorage.setItem("local_storage", JSON.stringify(storage_data));
   } else {
     alert("No local storage available!  Many functions will not work....");
@@ -721,7 +717,7 @@ function setLocalStorage() {
 function storageAvailable(type) {
     try {
         var storage = window[type],
-            x = '__storage_test__';
+            x = "__storage_test__";
         storage.setItem(x, x);
         storage.removeItem(x);
         return true;
@@ -734,9 +730,9 @@ function storageAvailable(type) {
             e.code === 1014 ||
             // test name field too, because code might not be present
             // everything except Firefox
-            e.name === 'QuotaExceededError' ||
+            e.name === "QuotaExceededError" ||
             // Firefox
-            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
             // acknowledge QuotaExceededError only if there's something already stored
             storage.length !== 0;
     }

@@ -66,10 +66,6 @@ const servicesSchema = mongoose.Schema({
   notes: String
 });
 
-// servicesSchema.virtual('memberAddress').get(function() {
-//   return `${this.address.street} ${this.address.city}, ${this.address.state}  ${this.address.zip}`
-//   .trim()});
-
 servicesSchema.methods.apiRepr = function() {
   return {
     id: this._id,

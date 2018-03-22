@@ -1,4 +1,4 @@
-'use strict'
+"use strict"
 
 var storage_data = {
   "user_email": "",
@@ -15,7 +15,7 @@ var storage_data = {
 
 function getLocalStorage() {
 
-  if (storageAvailable('sessionStorage')) {
+  if (storageAvailable("sessionStorage")) {
     let data = sessionStorage.getItem("local_storage");
     console.log(data);
     if (data) {
@@ -25,23 +25,23 @@ function getLocalStorage() {
 
         switch (storage_data.target) {
 
-          case 'shul':
+          case "shul":
             if (storage_data.action === "display"  &&  storage_data.shul_id) {
               displayShulData(storage_data.shul_id);
             } else {
               if (storage_data.action === "display-all") {
-                let route = '/shul-all';
+                let route = "/shul-all";
                 getShulData (route);
               }
             };
             break;
 
-          case 'member':
+          case "member":
             if (storage_data.action === "display" && storage_data.member_id) {
               displayMemberData(storage_data.member_id);
             } else {
               if (storage_data.action === "display-all") {
-                let route = '/member-all/' + storage_data.shul_id;
+                let route = "/member-all/" + storage_data.shul_id;
                 $.getJSON(route, function( data ) {
                     renderMemberList(data);
                 });
@@ -49,12 +49,12 @@ function getLocalStorage() {
             };
             break;
 
-          case 'services':
+          case "services":
             if (storage_data.action === "display") {
               displayServicesData(storage_data.services_id)
             } else {
               if (storage_data.action === "display-all") {
-                let route = '/services-all/' + storage_data.shul_id ;
+                let route = "/services-all/" + storage_data.shul_id ;
                 $.getJSON(route, function( data ) {
                     renderServicesList(data);
                 });
@@ -80,7 +80,7 @@ function getLocalStorage() {
 
 function setLocalStorage() {
 
-  if (storageAvailable('sessionStorage')) {
+  if (storageAvailable("sessionStorage")) {
     sessionStorage.setItem("local_storage", JSON.stringify(storage_data));
   } else {
     alert("No local storage available!  Many functions will not work....");
@@ -91,16 +91,16 @@ function setLocalStorage() {
 
 function watchLoginSubmit() {
 
-  $('#js-login').click(event => {
+  $("#js-login").click(event => {
     event.preventDefault();
     // validate email format
     let email = $( "input[name='email']" ).val().trim();
     if (validateEmail(email)) {
-      if ( ! $('#js-email-error').hasClass("hide") )
-        $('#js-email-error').addClass("hide");
+      if ( ! $("#js-email-error").hasClass("hide") )
+        $("#js-email-error").addClass("hide");
     } else {
-      $('#js-email-error').removeClass("hide");
-      $('#js-login-container').height("65vh");
+      $("#js-email-error").removeClass("hide");
+      $("#js-login-container").height("65vh");
       watchCloseError();
       return;
     };
@@ -109,8 +109,8 @@ function watchLoginSubmit() {
     if (pw && pw.length > 5)
       getLoginCredentials(email, pw);
     else {
-      $('#js-pw-error').removeClass("hide");
-      $('#js-login-container').height("65vh");
+      $("#js-pw-error").removeClass("hide");
+      $("#js-login-container").height("65vh");
       watchCloseError();
     };
   });
@@ -119,24 +119,24 @@ function watchLoginSubmit() {
 
 function watchCloseError() {
 
-  $('#js-email-error').click(event => {
+  $("#js-email-error").click(event => {
     event.preventDefault();
-    $('#js-email-error').addClass("hide");
+    $("#js-email-error").addClass("hide");
   });
-  $('#js-pw-error').click(event => {
+  $("#js-pw-error").click(event => {
     event.preventDefault();
-    $('#js-pw-error').addClass("hide");
+    $("#js-pw-error").addClass("hide");
   });
-  $('#js-newshul-error').click(event => {
+  $("#js-newshul-error").click(event => {
     event.preventDefault();
-    $('#js-newshul-error').addClass("hide");
+    $("#js-newshul-error").addClass("hide");
   });
 }
 
 
 function getLoginCredentials(email, pw) {
 
-  let route = '/user-login/';
+  let route = "/user-login/";
   let data = { "emailIn": email, "pwIn": pw };
 
   $.ajax({
@@ -147,26 +147,25 @@ function getLoginCredentials(email, pw) {
     dataType: "json",
     contentType: "application/json" })
     .done (function( user ) {
-      console.log(user);
       if (user.error) {
-        if (user.error.type === 'user') {
-          $('#js-email-error-txt').text(user.error.msg);
-          $('#js-email-error').removeClass("hide");
-          $('#js-login-container').height("65vh");
+        if (user.error.type === "user") {
+          $("#js-email-error-txt").text(user.error.msg);
+          $("#js-email-error").removeClass("hide");
+          $("#js-login-container").height("65vh");
           watchCloseError();
           return;
         }
-        if (user.error.type === 'password') {
-          $('#js-pw-error-txt').text(user.error.msg);
-          $('#js-pw-error').removeClass("hide");
-          $('#js-login-container').height("65vh");
+        if (user.error.type === "password") {
+          $("#js-pw-error-txt").text(user.error.msg);
+          $("#js-pw-error").removeClass("hide");
+          $("#js-login-container").height("65vh");
           watchCloseError();
           return;
         }
         console.log("Error type: " + user.error.type + " Msg: " + user.error.msg )
-        $('#js-email-error-txt').text("Login failed.  Unknown error- notify admin");
-        $('#js-email-error').removeClass("hide");
-        $('#js-login-container').height("65vh");
+        $("#js-email-error-txt").text("Login failed.  Unknown error- notify admin");
+        $("#js-email-error").removeClass("hide");
+        $("#js-login-container").height("65vh");
         watchCloseError();
         return;
       };
@@ -183,7 +182,7 @@ function getLoginCredentials(email, pw) {
           if (storage_data.shul_id) {
             displayShulData(storage_data.shul_id);
           } else {
-            let route = '/shul-all-public';
+            let route = "/shul-all-public";
             getShulData (route);
           };
         };
@@ -194,7 +193,7 @@ function getLoginCredentials(email, pw) {
 
         if (storage_data.access_level >= 5) {
           storage_data.shul_id = "";
-          let route = '/shul-all';
+          let route = "/shul-all";
           getShulData (route);
         };
 
@@ -209,26 +208,26 @@ function getLoginCredentials(email, pw) {
 
 function watchRegisterSubmit() {
 
-  $('#js-register').click(event => {
+  $("#js-register").click(event => {
     event.preventDefault();
-    $('#js-login-container').height("73vh");
+    $("#js-login-container").height("73vh");
     var email = "";
     var pw = "";
 
     // close any validation errors and start over from the top...
-    if ( ! $('#js-email-error').hasClass("hide") )
-      $('#js-email-error').addClass("hide");
-    if ( ! $('#js-pw-error').hasClass("hide") )
-      $('#js-pw-error').addClass("hide");
-    if ( ! $('#js-newshul-error').hasClass("hide") )
-      $('#js-newshul-error').addClass("hide");
+    if ( ! $("#js-email-error").hasClass("hide") )
+      $("#js-email-error").addClass("hide");
+    if ( ! $("#js-pw-error").hasClass("hide") )
+      $("#js-pw-error").addClass("hide");
+    if ( ! $("#js-newshul-error").hasClass("hide") )
+      $("#js-newshul-error").addClass("hide");
 
     // validate email format
     email = $( "input[name='email']" ).val().trim();
     if ( ! validateEmail(email) ) {
-      $('#js-email-error-txt').text("User ID must be valid email format");
-      $('#js-email-error').removeClass("hide");
-      $('#js-login-container').height("80vh");
+      $("#js-email-error-txt").text("User ID must be valid email format");
+      $("#js-email-error").removeClass("hide");
+      $("#js-login-container").height("80vh");
       watchCloseError();
       return;
     };
@@ -237,9 +236,9 @@ function watchRegisterSubmit() {
     pw =  $( "input[name='pw']" ).val().trim();
     if (pw && pw.length > 5) { }
     else {
-      $('#js-pw-error-txt').text("Password is invalid");
-      $('#js-pw-error').removeClass("hide");
-      $('#js-login-container').height("80vh");
+      $("#js-pw-error-txt").text("Password is invalid");
+      $("#js-pw-error").removeClass("hide");
+      $("#js-login-container").height("80vh");
       watchCloseError();
       return;
     };
@@ -251,23 +250,23 @@ function watchRegisterSubmit() {
 
     if (shulName.length > 2 && shulCalled) { }
     else {
-      $('#js-newshul-error').removeClass("hide");
-      $('#js-login-container').height("80vh");
+      $("#js-newshul-error").removeClass("hide");
+      $("#js-login-container").height("80vh");
       watchCloseError();
       return;
     };
 
     // verify user does not already exist
-    let route = '/user/' + email;
+    let route = "/user/" + email;
     $.getJSON(route, function( response ) {
       if (response.message === "User is not registered") {
         registerNewGabbaiAndShul(email, pw, shulName, shulCalled);
       } else {
         if (response.error) {
-          if (response.error.type === 'user') {
-            $('#js-email-error-txt').text(`${response.error.msg}`);
-            $('#js-email-error').removeClass("hide");
-            $('#js-login-container').height("80vh");
+          if (response.error.type === "user") {
+            $("#js-email-error-txt").text(`${response.error.msg}`);
+            $("#js-email-error").removeClass("hide");
+            $("#js-login-container").height("80vh");
             watchCloseError();
             return;
           };
@@ -275,10 +274,10 @@ function watchRegisterSubmit() {
       };
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-      console.log('getJSON find User failed! ' + textStatus);
-      $('#js-email-error-txt').text("getJSON find User failed!");
-      $('#js-email-error').removeClass("hide");
-      $('#js-login-container').height("80vh");
+      console.log("getJSON find User failed! " + textStatus);
+      $("#js-email-error-txt").text("getJSON find User failed!");
+      $("#js-email-error").removeClass("hide");
+      $("#js-login-container").height("80vh");
       watchCloseError();
       return;
     });
@@ -288,7 +287,7 @@ function watchRegisterSubmit() {
 
 function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
 
-  let route = '/newUserShul';
+  let route = "/newUserShul";
   let body = { "email": email,
                "pw": pw,
                "name": shulName,
@@ -321,21 +320,21 @@ function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
 function watchNewUserClick() {
 
   //  expand login area to include shul information
-  $('#js-new-shul').click(event => {
+  $("#js-new-shul").click(event => {
     event.preventDefault();
 
     // close any validation errors and start over from the top...
-    if ( ! $('#js-email-error').hasClass("hide") )
-      $('#js-email-error').addClass("hide");
-    if ( ! $('#js-pw-error').hasClass("hide") )
-      $('#js-pw-error').addClass("hide");
-    if ( ! $('#js-newshul-error').hasClass("hide") )
-      $('#js-newshul-error').addClass("hide");
+    if ( ! $("#js-email-error").hasClass("hide") )
+      $("#js-email-error").addClass("hide");
+    if ( ! $("#js-pw-error").hasClass("hide") )
+      $("#js-pw-error").addClass("hide");
+    if ( ! $("#js-newshul-error").hasClass("hide") )
+      $("#js-newshul-error").addClass("hide");
 
-    $( "input[name='email']" ).attr('placeholder', "Gabbai's email");
-    $('#js-login-container').height("73vh");
-    $('.login').toggleClass( "hide" );
-    $('.register').toggleClass( "hide" );
+    $( "input[name='email']" ).attr("placeholder", "Gabbai's email");
+    $("#js-login-container").height("73vh");
+    $(".login").toggleClass( "hide" );
+    $(".register").toggleClass( "hide" );
   });
 }
 
@@ -349,11 +348,11 @@ function watchNavbarClicks() {
 // 5 = site admin
 
 //     CLICKED SHUL ICON
-  $('#js-shul-icon').click(event => {
+  $("#js-shul-icon").click(event => {
     event.preventDefault();
 
     if (storage_data.access_level <= 1) {
-      let route = '/shul-all-public';
+      let route = "/shul-all-public";
       getShulData (route);
     };
 
@@ -369,14 +368,14 @@ function watchNavbarClicks() {
         setLocalStorage();
         window.location.href = "shul-steps.html";
       } else {
-        let route = '/shul-all';
+        let route = "/shul-all";
         getShulData (route);
       };
     };
   });
 
 //     CLICKED SHUL UPDATE ICON
-  $('#js-shovel-icon').click(event => {
+  $("#js-shovel-icon").click(event => {
     event.preventDefault();
 
     if (storage_data.access_level <= 1) {
@@ -399,17 +398,17 @@ function watchNavbarClicks() {
         setLocalStorage();
         window.location.href = "shul-steps.html";
       } else {
-        let route = '/shul-all';
+        let route = "/shul-all";
         getShulData (route);
       };
     };
   });
 
 //     CLICKED MEMBER ICON
-  $('#js-member-icon').click(event => {
+  $("#js-member-icon").click(event => {
     event.preventDefault();
     if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
-      let route = '/member-all/' + storage_data.shul_id ;
+      let route = "/member-all/" + storage_data.shul_id ;
       $.getJSON(route, function( data ) {
           renderMemberList(data);
       });
@@ -417,7 +416,7 @@ function watchNavbarClicks() {
   });
 
 //     CLICKED MEMBER UPDATE ICON
-  $('#js-member-upd-icon').click(event => {
+  $("#js-member-upd-icon").click(event => {
     event.preventDefault();
     if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
         storage_data.action = "update";
@@ -428,11 +427,11 @@ function watchNavbarClicks() {
   });
 
 //     CLICKED SERVICES ICON
-  $('#js-services-icon').click(event => {
+  $("#js-services-icon").click(event => {
     event.preventDefault();
     if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
       if (storage_data.shul_id) {
-        let route = '/services-all/' + storage_data.shul_id ;
+        let route = "/services-all/" + storage_data.shul_id ;
         $.getJSON(route, function( data ) {
             renderServicesList(data);
         });
@@ -443,7 +442,7 @@ function watchNavbarClicks() {
   });
 
 //     CLICKED SERVICES UPD ICON
-  $('#js-services-upd-icon').click(event => {
+  $("#js-services-upd-icon").click(event => {
     event.preventDefault();
     if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
         storage_data.action = "update";
@@ -485,7 +484,7 @@ function renderShulList(result) {
     };
   });   // map
 
-  $('#js-shul-results').html(content);
+  $("#js-shul-results").html(content);
   hideLoginRevealResults("shul");
   $(watchShulSelection);
 }
@@ -516,15 +515,13 @@ function getShulData (route) {
 
 function displayShulData(shulIdIn) {
 
-  console.log('shul ID: ' + shulIdIn);
-
-  let route = '/shul/' + shulIdIn;
+  let route = "/shul/" + shulIdIn;
   $.getJSON(route, function( data ) {
-      if (data == 'undefined' || data == null) {
-          console.log('could not find shulID:' + shulIdIn);
+      if (data == "undefined" || data == null) {
+          console.log("could not find shulID:" + shulIdIn);
           return;
       };
-      if (data.schemaType === 'shul') {
+      if (data.schemaType === "shul") {
           renderShulData(data);
       };
   });
@@ -814,11 +811,11 @@ function renderShulData(shul) {
         </div>
       </div>   `;
     content = content + shulLine;
-    $('#js-shul-results').off('click');
+    $("#js-shul-results").off("click");
     watchShulDelete();
   };
 
-  $('#js-shul-results').html(content);
+  $("#js-shul-results").html(content);
   hideLoginRevealResults("shul");
 
 }
@@ -832,7 +829,7 @@ function watchShulDelete() {
     let check = confirm("Confirm permanent delete of shul: " + storage_data.shul_name + " ?");
     if (check == false) { return; }
 
-    let route = '/shul/'+ storage_data.shul_id;
+    let route = "/shul/"+ storage_data.shul_id;
 
     $.ajax({
         url: route,
@@ -848,7 +845,7 @@ function watchShulDelete() {
 
     storage_data.action = "display";
     storage_data.target = "shul";
-    route = '/shul-all';
+    route = "/shul-all";
     getShulData (route);
 
   });
@@ -888,7 +885,7 @@ function renderMemberList(result) {
 
   });   // map
 
-  $('#js-member-results').html(content);
+  $("#js-member-results").html(content);
   hideLoginRevealResults("member");
   $(watchMemberSelection);
 }
@@ -907,16 +904,15 @@ function watchMemberSelection() {
 
 function displayMemberData(memberID) {
 
-  console.log('member ID: ' + memberID);
   storage_data.member_id = memberID;
 
-  let route = '/member/' + memberID;
+  let route = "/member/" + memberID;
   $.getJSON(route, function( data ) {
-      if (data == 'undefined' || data == null) {
-          console.log('could not find memberID:' + memberID);
+      if (data == "undefined" || data == null) {
+          console.log("could not find memberID:" + memberID);
           return;
       };
-      if (data.schemaType === 'member') {
+      if (data.schemaType === "member") {
           renderMemberData(data);
       };
   });
@@ -925,7 +921,7 @@ function displayMemberData(memberID) {
 
 function renderMemberData(member) {
 
-  if (member.schemaType != 'member') {
+  if (member.schemaType != "member") {
       console.log("error in renderMemberData-invalid paramemter passed in.");
       return;
   }
@@ -1087,10 +1083,10 @@ function renderMemberData(member) {
     </div>   `;
   content = content + memberLine;
 
-  $('#js-member-results').off('click');
+  $("#js-member-results").off("click");
   watchMemberDelete();
 
-  $('#js-member-results').html(content);
+  $("#js-member-results").html(content);
   hideLoginRevealResults("member");
 }
 
@@ -1103,7 +1099,7 @@ function watchMemberDelete() {
     let check = confirm("Confirm *permanent* delete of this Member?");
     if (check == false) { return; }
 
-    let route = '/member/'+ storage_data.member_id;
+    let route = "/member/"+ storage_data.member_id;
 
     $.ajax({
         url: route,
@@ -1120,7 +1116,7 @@ function watchMemberDelete() {
     storage_data.action = "display";
     storage_data.target = "member";
     if (storage_data.shul_id) {
-      let route = '/member-all/' + storage_data.shul_id;
+      let route = "/member-all/" + storage_data.shul_id;
       $.getJSON(route, function( data ) {
           renderMemberList(data);
       });
@@ -1143,7 +1139,7 @@ function renderServicesList(result) {
 
       let when = oneService.parsha + " " + oneService.year;
       let date = new Date(oneService.dateEnglish);
-      let formattedDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+      let formattedDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
       let kohen = oneService.aliyosShacharis.kohen.member || " ";
       let levi = oneService.aliyosShacharis.levi.member || " ";
       let shlishi = oneService.aliyosShacharis.shlishi.member || " ";
@@ -1175,7 +1171,7 @@ function renderServicesList(result) {
     };
   });   // map
 
-  $('#js-services-results').html(content);
+  $("#js-services-results").html(content);
   hideLoginRevealResults("services");
   $(watchServicesSelection);
 }
@@ -1194,16 +1190,15 @@ function watchServicesSelection() {
 
 function displayServicesData(servicesID) {
 
-  console.log('services ID: ' + servicesID);
   storage_data.services_id = servicesID;
 
-  let route = '/services/' + servicesID;
+  let route = "/services/" + servicesID;
   $.getJSON(route, function( data ) {
-      if (data == 'undefined' || data == null) {
-          console.log('could not find servicesID:' + servicesID);
+      if (data == "undefined" || data == null) {
+          console.log("could not find servicesID:" + servicesID);
           return;
       };
-      if (data.schemaType === 'services') {
+      if (data.schemaType === "services") {
           renderServicesData(data);
       };
   });
@@ -1212,7 +1207,7 @@ function displayServicesData(servicesID) {
 
 function renderServicesData(services) {
 
-  if (services.schemaType != 'services') {
+  if (services.schemaType != "services") {
       console.log("error in renderServicesData--invalid object passed in.");
       return;
   };
@@ -1221,7 +1216,7 @@ function renderServicesData(services) {
 
   let when = "Parshas " + services.parsha + ", " + services.year;
   let date = new Date(services.dateEnglish);
-  let formattedDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+  let formattedDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
 
   let kabolasShabbos = services.ledDavening.kabolasShabbos || " ";
   let shacharis = services.ledDavening.shacharis || " ";
@@ -1355,10 +1350,10 @@ function renderServicesData(services) {
 
   content = content + servicesLine;
 
-  $('#js-services-results').off('click');
+  $("#js-services-results").off("click");
   watchServicesDelete();
 
-  $('#js-services-results').html(content);
+  $("#js-services-results").html(content);
   hideLoginRevealResults("services");
 }
 
@@ -1371,7 +1366,7 @@ function watchServicesDelete() {
     let check = confirm("Confirm *permanent* delete of this Services instance?");
     if (check == false) { return; }
 
-    let route = '/services/'+ storage_data.services_id;
+    let route = "/services/"+ storage_data.services_id;
 
     $.ajax({
         url: route,
@@ -1388,7 +1383,7 @@ function watchServicesDelete() {
     storage_data.action = "display";
     storage_data.target = "services";
     if (storage_data.shul_id) {
-      let route = '/services-all/' + storage_data.shul_id;
+      let route = "/services-all/" + storage_data.shul_id;
       $.getJSON(route, function( data ) {
           renderServicesList(data);
       });
@@ -1402,7 +1397,7 @@ function watchServicesDelete() {
 function formatPhone(input) {
         input = input.toString();
         // Strip all characters from the input except digits
-        input = input.replace(/\D/g,'');
+        input = input.replace(/\D/g,"");
         // Trim the remaining input to ten characters, to preserve phone number format
         input = input.substring(0,10);
         // Based upon the length of the string, we add formatting as necessary
@@ -1410,11 +1405,11 @@ function formatPhone(input) {
         if(size == 0){
                 input = input;
         }else if(size < 4){
-                input = '('+input;
+                input = "("+input;
         }else if(size < 7){
-                input = '('+input.substring(0,3)+') '+input.substring(3,6);
+                input = "("+input.substring(0,3)+") "+input.substring(3,6);
         }else{
-                input = '('+input.substring(0,3)+') '+input.substring(3,6)+'-'+input.substring(6,10);
+                input = "("+input.substring(0,3)+") "+input.substring(3,6)+"-"+input.substring(6,10);
         }
         return input;
 }
@@ -1422,45 +1417,45 @@ function formatPhone(input) {
 
 function hideLoginRevealResults(reveal) {
 
-  if ( ! $('#js-login-row').hasClass("hide") ) {
-    $('#js-login-row').addClass("hide");
+  if ( ! $("#js-login-row").hasClass("hide") ) {
+    $("#js-login-row").addClass("hide");
   };
 
   switch (reveal) {
 
-    case 'shul':
-      if ( $('#js-shul-results').hasClass("hide") ) {
-        $('#js-shul-results').removeClass("hide");
+    case "shul":
+      if ( $("#js-shul-results").hasClass("hide") ) {
+        $("#js-shul-results").removeClass("hide");
       };
-      if ( ! $('#js-member-results').hasClass("hide") ) {
-        $('#js-member-results').addClass("hide");
+      if ( ! $("#js-member-results").hasClass("hide") ) {
+        $("#js-member-results").addClass("hide");
       };
-      if ( ! $('#js-services-results').hasClass("hide") ) {
-        $('#js-services-results').addClass("hide");
-      };
-      break;
-
-    case 'member':
-      if ( $('#js-member-results').hasClass("hide") ) {
-        $('#js-member-results').removeClass("hide");
-      };
-      if ( ! $('#js-shul-results').hasClass("hide") ) {
-        $('#js-shul-results').addClass("hide");
-      };
-      if ( ! $('#js-services-results').hasClass("hide") ) {
-        $('#js-services-results').addClass("hide");
+      if ( ! $("#js-services-results").hasClass("hide") ) {
+        $("#js-services-results").addClass("hide");
       };
       break;
 
-    case 'services':
-      if ( $('#js-services-results').hasClass("hide") ) {
-        $('#js-services-results').removeClass("hide");
+    case "member":
+      if ( $("#js-member-results").hasClass("hide") ) {
+        $("#js-member-results").removeClass("hide");
       };
-      if ( ! $('#js-member-results').hasClass("hide") ) {
-        $('#js-member-results').addClass("hide");
+      if ( ! $("#js-shul-results").hasClass("hide") ) {
+        $("#js-shul-results").addClass("hide");
       };
-      if ( ! $('#js-shul-results').hasClass("hide") ) {
-        $('#js-shul-results').addClass("hide");
+      if ( ! $("#js-services-results").hasClass("hide") ) {
+        $("#js-services-results").addClass("hide");
+      };
+      break;
+
+    case "services":
+      if ( $("#js-services-results").hasClass("hide") ) {
+        $("#js-services-results").removeClass("hide");
+      };
+      if ( ! $("#js-member-results").hasClass("hide") ) {
+        $("#js-member-results").addClass("hide");
+      };
+      if ( ! $("#js-shul-results").hasClass("hide") ) {
+        $("#js-shul-results").addClass("hide");
       };
       break;
 
@@ -1480,7 +1475,7 @@ return (false);
 function storageAvailable(type) {
     try {
         var storage = window[type],
-            x = '__storage_test__';
+            x = "__storage_test__";
         storage.setItem(x, x);
         storage.removeItem(x);
         return true;
@@ -1493,9 +1488,9 @@ function storageAvailable(type) {
             e.code === 1014 ||
             // test name field too, because code might not be present
             // everything except Firefox
-            e.name === 'QuotaExceededError' ||
+            e.name === "QuotaExceededError" ||
             // Firefox
-            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
             // acknowledge QuotaExceededError only if there's something already stored
             storage.length !== 0;
     }

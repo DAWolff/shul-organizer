@@ -17,9 +17,9 @@ app.use(bodyParser);
 app.use(morgan('common'));
 chai.use(chaiHttp);
 
-var SHUL_ID = "";
-var MEMBER_ID = "";
-var SERVICES_ID = "";
+var SHUL_ID = '';
+var MEMBER_ID = '';
+var SERVICES_ID = '';
 
 describe('Homepage endpoint', function() {
 
@@ -53,7 +53,7 @@ describe('USER and SHUL endpoints', function() {
     return closeServer();
   });
 
-  let USER_ID = "";
+  let USER_ID = '';
 
   it('should add a User and Shul on POST', function() {
     const newItem = { 'email': 'test.email@gmail.com',
@@ -80,7 +80,7 @@ describe('USER and SHUL endpoints', function() {
   });
 
   it('should GET a specific User by ID and PSWD', function() {
-    let data = { "emailIn": 'test.email@gmail.com', "pwIn": 'thisismypw1234'};
+    let data = { 'emailIn': 'test.email@gmail.com', 'pwIn': 'thisismypw1234'};
     return chai.request(app)
       .post('/user-login/')
       .send(data)
@@ -101,7 +101,6 @@ describe('USER and SHUL endpoints', function() {
     return chai.request(app)
       .get('/user-all')
       .then(function(res) {
-        console.log("res body = ", JSON.stringify(res.body));
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('array');
@@ -126,7 +125,6 @@ describe('USER and SHUL endpoints', function() {
     return chai.request(app)
       .get('/shul-all')
       .then(function(res) {
-        console.log("res body = ", JSON.stringify(res.body));
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('array');
@@ -143,7 +141,6 @@ describe('USER and SHUL endpoints', function() {
     return chai.request(app)
       .get('/shul-all-public')
       .then(function(res) {
-        console.log("res body = ", JSON.stringify(res.body));
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('array');
@@ -208,7 +205,6 @@ describe('MEMBER endpoints', function() {
     return chai.request(app)
       .get(`/member-all`)
       .then(function(res) {
-        console.log("res body = ", JSON.stringify(res.body));
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('array');
@@ -225,7 +221,6 @@ describe('MEMBER endpoints', function() {
     return chai.request(app)
       .get(`/member-all/${SHUL_ID}`)
       .then(function(res) {
-        console.log("res body = ", JSON.stringify(res.body));
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('array');
@@ -256,7 +251,6 @@ describe('MEMBER endpoints', function() {
     return chai.request(app)
       .get(`/member/${MEMBER_ID}`)
       .then(function(res) {
-        console.log("res body = ", JSON.stringify(res.body));
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('object');
@@ -327,7 +321,6 @@ describe('SERVICES endpoints', function() {
     return chai.request(app)
       .get(`/services-all`)
       .then(function(res) {
-        console.log("res body = ", JSON.stringify(res.body));
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('array');
@@ -344,7 +337,6 @@ describe('SERVICES endpoints', function() {
     return chai.request(app)
       .get(`/services-all/${SHUL_ID}`)
       .then(function(res) {
-        console.log("res body = ", JSON.stringify(res.body));
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('array');
@@ -375,7 +367,6 @@ describe('SERVICES endpoints', function() {
     return chai.request(app)
       .get(`/services/${SERVICES_ID}`)
       .then(function(res) {
-        console.log("res body = ", JSON.stringify(res.body));
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('object');

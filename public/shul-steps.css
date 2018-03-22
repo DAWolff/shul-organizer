@@ -26,9 +26,9 @@ body {
 }
 
 #js-navbar ul {
-margin: 0px;
-padding: 0px;
-float: right;
+	margin: 0px;
+	padding: 0px;
+	float: right;
 }
 
 #js-navbar li {
@@ -38,30 +38,29 @@ float: right;
 }
 
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-    top: 100%;
-    left: 50%;
-    margin-left: -60px;
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+  visibility: visible;
 }
 
 /*form styles*/
@@ -79,7 +78,6 @@ float: right;
 	padding: 20px 30px;
 	width: 80%;
 	margin: 0 10%;
-
 	/*stacking fieldsets above each other*/
 	position: relative;
 }
@@ -87,7 +85,6 @@ float: right;
 #msform fieldset:not(:first-of-type) {
 	display: none;
 }
-
 #msform input::placeholder {
 	color: #FF0000;
 }
@@ -141,6 +138,7 @@ float: right;
 	color: white;
 	margin-bottom: 20px;
 }
+
 /*progressbar*/
 #progressbar {
 	margin-bottom: 30px;

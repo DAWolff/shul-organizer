@@ -17,7 +17,7 @@
   </head>
 
   <body>
-    <div  id="js-navbar" class="row">
+    <div  id="js-navbar" class="row" role="navigation">
       <div class="col-12">
         <div class="box">
           <ul>
@@ -48,7 +48,7 @@
 
 
     <!-- multistep form -->
-    <form name="memberform" id="msform" >
+    <form name="memberform" id="msform" role="form">
       <!-- progressbar -->
       <ul id="progressbar">
         <li class="active">Member Info</li>
@@ -80,7 +80,7 @@
              <a id="reg-yes">Yes</a>
              <a id="reg-no">No</a>
            </div>
-          </div>        <!-- canLeadDavening: Boolean, -->
+          </div>
           <div class="dropdown">
            <h3>Can Daven?</h3>
            <input class="dropinp flex1" type="text" name="canlead" placeholder="Can Daven?"/>
@@ -157,13 +157,13 @@
         <h3 class="fs-subtitle">Occaisions and Notes</h3>
         <input type="button" id="add-occaision" class="add action-button" value="Add Occaision" />
         <span  id="occaisions"></span>
-        <textarea id="notes" rows='3' data-min-rows='3' placeholder="Notes"></textarea>
+        <textarea id="notes" rows="3" data-min-rows="3" placeholder="Notes"></textarea>
         <input type="button" name="previous" class="previous action-button" value="Previous" />
         <input type="submit" name="submit" class="submit action-button" value="Submit" />
       </fieldset>
 
     </form>
 
-    <script src="member-steps.js" type='text/javascript'></script>
+    <script src="member-steps.js" type="text/javascript"></script>
   </body>
 </html>

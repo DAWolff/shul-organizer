@@ -17,7 +17,7 @@
   </head>
 
   <body>
-    <div  id="js-navbar" class="row">
+    <div  id="js-navbar" class="row" role="navigation">
       <div class="col-12">
         <div class="box">
           <ul>
@@ -47,7 +47,7 @@
     </div>
 
     <!-- multistep form -->
-    <form name="servicesform" id="msform" >
+    <form name="servicesform" id="msform" role="form">
 
       <!-- progressbar -->
       <ul id="progressbar">
@@ -81,7 +81,7 @@
           <input class="label disabl" type="text" disabled="disabled" value="English Date"/>
           <input class="content" type="text" name="dateng" placeholder="English Date"/>
         </div>
-        <textarea id="notes" rows='3' data-min-rows='3' placeholder="Notes"></textarea>
+        <textarea id="notes" rows="3" data-min-rows="3" placeholder="Notes"></textarea>
         <input type="button" name="next" class="next action-button" value="Next" />
       </fieldset>
 
@@ -201,6 +201,6 @@
 
     </form>
 
-    <script src="services-steps.js" type='text/javascript'></script>
+    <script src="services-steps.js" type="text/javascript"></script>
   </body>
 </html>

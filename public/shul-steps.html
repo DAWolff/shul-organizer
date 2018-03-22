@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +18,7 @@
   </head>
 
   <body>
-    <div  id="js-navbar" class="row">
+    <div  id="js-navbar" class="row" role="navigation">
       <div class="col-12">
         <div class="box">
           <ul>
@@ -47,7 +48,7 @@
     </div>
 
     <!-- multistep form -->
-    <form name="shulform" id="msform" >
+    <form name="shulform" id="msform" role="main">
       <!-- progressbar -->
       <ul id="progressbar">
         <li class="active">General Setup</li>
@@ -69,7 +70,6 @@
         <div class="onerow">
          <input class="nickname" type="text" name="called" placeholder="Shul Nickname" />
          <div class="dropdown">
-           <!-- <button class="dropbtn">Dropdown</button> -->
            <input class="dropinp label" type="text" name="public" placeholder="Info Public?"/>
            <div class="dropdown-content">
              <a id="pub-yes">Public</a>
@@ -182,13 +182,13 @@
         <h3 class="fs-subtitle">Events and Notes</h3>
         <input type="button" id="add-event" class="add action-button" value="Add Event" />
         <span  id="events"></span>
-        <textarea id="notes" rows='3' data-min-rows='3' placeholder="Notes"></textarea>
+        <textarea id="notes" rows="3" data-min-rows="3" placeholder="Notes"></textarea>
         <input type="button" name="previous" class="previous action-button" value="Previous" />
         <input type="submit" name="submit" class="submit action-button" value="Submit" />
       </fieldset>
 
     </form>
 
-    <script src="shul-steps.js" type='text/javascript'></script>
+    <script src="shul-steps.js" type="text/javascript"></script>
   </body>
 </html>

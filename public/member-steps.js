@@ -92,10 +92,10 @@ $(".next").click (function() {
 			//3. increase opacity of next_fs to 1 as it moves in
 			opacity = 1 - now;
 			current_fs.css({
-        'transform': 'scale('+scale+')',
-        'position': 'absolute'
+        "transform": "scale('+scale+')",
+        "position": "absolute"
       });
-			next_fs.css({'left': left, 'opacity': opacity});
+			next_fs.css({"left": left, "opacity": opacity});
 		},
 		duration: 800,
 		complete: function(){
@@ -128,8 +128,8 @@ $(".previous").click (function() {
 			left = ((1-now) * 50)+"%";
 			//3. increase opacity of previous_fs to 1 as it moves in
 			opacity = 1 - now;
-			current_fs.css({'left': left});
-			previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+			current_fs.css({"left": left});
+			previous_fs.css({"transform": "scale('+scale+')", "opacity": opacity});
 		},
 		duration: 800,
 		complete: function(){
@@ -145,13 +145,13 @@ $("#add-occaision").click (function() {
 		event.preventDefault();
 		let count = $("#occaisions div").length;  // occaisions already on the Page
 
-		let occname = '#occname0';
-		let occmonth = '#occmonth0';
-		let occday = '#occday0';
+		let occname = "#occname0";
+		let occmonth = "#occmonth0";
+		let occday = "#occday0";
 		if ( count > 0 ) {
-			occname = '#occname' + (count -1);
-			occmonth = '#occmonth' + (count -1);
-			occday = '#offpersn' + (count -1);
+			occname = "#occname" + (count -1);
+			occmonth = "#occmonth" + (count -1);
+			occday = "#offpersn" + (count -1);
 		};
 		let nameval = $(occname).val();
 		let monthval = $(occmonth).val();
@@ -161,10 +161,10 @@ $("#add-occaision").click (function() {
 		} else {
 			return
 		};
-		occname = 'occname' + count;
-		occmonth = 'occmonth' + count;
-		occday = 'occday' + count;
-		$('#occaisions').append( `
+		occname = "occname" + count;
+		occmonth = "occmonth" + count;
+		occday = "occday" + count;
+		$("#occaisions").append( `
 		 <div class="onerow">
 			 <input type="text" id="${occname}" placeholder="Occasion" />
 			 <input type="text" id="${occmonth}" placeholder="Month" />
@@ -182,29 +182,29 @@ function requiredFieldsValid() {
 	let familyname = $("input[name='familyname']").val().trim() || "";
 
 	if ( called.length < 2 ) {
-		$('#js-error-txt').text("Nickname is required!");
-		$('#js-error-alert').removeClass("hide");
+		$("#js-error-txt").text("Nickname is required!");
+		$("#js-error-alert").removeClass("hide");
 		watchCloseError();
 		return false;
 	}
 
 	if ( hebrewname.length < 2 ) {
-		$('#js-error-txt').text("Hebrew name is required!");
-		$('#js-error-alert').removeClass("hide");
+		$("#js-error-txt").text("Hebrew name is required!");
+		$("#js-error-alert").removeClass("hide");
 		watchCloseError();
 		return false;
 	}
 
 	if ( englishname.length < 2 ) {
-		$('#js-error-txt').text("English name is required!");
-		$('#js-error-alert').removeClass("hide");
+		$("#js-error-txt").text("English name is required!");
+		$("#js-error-alert").removeClass("hide");
 		watchCloseError();
 		return false;
 	}
 
 	if ( familyname.length < 2 ) {
-		$('#js-error-txt').text("Family name is required!");
-		$('#js-error-alert').removeClass("hide");
+		$("#js-error-txt").text("Family name is required!");
+		$("#js-error-alert").removeClass("hide");
 		watchCloseError();
 		return false;
 	}
@@ -215,9 +215,9 @@ function requiredFieldsValid() {
 
 function watchCloseError() {
 
-  $('#js-error-alert').click(event => {
+  $("#js-error-alert").click(event => {
     event.preventDefault();
-    $('#js-error-alert').addClass("hide");
+    $("#js-error-alert").addClass("hide");
   });
 }
 
@@ -228,7 +228,7 @@ function watchUpdateSubmit() {
 		event.preventDefault();
 
 		if ( ! requiredFieldsValid ) {
-			console.log("Quit watchUpdateSubmit-- required fields not valid.");
+			console.log("Quitting watchUpdateSubmit-- required fields not valid.");
 			return;
 		}
 
@@ -301,9 +301,9 @@ function watchUpdateSubmit() {
 			let day = "";
 			let occasStr = '{"occaisions": [';
 			for (var i = 0; i < count; i++) {
-				let occname = '#occname' + i;
-				let occmonth = '#occmonth' + i;
-				let occday = '#occday' + i;
+				let occname = "#occname" + i;
+				let occmonth = "#occmonth" + i;
+				let occday = "#occday" + i;
 				name = $(occname).val().trim();
 				month = $(occmonth).val().trim();
 				day = $(occday).val().trim();
@@ -321,9 +321,7 @@ function watchUpdateSubmit() {
 			member_document = merge;
 		};   // count > 0
 
-		console.log(member_document);
-
-		if (storage_data.action === 'update') {
+		if (storage_data.action === "update") {
 			updateMemberDocument(storage_data.member_id);
 		} else {
 				delete member_document["_id"];
@@ -376,7 +374,7 @@ function displayMemberData(data) {
   $("#notes").val(data.notes);
 
   if (data.occaisions.length === 0) {
-	 $('#occaisions').append(
+	 $("#occaisions").append(
 		 `
 		 <div class="onerow">
 			 <textarea class="flex1" id="occname0" placeholder="Occaision Name"></textarea>
@@ -389,10 +387,10 @@ function displayMemberData(data) {
 		 let name = data.occaisions[k].name;
 		 let month = data.occaisions[k].month;
 		 let day = data.occaisions[k].day;
-		 let occname = 'occname' + k;
-		 let occmonth = 'occmonth' + k;
-		 let occday = 'occday' + k;
-		 $('#occaisions').append ( `
+		 let occname = "occname" + k;
+		 let occmonth = "occmonth" + k;
+		 let occday = "occday" + k;
+		 $("#occaisions").append ( `
 			 <div class="onerow">
 			   <textarea class="flex1" id="${occname}" placeholder="Occaision Name">${name}</textarea>
 			   <textarea class="flex1" id="${occmonth}"  placeholder="Occaision Month">${month}</textarea>
@@ -408,38 +406,38 @@ function displayMemberData(data) {
 
 function watchBooleanSelects() {
 
-	$('#reg-yes').click(event => {
+	$("#reg-yes").click(event => {
     event.preventDefault();
 		$("input[name='regular']").val("Yes");
 	});
-	$('#reg-no').click(event => {
+	$("#reg-no").click(event => {
 		event.preventDefault();
 		$("input[name='regular']").val("No");
 	});
 
-	$('#lead-yes').click(event => {
+	$("#lead-yes").click(event => {
     event.preventDefault();
 		$("input[name='canlead']").val("Yes");
 	});
-	$('#lead-no').click(event => {
+	$("#lead-no").click(event => {
 		event.preventDefault();
 		$("input[name='canlead']").val("No");
 	});
 
-	$('#koh-yes').click(event => {
+	$("#koh-yes").click(event => {
     event.preventDefault();
 		$("input[name='kohen']").val("Yes");
 	});
-	$('#koh-no').click(event => {
+	$("#koh-no").click(event => {
 		event.preventDefault();
 		$("input[name='kohen']").val("No");
 	});
 
-	$('#lev-yes').click(event => {
+	$("#lev-yes").click(event => {
     event.preventDefault();
 		$("input[name='levi']").val("Yes");
 	});
-	$('#lev-no').click(event => {
+	$("#lev-no").click(event => {
 		event.preventDefault();
 		$("input[name='levi']").val("No");
 	});
@@ -448,15 +446,14 @@ function watchBooleanSelects() {
 
 function getMemberData(memberIdIn) {
 
-  console.log('member ID: ' + memberIdIn);
-  let route = '/member/' + memberIdIn;
+  let route = "/member/" + memberIdIn;
 
   $.getJSON(route, function( data ) {
-      if (data == 'undefined' || data == null) {
+      if (data == "undefined" || data == null) {
           console.log("could not find memberID:" + memberIdIn);
           return;
       };
-      if (data.schemaType === 'member') {
+      if (data.schemaType === "member") {
 				let merge = Object.assign(member_document, data);
 			  member_document = merge;
         displayMemberData(member_document);
@@ -474,15 +471,14 @@ function updateMemberDocument(memberId) {
 		return;
 	}
 
-	let route = '/member/' + memberId;
+	let route = "/member/" + memberId;
   let data = member_document;
 
 	$.ajax({
 	   url: route,
 	   data: data,
-	   dataType: 'json',
+	   dataType: "json",
 	   success: function(data) {
-			  console.log("successful update for Member-id: " + memberId);
  				storage_data.logged_in = true;
  				storage_data.target = "member";
  				storage_data.action = "display";
@@ -493,17 +489,15 @@ function updateMemberDocument(memberId) {
 		 error: function() {
 			 console.log("Update failed for Member-id: " + memberId);
 		 },
-	   type: 'PUT'
+	   type: "PUT"
 	});
 }
 
 
 function createMemberDocument (dataIn) {
 
-	let route = '/member/';
+	let route = "/member/";
   let data = dataIn;
-
-	console.log(JSON.stringify(dataIn));
 
   $.ajax({
     url: route,
@@ -513,8 +507,6 @@ function createMemberDocument (dataIn) {
     dataType: "json",
     contentType: "application/json" })
     .done (function( member ) {
-      console.log("New Member created:");
-      console.log(member);
 			storage_data.logged_in = true;
       storage_data.member_id = member._id;
 			storage_data.target = "member";
@@ -553,7 +545,7 @@ function watchNavbarClicks() {
 	};
 
 	//     CLICKED SHUL ICON
-  $('#js-shul-icon').click(event => {
+  $("#js-shul-icon").click(event => {
     event.preventDefault();
 
     if (storage_data.access_level === 3) {
@@ -585,7 +577,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED MEMBER ICON
-  $('#js-member-icon').click(event => {
+  $("#js-member-icon").click(event => {
     event.preventDefault();
     if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
 			if (storage_data.shul_id) {
@@ -608,7 +600,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED MEMBER UPDATE ICON
-	$('#js-member-upd-icon').click(event => {
+	$("#js-member-upd-icon").click(event => {
 		event.preventDefault();
 
 		//  if we are in update mode, switch to create mode
@@ -658,7 +650,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED SERVICES ICON
-  $('#js-services-icon').click(event => {
+  $("#js-services-icon").click(event => {
     event.preventDefault();
 		if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
 			if (storage_data.shul_id) {
@@ -681,7 +673,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED SERVICES UPD ICON
-	$('#js-services-upd-icon').click(event => {
+	$("#js-services-upd-icon").click(event => {
 		event.preventDefault();
 		if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
 			if (storage_data.shul_id) {
@@ -708,13 +700,12 @@ function watchNavbarClicks() {
 
 function getLocalStorage() {
 
-  if ( !storageAvailable('sessionStorage') ) {
+  if ( !storageAvailable("sessionStorage") ) {
     alert("No local storage available!  Many functions will not work....");
 		window.location.href = "index.html";
 	};
 
   let data = sessionStorage.getItem("local_storage");
-  console.log("local_storage:");
   console.log(data);
 
   if ( !data ) {
@@ -769,7 +760,7 @@ function getLocalStorage() {
 
 function setLocalStorage() {
 
-  if (storageAvailable('sessionStorage')) {
+  if (storageAvailable("sessionStorage")) {
     sessionStorage.setItem("local_storage", JSON.stringify(storage_data));
   } else {
     alert("No local storage available!  Many functions will not work....");
@@ -780,7 +771,7 @@ function setLocalStorage() {
 function storageAvailable(type) {
     try {
         var storage = window[type],
-            x = '__storage_test__';
+            x = "__storage_test__";
         storage.setItem(x, x);
         storage.removeItem(x);
         return true;
@@ -793,9 +784,9 @@ function storageAvailable(type) {
             e.code === 1014 ||
             // test name field too, because code might not be present
             // everything except Firefox
-            e.name === 'QuotaExceededError' ||
+            e.name === "QuotaExceededError" ||
             // Firefox
-            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
             // acknowledge QuotaExceededError only if there's something already stored
             storage.length !== 0;
     }

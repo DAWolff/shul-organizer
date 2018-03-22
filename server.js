@@ -41,7 +41,7 @@ function hashPassword (password) {
   return bcrypt.hashSync(password, 10);
 };
 
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
   initialize();
   res.status(200).sendFile(__dirname + '/public/index.html');
 });
@@ -55,7 +55,7 @@ app.get("/", (req, res) => {
 // --------------
 
 // get user by ID
-app.get("/user-byid/:id", (req, res) => {
+app.get('/user-byid/:id', (req, res) => {
   User
     .findById(req.params.id)
     .then((users)=>{
@@ -74,11 +74,11 @@ app.get('/user/:email', (req, res) => {
   .count()
   .then(count => {
             if (count > 0) {
-                res.status(207).json({error: {type: "user", msg: "Username already taken"} });
+                res.status(207).json({error: {type: 'user', msg: 'Username already taken'} });
             }
             else
               // If there is no existing user, return 200
-              res.status(200).json({message: "User is not registered"});
+              res.status(200).json({message: 'User is not registered'});
   })
   .catch(err => {
     res.status(500).json({code: 500, message: 'Internal server error'});
@@ -109,12 +109,12 @@ app.post('/user-login/', (req, res) => {
         res.status(201).json(user.apiRepr());
       }
       else {
-        res.status(206).json({error: {type: "password", msg: "Password not valid for UserID"} });
+        res.status(206).json({error: {type: 'password', msg: 'Password not valid for UserID'} });
       };
     })
     .catch(err => {
       console.error(err);
-      res.status(208).json({error: {type: "user", msg: "User is not registered"} });
+      res.status(208).json({error: {type: 'user', msg: 'User is not registered'} });
     });
 });
 
@@ -124,7 +124,7 @@ app.post ('/newUserShul', (req, res) => {
     const missingField = requiredFields.find(field => !(field in req.body));
 
     if (missingField) {
-        console.log("missing field: " + missingField);
+        console.log('missing field: ' + missingField);
         return res.status(422).json({
             code: 422,
             reason: 'ValidationError',
@@ -150,11 +150,11 @@ app.post ('/newUserShul', (req, res) => {
             accessLevel: 3
           })
           .then((newUser)=>{
-            let data = {"userId": newUser.id,
-                        "email": newUser.email,
-                        "accessLevel": newUser.accessLevel,
-                        "shulId": newUser.shulId,
-                        "shulName": newShul.name
+            let data = {'userId': newUser.id,
+                        'email': newUser.email,
+                        'accessLevel': newUser.accessLevel,
+                        'shulId': newUser.shulId,
+                        'shulName': newShul.name
                        };
             res.status(201).json(data);
           })
@@ -235,7 +235,7 @@ app.get('/shul-all-public', (req, res) => {
     });
 });
 
-app.get("/shul/:id", (req, res) => {
+app.get('/shul/:id', (req, res) => {
   Shul
     .findById(req.params.id)
     .then((shul)=>{
@@ -334,7 +334,7 @@ app.get('/member-all/:shulId', (req, res) => {
     });
 });
 
-app.get("/member/:id", (req, res) => {
+app.get('/member/:id', (req, res) => {
   Member
     .findById(req.params.id)
     .then((member)=>{
@@ -434,7 +434,7 @@ app.get('/services-all/:shulId', (req, res) => {
   });
 });
 
-app.get("/services/:id", (req, res) => {
+app.get('/services/:id', (req, res) => {
   Services
     .findById(req.params.id)
     .then((services)=>{
@@ -505,7 +505,7 @@ app.delete('/services/:id', (req, res) => {
 app.use(express.static('public'));
 
 app.use('*', function(req, res) {
-  let msg = `{ error: "Path not found: \`${req.path}\`" }`;
+  let msg = `{ error: 'Path not found: \`${req.path}\`'}`;
   res.status(404).json(msg);
 });
 

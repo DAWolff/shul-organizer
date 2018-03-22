@@ -111,10 +111,10 @@ $(".next").click (function() {
 			//3. increase opacity of next_fs to 1 as it moves in
 			opacity = 1 - now;
 			current_fs.css({
-        'transform': 'scale('+scale+')',
-        'position': 'absolute'
+        "transform": "scale('+scale+')",
+        "position": "absolute"
       });
-			next_fs.css({'left': left, 'opacity': opacity});
+			next_fs.css({"left": left, "opacity": opacity});
 		},
 		duration: 800,
 		complete: function(){
@@ -147,8 +147,8 @@ $(".previous").click (function() {
 			left = ((1-now) * 50)+"%";
 			//3. increase opacity of previous_fs to 1 as it moves in
 			opacity = 1 - now;
-			current_fs.css({'left': left});
-			previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+			current_fs.css({"left": left});
+			previous_fs.css({"transform": "scale('+scale+')", "opacity": opacity});
 		},
 		duration: 800,
 		complete: function(){
@@ -164,13 +164,13 @@ $("#add-occaision").click (function() {
 		event.preventDefault();
 		let count = $("#occaisions div").length;  // occaisions already on the Page
 
-		let occname = '#occname0';
-		let occmonth = '#occmonth0';
-		let occday = '#occday0';
+		let occname = "#occname0";
+		let occmonth = "#occmonth0";
+		let occday = "#occday0";
 		if ( count > 0 ) {
-			occname = '#occname' + (count -1);
-			occmonth = '#occmonth' + (count -1);
-			occday = '#offpersn' + (count -1);
+			occname = "#occname" + (count -1);
+			occmonth = "#occmonth" + (count -1);
+			occday = "#offpersn" + (count -1);
 		};
 		let nameval = $(occname).val();
 		let monthval = $(occmonth).val();
@@ -180,10 +180,10 @@ $("#add-occaision").click (function() {
 		} else {
 			return
 		};
-		occname = 'occname' + count;
-		occmonth = 'occmonth' + count;
-		occday = 'occday' + count;
-		$('#occaisions').append( `
+		occname = "occname" + count;
+		occmonth = "occmonth" + count;
+		occday = "occday" + count;
+		$("#occaisions").append( `
 		 <div class="onerow">
 			 <input type="text" id="${occname}" placeholder="Occasion" />
 			 <input type="text" id="${occmonth}" placeholder="Month" />
@@ -201,29 +201,29 @@ function requiredFieldsValid() {
 	let dateng = $("input[name='dateng']").val().trim() || "";
 
 	if ( servparsha.length < 2 ) {
-		$('#js-error-txt').text("Parsha name is required!");
-		$('#js-error-alert').removeClass("hide");
+		$("#js-error-txt").text("Parsha name is required!");
+		$("#js-error-alert").removeClass("hide");
 		watchCloseError();
 		return false;
 	}
 
 	if ( servyear.length < 2 ) {
-		$('#js-error-txt').text("Parsha year is required!");
-		$('#js-error-alert').removeClass("hide");
+		$("#js-error-txt").text("Parsha year is required!");
+		$("#js-error-alert").removeClass("hide");
 		watchCloseError();
 		return false;
 	}
 
 	if ( dateheb.length < 5 ) {
-		$('#js-error-txt').text("Hebrew date of services is required!");
-		$('#js-error-alert').removeClass("hide");
+		$("#js-error-txt").text("Hebrew date of services is required!");
+		$("#js-error-alert").removeClass("hide");
 		watchCloseError();
 		return false;
 	}
 
 	if ( dateng.length < 5 ) {
-		$('#js-error-txt').text("English date of services is required!");
-		$('#js-error-alert').removeClass("hide");
+		$("#js-error-txt").text("English date of services is required!");
+		$("#js-error-alert").removeClass("hide");
 		watchCloseError();
 		return false;
 	}
@@ -234,9 +234,9 @@ function requiredFieldsValid() {
 
 function watchCloseError() {
 
-  $('#js-error-alert').click(event => {
+  $("#js-error-alert").click(event => {
     event.preventDefault();
-    $('#js-error-alert').addClass("hide");
+    $("#js-error-alert").addClass("hide");
   });
 }
 
@@ -300,9 +300,7 @@ function watchUpdateSubmit() {
 
 		services_document.notes = $("#notes").val().trim();
 
-		console.log(services_document);
-
-		if (storage_data.action === 'update') {
+		if (storage_data.action === "update") {
 			updateServicesDocument(storage_data.services_id);
 		} else {
 				delete services_document["_id"];
@@ -363,11 +361,11 @@ function displayServicesData(data) {
 
 function watchBooleanSelects() {
 
-	$('#kiddush-yes').click(event => {
+	$("#kiddush-yes").click(event => {
     event.preventDefault();
 		$("input[name='kiddush']").val("Yes");
 	});
-	$('#kiddush-no').click(event => {
+	$("#kiddush-no").click(event => {
 		event.preventDefault();
 		$("input[name='kiddush']").val("No");
 	});
@@ -377,15 +375,14 @@ function watchBooleanSelects() {
 
 function getServicesData(servicesIdIn) {
 
-  console.log('services ID: ' + servicesIdIn);
-  let route = '/services/' + servicesIdIn;
+  let route = "/services/" + servicesIdIn;
 
   $.getJSON(route, function( data ) {
-      if (data == 'undefined' || data == null) {
+      if (data == "undefined" || data == null) {
           console.log("could not find servicesID:" + servicesIdIn);
           return;
       };
-      if (data.schemaType === 'services') {
+      if (data.schemaType === "services") {
 				let merge = Object.assign(services_document, data);
 			  services_document = merge;
         displayServicesData(services_document);
@@ -403,15 +400,14 @@ function updateServicesDocument(servicesId) {
 		return;
 	}
 
-	let route = '/services/' + servicesId;
+	let route = "/services/" + servicesId;
   let data = services_document;
 
 	$.ajax({
 	   url: route,
 	   data: data,
-	   dataType: 'json',
+	   dataType: "json",
 	   success: function(data) {
-			  console.log("successful update for Services-id: " + servicesId);
  				storage_data.logged_in = true;
  				storage_data.target = "services";
  				storage_data.action = "display";
@@ -422,17 +418,15 @@ function updateServicesDocument(servicesId) {
 		 error: function() {
 			 console.log("Update failed for Services-id: " + servicesId);
 		 },
-	   type: 'PUT'
+	   type: "PUT"
 	});
 }
 
 
 function createServicesDocument (dataIn) {
 
-	let route = '/services/';
+	let route = "/services/";
   let data = dataIn;
-
-	console.log(JSON.stringify(dataIn));
 
   $.ajax({
     url: route,
@@ -442,8 +436,6 @@ function createServicesDocument (dataIn) {
     dataType: "json",
     contentType: "application/json" })
     .done (function( services ) {
-      console.log("New Services Document created:");
-      console.log(services);
 			storage_data.logged_in = true;
       storage_data.services_id = services._id;
 			storage_data.target = "services";
@@ -482,7 +474,7 @@ function watchNavbarClicks() {
 	};
 
 	//     CLICKED SHUL ICON
-  $('#js-shul-icon').click(event => {
+  $("#js-shul-icon").click(event => {
     event.preventDefault();
 
     if (storage_data.access_level === 3) {
@@ -514,7 +506,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED MEMBER ICON
-  $('#js-member-icon').click(event => {
+  $("#js-member-icon").click(event => {
     event.preventDefault();
     if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
 			if (storage_data.shul_id) {
@@ -537,7 +529,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED MEMBER UPDATE ICON
-	$('#js-member-upd-icon').click(event => {
+	$("#js-member-upd-icon").click(event => {
 		event.preventDefault();
 		if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
 			if (storage_data.shul_id) {
@@ -560,7 +552,7 @@ function watchNavbarClicks() {
 	});
 
 	//     CLICKED SERVICES ICON
-  $('#js-services-icon').click(event => {
+  $("#js-services-icon").click(event => {
     event.preventDefault();
 		if (storage_data.access_level === 3 || storage_data.access_level >= 5) {
 			if (storage_data.shul_id) {
@@ -583,7 +575,7 @@ function watchNavbarClicks() {
   });
 
 	//     CLICKED SERVICES UPD ICON
-	$('#js-services-upd-icon').click(event => {
+	$("#js-services-upd-icon").click(event => {
 		event.preventDefault();
 
 		//  if we are in update mode, switch to create mode
@@ -639,7 +631,7 @@ function watchNavbarClicks() {
 
 function getLocalStorage() {
 
-  if ( !storageAvailable('sessionStorage') ) {
+  if ( !storageAvailable("sessionStorage") ) {
     alert("No local storage available!  Many functions will not work....");
 		window.location.href = "index.html";
 	};
@@ -700,7 +692,7 @@ function getLocalStorage() {
 
 function setLocalStorage() {
 
-  if (storageAvailable('sessionStorage')) {
+  if (storageAvailable("sessionStorage")) {
     sessionStorage.setItem("local_storage", JSON.stringify(storage_data));
   } else {
     alert("No local storage available!  Many functions will not work....");
@@ -711,7 +703,7 @@ function setLocalStorage() {
 function storageAvailable(type) {
     try {
         var storage = window[type],
-            x = '__storage_test__';
+            x = "__storage_test__";
         storage.setItem(x, x);
         storage.removeItem(x);
         return true;
@@ -724,9 +716,9 @@ function storageAvailable(type) {
             e.code === 1014 ||
             // test name field too, because code might not be present
             // everything except Firefox
-            e.name === 'QuotaExceededError' ||
+            e.name === "QuotaExceededError" ||
             // Firefox
-            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
             // acknowledge QuotaExceededError only if there's something already stored
             storage.length !== 0;
     }

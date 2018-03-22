@@ -7,11 +7,11 @@ To log in, use:
 User:  george@gmail.com
 PW:    george
 
-OR register a new user/Shul 
+OR register a new user/Shul
 
 ## Synopsis
 
-The 'Shul Organizer' enables a Gabbai (Synagogue sexton) to record important information needed to organize and run a Shul (Synagogue).  Data is kept in three collections:  
+The "Shul Organizer" enables a Gabbai (Synagogue sexton) to record important information needed to organize and run a Shul (Synagogue).  Data is kept in three collections:  
   1. The Shul - Official Name, address, Times of services, Shul announcements, Shul management
   2. The Members - Contact info, participation records, and occasions observed in the Shul
   3. Services - What happened on a given Shabbat or Holiday - who got which honors, etc.   
@@ -34,7 +34,7 @@ app.post ('/newUserShul', (req, res) => {
     const missingField = requiredFields.find(field => !(field in req.body));
 
     if (missingField) {
-        console.log("missing field: " + missingField);
+        console.log('missing field: ' + missingField);
         return res.status(422).json({
             code: 422,
             reason: 'ValidationError',
@@ -60,11 +60,11 @@ app.post ('/newUserShul', (req, res) => {
             accessLevel: 3
           })
           .then((newUser)=>{
-            let data = {"userId": newUser.id,
-                        "email": newUser.email,
-                        "accessLevel": newUser.accessLevel,
-                        "shulId": newUser.shulId,
-                        "shulName": newShul.name
+            let data = {'userId': newUser.id,
+                        'email': newUser.email,
+                        'accessLevel': newUser.accessLevel,
+                        'shulId': newUser.shulId,
+                        'shulName': newShul.name
                        };
             res.status(201).json(data);
           })
@@ -80,16 +80,16 @@ Module:  index.js  (client side)
 function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
 
   let route = '/newUserShul';
-  let body = { "email": email,
-               "pw": pw,
-               "name": shulName,
-               "called": shulCalled };
+  let body = { 'email': email,
+               'pw': pw,
+               'name': shulName,
+               'called': shulCalled };
 
   $.post(route, body, function ( data, status, xhr ) {
-      console.log(data.userId + " "
-                + data.email + " "
-                + data.accessLevel + " "
-                + data.shulId + " "
+      console.log(data.userId + ' '
+                + data.email + ' '
+                + data.accessLevel + ' '
+                + data.shulId + ' '
                 + data.shulName )
       storage_data.user_email = data.email;
       storage_data.access_level = data.accessLevel;
@@ -97,10 +97,10 @@ function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
       storage_data.user_id = data.userId;
       storage_data.shul_id = data.shulId;
       storage_data.shul_name = data.shulName;
-      storage_data.action = "update";
-      storage_data.target = "shul";
+      storage_data.action = 'update';
+      storage_data.target = 'shul';
       setLocalStorage();
-      window.location.href = "shul-steps.html";
+      window.location.href = 'shul-steps.html';
       })
   .fail(function(err) {
     // responseJSON   status
@@ -116,10 +116,7 @@ function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
 
 To facilitate the running of a Shul by providing a database and CRUD operations on key data.
 
-## Installation
-
-<!-- Project is at GitHub Pages:
-		 https://dawolff.github.io/shul-organizer/ -->
+## Installation=
 
 Code is at GitHub:
 		 https://github.com/DAWolff/shul-organizer.git

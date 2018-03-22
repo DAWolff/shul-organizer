@@ -15,7 +15,6 @@ html {
   background-repeat: repeat;
   min-height: 100vh;
   color: white;
-  /* font-family: 'Roboto'; */
 }
 
 body {
@@ -32,9 +31,9 @@ h3 {
 }
 
 #js-navbar ul {
-margin: 0px;
-padding: 0px;
-float: right;
+	margin: 0px;
+	padding: 0px;
+	float: right;
 }
 
 #js-navbar li {
@@ -44,30 +43,29 @@ float: right;
 }
 
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-    top: 100%;
-    left: 50%;
-    margin-left: -60px;
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+  visibility: visible;
 }
 
 /*form styles*/
@@ -85,7 +83,6 @@ float: right;
 	padding: 20px 30px;
 	width: 80%;
 	margin: 0 10%;
-
 	/*stacking fieldsets above each other*/
 	position: relative;
 }
@@ -147,6 +144,7 @@ float: right;
 	color: white;
 	margin-bottom: 20px;
 }
+
 /*progressbar*/
 #progressbar {
 	margin-bottom: 30px;
@@ -257,28 +255,28 @@ float: right;
 
 /* Style The Dropdown */
 .dropinp {
-    cursor: pointer;
+  cursor: pointer;
 }
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
 }
 /* Inside the dropdown */
 .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
@@ -288,11 +286,11 @@ float: right;
 }
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
-    display: block;
+  display: block;
 }
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-    background-color: Azure;
+  background-color: Azure;
 }
 
 @media (max-width: 770px) {

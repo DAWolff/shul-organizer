@@ -12,9 +12,9 @@ body {
 }
 
 ul,li { list-style-type: none;
-        list-style-position: inside;
-        margin:0;
-        padding:0;
+  list-style-position: inside;
+  margin:0;
+  padding:0;
 }
 
 h1 {
@@ -48,30 +48,29 @@ h2 {
 }
 
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-    top: 100%;
-    left: 50%;
-    margin-left: -60px;
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+  visibility: visible;
 }
 
 #js-navbar {
@@ -79,9 +78,9 @@ h2 {
 }
 
 #js-navbar ul {
-margin: 0;
-padding: 0;
-float: right;
+  margin: 0;
+  padding: 0;
+  float: right;
 }
 
 #js-navbar li {
@@ -99,8 +98,8 @@ float: right;
 }
 
 #copyright img {
-    height: 15px;
-    width: 15px;
+  height: 15px;
+  width: 15px;
 }
 
 .buttonz {
@@ -212,27 +211,25 @@ input::placeholder {
 }
 
 .button {
-    border: none;
-    display: block;
-    background: #557ca2;
-    height: 40px;
-    width: 80px;
-    color: #ffffff;
-    text-align: center;
-    border-radius: 5px;
-	  transition: all 0.15s linear;
+  border: none;
+  display: block;
+  background: #557ca2;
+  height: 40px;
+  width: 80px;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 5px;
+  transition: all 0.15s linear;
 }
 
 .button:hover,
 .select:hover {
   background: #2A002A;
   box-shadow: 0 3px 1px white;
-  /* box-shadow: 0 3px 1px #237bb2; */
 }
 
 .button:active {
   background: #2A002A;
-  /* background: #136899; */
   box-shadow: 0 3px 1px #0f608c, 0 3px 1px #0f608c;
 }
 
@@ -252,11 +249,11 @@ input::placeholder {
 }
 
 .error-box {
-    padding: 10px 10px 10px 20px;
-    background-color: #f44336;
-    color: white;
-    height: 40px;
-    font-weight: bold;
+  padding: 10px 10px 10px 20px;
+  background-color: #f44336;
+  color: white;
+  height: 40px;
+  font-weight: bold;
 }
 
 .error-triangle {
@@ -269,18 +266,18 @@ input::placeholder {
 }
 
 .closebtn {
-    margin-left: 15px;
-    color: white;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .closebtn:hover {
-    color: black;
+  color: black;
 }
 
 @media (max-width: 770px) {
@@ -307,9 +304,6 @@ input::placeholder {
   }
 
   .imge {
-    /*background-image: url(images/aron-hakodesh.jpg);*/
-    /*background-image: url(images/spanish.jpg);*/
-    /*background-image: url(images/curacas.jpg);*/
     background-image: url(images/touro-synagogue-national-historic-site-1.jpg);
     background-size: cover;
     background-repeat: no-repeat;
