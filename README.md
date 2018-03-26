@@ -1,25 +1,27 @@
 ## The Shul Organizer
 
-Application:  https://fierce-tundra-73265.herokuapp.com/
-
 Screen Shot:  https://www.flickr.com/photos/156091700@N03/39744894495/in/dateposted-public/
 
 ## Synopsis
 
-The "Shul Organizer" enables a Gabbai (Synagogue sexton) to record important information needed to organize and run a Shul (Synagogue).  Data is kept in three collections:  
+The "Shul Organizer" enables a Gabbai (Synagogue sexton) to record important information needed to organize and run a Shul (Synagogue).  Data is kept in four collections:  
   1. The Shul - Official Name, address, Times of services, Shul announcements, Shul management
-  2. The Members - Contact info, participation records, and occasions observed in the Shul
-  3. Services - What happened on a given Shabbat or Holiday - who got which honors, etc.   
+  2. The Members - Contact info, participation records, and occasions observed in a given Shul
+  3. Services - What happened on a given Shabbat or Holiday in a given Shul - who got which honors, etc.   
+  4. All registered Users, with encrypted passwords and access level.
 
 To log in:
 
-  1. Register a new User/Shul on the landing page ('New User' button)
-  2. Log in with an existing user (can only update his own Shul):
+  * Register a new User/Shul on the landing page ('New User' button)
+  * Log in with an existing user (can only update his own Shul):
         Email: george@gmail.com
         PW:    george
-  3. Log in using a super user's account (can view/update any shul):
+  * Log in using a super user's account (can view/update any shul):
         Email: daniel613@live.com
         PW:    daniel613
+
+Note that anyone can view all "public" Shuls BEFORE logging in, by clicking the Shul icon.
+(Member and Services data cannot be viewed without logging in).
 
 ## Notes
 
@@ -113,15 +115,17 @@ function registerNewGabbaiAndShul(email, pw, shulName, shulCalled) {
   });
 }
 
-// Display of data is handled in index.html/index.js
-// Data is created and updated in xxxx-steps.html/xxxx-steps.js modules
+// Display of data is handled in:  public/index.html/index.js
+// Data is created and updated in:  public/xxxx-steps.html and public/xxxx-steps.js modules
 // State is maintained via local storage  
 
 ## Motivation
 
 To facilitate the running of a Shul by providing a database and CRUD operations on key data.
 
-## Installation=
+## Installation
+
+Application:  https://fierce-tundra-73265.herokuapp.com
 
 Code is at GitHub:
 		 https://github.com/DAWolff/shul-organizer.git
