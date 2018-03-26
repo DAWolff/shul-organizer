@@ -1,13 +1,8 @@
 ## The Shul Organizer
 
+Application:  https://fierce-tundra-73265.herokuapp.com/
+
 Screen Shot:  https://www.flickr.com/photos/156091700@N03/39744894495/in/dateposted-public/
-
-To log in, use:
-
-User:  george@gmail.com
-PW:    george
-
-OR register a new user/Shul
 
 ## Synopsis
 
@@ -15,6 +10,16 @@ The "Shul Organizer" enables a Gabbai (Synagogue sexton) to record important inf
   1. The Shul - Official Name, address, Times of services, Shul announcements, Shul management
   2. The Members - Contact info, participation records, and occasions observed in the Shul
   3. Services - What happened on a given Shabbat or Holiday - who got which honors, etc.   
+
+To log in:
+
+  1. Register a new User/Shul on the landing page ('New User' button)
+  2. Log in with an existing user (can only update his own Shul):
+        Email: george@gmail.com
+        PW:    george
+  3. Log in using a super user's account (can view/update any shul):
+        Email: daniel613@live.com
+        PW:    daniel613
 
 ## Notes
 
