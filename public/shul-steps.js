@@ -514,6 +514,23 @@ function watchNavbarClicks() {
 		window.location.href = "index.html";
 	};
 
+	//     CLICKED LOGOUT ICON
+	$("#js-logout-icon").click(event => {
+    event.preventDefault();
+    storage_data.user_email = "";
+    storage_data.access_level = "";
+    storage_data.logged_in = false;
+    storage_data.user_id = "";
+    storage_data.shul_id = "";
+    storage_data.shul_name = "";
+    storage_data.member_id = "";
+    storage_data.services_id = "";
+    storage_data.action = "";
+  	storage_data.target = "";
+    setLocalStorage();
+    window.location.href = "index.html";
+  });
+
 	//     CLICKED SHUL ICON
   $("#js-shul-icon").click(event => {
     event.preventDefault();
